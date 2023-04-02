@@ -3,16 +3,32 @@
     <head>
         <style>
             #back {
-                background-color: rgb(41, 41, 41);
+                background:
+                100px 100px/calc(2*100px) calc(2*100px) conic-gradient(at calc(500%/6) 50%,#383838 25%,#0000 0),0 0/calc(2*100px) calc(2*100px) conic-gradient(at calc(500%/6) 50%,#383838 25%,#0000 0),
+                100px 100px/calc(2*100px) calc(2*100px) conic-gradient(at calc(200%/3) 50%,#ff003d 25%,#0000 0),0 0/calc(2*100px) calc(2*100px) conic-gradient(at calc(200%/3) 50%,#ff003d 25%,#0000 0),
+                repeating-conic-gradient(#6b6b6b 0 25%,#0000 0 50%) 0 0/calc(2*100px) calc(2*100px),
+                linear-gradient(#6b6b6b calc(100%/3),#ff003d 0 calc(200%/3),#383838 0)
+                0 0/100px 100px;
+
+                /* background-image: repeating-linear-gradient(45deg, transparent, transparent 100px, #383838 100px, #383838 200px);
+                background-color: #161616; */
             }  
             #top {
-                background-color: rgb(41, 41, 41);
-                color: rgb(218, 218, 218);
+                background-color: #6b6b6b;
+                width: fit-content;
+                color: rgb(235, 235, 235);
                 text-align: center;
                 font-family: cursive;
+                margin: auto;
+                border-radius: 10px;
+                padding: 20px;
+                padding-top: 0px;
+                padding-bottom: 0px;
+                border: 2px solid rgb(75, 75, 75);
+                /* box-shadow: 10px 10px 5px rgb(20, 20, 20); */
             }
             #bio {
-                background-color: rgb(88, 88, 88);
+                background-color: rgb(48, 48, 48);
                 color: rgb(218, 218, 218);
                 border: 2px solid rgb(116, 116, 116);
                 font-family: cursive;
@@ -22,7 +38,7 @@
                 box-shadow: 10px 10px 5px rgb(20, 20, 20);
             }
             #testiky{
-                background-color: rgb(88, 88, 88);
+                background-color: rgb(48, 48, 48);
                 color: rgb(218, 218, 218);
                 border: 2px solid rgb(116, 116, 116);
                 font-family: cursive;
@@ -34,7 +50,7 @@
                 width: 80%;
             }
             #links{
-                background-color: rgb(88, 88, 88);
+                background-color: rgb(48, 48, 48);
                 color: rgb(218, 218, 218);
                 border: 2px solid rgb(116, 116, 116);
                 font-family: cursive;
@@ -95,9 +111,10 @@
         <div id="top">
             <h1>František Křížek</h1>
             <p>
-                profesionální trouba. <img width="20" height="20" src="https://em-content.zobj.net/thumbs/160/apple/354/skull_1f480.png">
+                profesionální trouba.
             </p>
         </div>
+        <br>
         <div id="bio">
             <h1>Jsem profesionální trouba.</h1>
             <img id="cat" width="320" height="180" src="https://www.rd.com/wp-content/uploads/2019/09/Cute-cat-lying-on-his-back-on-the-carpet.-Breed-British-mackerel-with-yellow-eyes-and-a-bushy-mustache.-Close-up-e1573490045672.jpg">
