@@ -41,7 +41,7 @@
             <img id="cat" width="320" height="180" src="https://www.rd.com/wp-content/uploads/2019/09/Cute-cat-lying-on-his-back-on-the-carpet.-Breed-British-mackerel-with-yellow-eyes-and-a-bushy-mustache.-Close-up-e1573490045672.jpg">
             <p>
                 <h1>Kalkulátor výšky</h1>
-                Napište svoji výšku v cm: <input type="text" id="inputField">
+                Napište svoji výšku v cm: <input type="number" id="inputField">
                 <p id="output"></p>
 
                 <script>
@@ -52,7 +52,11 @@
                     let inputValue = inputField.value;
                     // Perform your calculation here
                     let result = inputValue;
-                    output.textContent = "Vaše výška: " + result + 'cm';
+                    if (result != ""){
+                        output.textContent = "Vaše výška: " + result + 'cm';
+                    }else{
+                        output.textContent = ""
+                    }
                 });
                 </script>
             </p>
