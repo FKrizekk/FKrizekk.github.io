@@ -78,113 +78,123 @@
             <img id="cat" width="320" height="180" src="https://www.rd.com/wp-content/uploads/2019/09/Cute-cat-lying-on-his-back-on-the-carpet.-Breed-British-mackerel-with-yellow-eyes-and-a-bushy-mustache.-Close-up-e1573490045672.jpg">
         </div>
         <br>
-        <div id="heightcalc">
-            <h1>Kalkulátor výšky</h1>
-            Napište svoji výšku v cm: <input type="number" id="inputField">
-            <p id="output"></p>
-            <script>
-                let inputField = document.querySelector('#inputField');
-                let output = document.querySelector('#output');
-
-                //when the input value of the input field changes => makes the calculation
-                inputField.addEventListener('input', function() {
-                    let inputValue = inputField.value;
-                    let result = inputValue;
-                    //hard kalkulace
-                    if (result != ""){
-                        output.textContent = "Vaše výška: " + result + 'cm';
-                        output.style.height = '50px';
-                    }else{
-                        output.textContent = ""
-                        output.style.height = '0px';
-                    }
-                });
-            </script>
+        <div id="bio">
+            <h1>Links</h1>
+            <p>
+                <a href="www.github.com/FKrizekk">github</a>
+            </p>
         </div>
         <br>
-        <div id="cubecalc">
-            <h1>Kalkulátor krychle</h1>
-            Povrch v cm²: <input type="number" id="cubecalcSInput"><br>
-            Objem v cm³: <input type="number" id="cubecalcVInput"><br>
-            Úhlopříčka podstavy v cm: <input type="number" id="cubecalcUInput"><br>
-            Úhlopříčka tělesa v cm: <input type="number" id="cubecalcUtInput"><br>
-
-            <div id="cubecalcOutput">
-                <p id="cubecalcSOut"></p>
-                <p id="cubecalcVOut"></p>
-                <p id="cubecalcUOut"></p>
-                <p id="cubecalcUtOut"></p>
+        <div id="bio">
+            <h1>Testiky</h1>
+            <div id="heightcalc">
+                <h1>Kalkulátor výšky</h1>
+                Napište svoji výšku v cm: <input type="number" id="inputField">
+                <p id="output"></p>
+                <script>
+                    let inputField = document.querySelector('#inputField');
+                    let output = document.querySelector('#output');
+    
+                    //when the input value of the input field changes => makes the calculation
+                    inputField.addEventListener('input', function() {
+                        let inputValue = inputField.value;
+                        let result = inputValue;
+                        //hard kalkulace
+                        if (result != ""){
+                            output.textContent = "Vaše výška: " + result + 'cm';
+                            output.style.height = '50px';
+                        }else{
+                            output.textContent = ""
+                            output.style.height = '0px';
+                        }
+                    });
+                </script>
             </div>
-            
-
-            <script>
-                //Inputs
-                let povrchIn = document.querySelector('#cubecalcSInput');
-                let objemIn = document.querySelector('#cubecalcVInput');
-                let uIn = document.querySelector('#cubecalcUInput');
-                let utIn = document.querySelector('#cubecalcUtInput');
-
-                //Outputs
-                let povrchOut = document.querySelector('#cubecalcSOut');
-                let objemOut = document.querySelector('#cubecalcVOut');
-                let uOut = document.querySelector('#cubecalcUOut');
-                let utOut = document.querySelector('#cubecalcUtOut');
-
-                let cubecalcOutput = document.querySelector("#cubecalcOutput");
+            <br>
+            <div id="cubecalc">
+                <h1>Kalkulátor krychle</h1>
+                Povrch v cm²: <input type="number" id="cubecalcSInput"><br>
+                Objem v cm³: <input type="number" id="cubecalcVInput"><br>
+                Úhlopříčka podstavy v cm: <input type="number" id="cubecalcUInput"><br>
+                Úhlopříčka tělesa v cm: <input type="number" id="cubecalcUtInput"><br>
+    
+                <div id="cubecalcOutput">
+                    <p id="cubecalcSOut"></p>
+                    <p id="cubecalcVOut"></p>
+                    <p id="cubecalcUOut"></p>
+                    <p id="cubecalcUtOut"></p>
+                </div>
                 
-                povrchIn.addEventListener("input", function(){
-                    calc();
-                });
-                objemIn.addEventListener("input", function(){
-                    calc();
-                });
-                uIn.addEventListener("input", function(){
-                    calc();
-                });
-                utIn.addEventListener("input", function(){
-                    calc();
-                });
-
-                function calc(){
-                    let a = 0
-                    let dict = {}
-                    dict["povrch"] = povrchIn.value
-                    dict["objem"] = objemIn.value
-                    dict["u"] = uIn.value
-                    dict["ut"] = utIn.value
-                    for (var key in dict) {
-                        if (dict[key] != null && dict[key] != ""){
-                            switch (key) {
-                                case "povrch":
-                                    a = Math.sqrt(dict[key]/6)
-                                    break;
-                                case "objem":
-                                    a = Math.cbrt(dict[key])
-                                    break;
-                                case "u":
-                                    a = dict[key]/Math.sqrt(2)
-                                    break;
-                                case "ut":
-                                    a = dict[key]/Math.sqrt(3)
-                                    break;
+    
+                <script>
+                    //Inputs
+                    let povrchIn = document.querySelector('#cubecalcSInput');
+                    let objemIn = document.querySelector('#cubecalcVInput');
+                    let uIn = document.querySelector('#cubecalcUInput');
+                    let utIn = document.querySelector('#cubecalcUtInput');
+    
+                    //Outputs
+                    let povrchOut = document.querySelector('#cubecalcSOut');
+                    let objemOut = document.querySelector('#cubecalcVOut');
+                    let uOut = document.querySelector('#cubecalcUOut');
+                    let utOut = document.querySelector('#cubecalcUtOut');
+    
+                    let cubecalcOutput = document.querySelector("#cubecalcOutput");
+                    
+                    povrchIn.addEventListener("input", function(){
+                        calc();
+                    });
+                    objemIn.addEventListener("input", function(){
+                        calc();
+                    });
+                    uIn.addEventListener("input", function(){
+                        calc();
+                    });
+                    utIn.addEventListener("input", function(){
+                        calc();
+                    });
+    
+                    function calc(){
+                        let a = 0
+                        let dict = {}
+                        dict["povrch"] = povrchIn.value
+                        dict["objem"] = objemIn.value
+                        dict["u"] = uIn.value
+                        dict["ut"] = utIn.value
+                        for (var key in dict) {
+                            if (dict[key] != null && dict[key] != ""){
+                                switch (key) {
+                                    case "povrch":
+                                        a = Math.sqrt(dict[key]/6)
+                                        break;
+                                    case "objem":
+                                        a = Math.cbrt(dict[key])
+                                        break;
+                                    case "u":
+                                        a = dict[key]/Math.sqrt(2)
+                                        break;
+                                    case "ut":
+                                        a = dict[key]/Math.sqrt(3)
+                                        break;
+                                }
                             }
                         }
+                        if(a != 0 && a != null){
+                            povrchOut.textContent = "Povrch: " + a*a*6 + "cm²"
+                            objemOut.textContent = "Objem: " + a**3 + "cm³"
+                            uOut.textContent = "Úhlopříčka podstavy: " + a*Math.sqrt(2) + "cm"
+                            utOut.textContent = "Úhlopříčka tělesa: " + a*Math.sqrt(3) + "cm"
+                            cubecalcOutput.style.height = '200px';
+                        }else{
+                            povrchOut.textContent = null
+                            objemOut.textContent = null
+                            uOut.textContent = null
+                            utOut.textContent = null
+                            cubecalcOutput.style.height = '0px';
+                        }
                     }
-                    if(a != 0 && a != null){
-                        povrchOut.textContent = "Povrch: " + a*a*6 + "cm²"
-                        objemOut.textContent = "Objem: " + a**3 + "cm³"
-                        uOut.textContent = "Úhlopříčka podstavy: " + a*Math.sqrt(2) + "cm"
-                        utOut.textContent = "Úhlopříčka tělesa: " + a*Math.sqrt(3) + "cm"
-                        cubecalcOutput.style.height = '200px';
-                    }else{
-                        povrchOut.textContent = null
-                        objemOut.textContent = null
-                        uOut.textContent = null
-                        utOut.textContent = null
-                        cubecalcOutput.style.height = '0px';
-                    }
-                }
-            </script>
+                </script>
+            </div>
         </div>
     </body>
 </html>
