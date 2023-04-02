@@ -2,27 +2,60 @@
 <html>
     <head>
         <style>
-          #top {
-            background-color: rgb(39, 39, 39);
-          }
-          #bottom {
-            background-color: rgb(155, 155, 155);
-          }
+            #back {
+                background-color: rgb(41, 41, 41);
+            }  
+            #top {
+                background-color: rgb(41, 41, 41);
+                color: rgb(218, 218, 218);
+                text-align: center;
+                font-family: cursive;
+            }
+            #bottom {
+                background-color: rgb(88, 88, 88);
+                color: rgb(218, 218, 218);
+                border: 2px solid rgb(116, 116, 116);
+                font-family: cursive;
+                border-radius: 15px;
+                padding: 20px;
+                padding-top: 0px;
+                box-shadow: 10px 10px 5px rgb(20, 20, 20);
+            }
+            #cat{
+                border: 2px solid rgb(116, 116, 116);
+                border-radius: 15px;
+            }
+            #output{
+                color: red;
+                font-size: xx-large;
+            }
         </style>
       </head>
-    <body>
+    <body id="back">
         <div id="top">
-            <h1>Welcome to my page!!!!</h1>
-            <p>This is my first HTML page.</p>
+            <h1>František Křížek</h1>
+            <p>profesionální trouba.</p>
         </div>
         <div id="bottom">
             <h1>Jsem profesionální trouba.</h1>
-            <img src="https://em-content.zobj.net/thumbs/160/apple/354/skull_1f480.png">
+            <img id="cat" width="320" height="180" src="https://www.rd.com/wp-content/uploads/2019/09/Cute-cat-lying-on-his-back-on-the-carpet.-Breed-British-mackerel-with-yellow-eyes-and-a-bushy-mustache.-Close-up-e1573490045672.jpg">
             <p>
-                <input>
-                neco neco neco
+                <h1>Kalkulátor výšky</h1>
+                Napište svoji výšku v cm: <input type="text" id="inputField">
+                <p id="output"></p>
+
+                <script>
+                let inputField = document.querySelector('#inputField');
+                let output = document.querySelector('#output');
+
+                inputField.addEventListener('input', function() {
+                    let inputValue = inputField.value;
+                    // Perform your calculation here
+                    let result = inputValue;
+                    output.textContent = "Vaše výška: " + result + 'cm';
+                });
+                </script>
             </p>
         </div>
-        
     </body>
 </html>
