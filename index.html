@@ -47,19 +47,20 @@
                 <p id="output"></p>
 
                 <script>
-                let inputField = document.querySelector('#inputField');
-                let output = document.querySelector('#output');
+                    let inputField = document.querySelector('#inputField');
+                    let output = document.querySelector('#output');
 
-                inputField.addEventListener('input', function() {
-                    let inputValue = inputField.value;
-                    // Perform your calculation here
-                    let result = inputValue;
-                    if (result != ""){
-                        output.textContent = "Vaše výška: " + result + 'cm';
-                    }else{
-                        output.textContent = ""
-                    }
-                });
+                    //when the input value of the input field changes => makes the calculation
+                    inputField.addEventListener('input', function() {
+                        let inputValue = inputField.value;
+                        let result = inputValue;
+                        //hard kalkulace
+                        if (result != ""){
+                            output.textContent = "Vaše výška: " + result + 'cm';
+                        }else{
+                            output.textContent = ""
+                        }
+                    });
                 </script>
             </p>
         </div>
