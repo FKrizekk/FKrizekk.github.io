@@ -33,6 +33,12 @@
       text-align: center;
       margin-top: 20px;
     }
+    .character-card.highlight {
+      position: relative; /* Position the card absolutely */
+      transform: scale(1.4); /* Adjust scale as needed */
+      transition: all 0.5s ease; /* Smooth transition for the animation */
+      z-index: 10;        /* Ensure the highlighted card is on top */
+    }
   </style>
 </head>
 <body>
@@ -181,27 +187,51 @@
     }
 
     function displayCharacter(character, container) {
-      const card = document.createElement('div');
-      card.className = 'character-card';
-      card.innerHTML = `
-        <h2>${character.name.full}</h2>
-        <img src="${character.image.large}" alt="${character.name.full}">
-      `;
-      container.appendChild(card);
+      const charDiv = document.createElement('div');
+      charDiv.classList.add('character-card');
+
+      const charImg = document.createElement('img');
+      charImg.src = character.image.large;
+      charImg.alt = character.name.full;
+
+      // Add click event listener to the image
+      charImg.addEventListener('click', () => {
+        // Find the opponent in the current duel
+        const opponent = currentDuel.find(char => char !== character);
+        
+        // Call selectWinner with the clicked character as the winner
+        selectWinner(character, opponent);
+      });
+
+      charDiv.appendChild(charImg);
+      const charName = document.createElement('p');
+      charName.textContent = character.name.full;
+      charDiv.appendChild(charName);
+
+      container.appendChild(charDiv);
     }
 
     let eliminationRounds = []; // Track the round in which each character was eliminated
 
     function selectWinner(winner, loser) {
-    survivors.push(winner);
-    eliminationRounds[characters.indexOf(loser)] = round; // Record the loser's elimination round
+      survivors.push(winner);
+      eliminationRounds[characters.indexOf(loser)] = round;
 
-    if (survivors.length === 2) {
-        round++;
-    }
-    startDuel();
-    }
+      const winnerCard = document.querySelector(`.character-card img[src="${winner.image.large}"]`).parentElement;
+      winnerCard.classList.add('highlight');
 
+      setTimeout(() => {
+        winnerCard.classList.remove('highlight');
+
+        // Delay starting the next duel to allow the animation to finish
+        setTimeout(() => {
+          if (survivors.length === 2) {
+            round++;
+          }
+          startDuel();
+        }, 500); // Adjust the delay (in milliseconds) as needed
+      }, 500); 
+    }
     // Handle key press for left and right arrows
     document.addEventListener('keydown', function(event) {
       if (event.key === 'ArrowLeft') {
