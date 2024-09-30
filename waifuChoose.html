@@ -42,21 +42,38 @@
   
   <label for="characterCount">Number of characters:</label>
   <input type="number" id="characterCount" min="2" value="1000"> 
+  <button id="startButton">Start Duel</button>
 
+  
   <div id="status"></div>
   <div id="duel-container"></div>
   <div id="final-board"></div>
 
   <script>
+    // Get references to the input and button elements
+    const characterCountInput = document.getElementById('characterCount');
+    const startButton = document.getElementById('startButton');
+
+
     let characters = [];
     let survivors = [];
     let currentDuel = [];
     let round = 1;
 
     const charactersPerPage = 50; // Number of characters to fetch per page
-    const desiredCharacterCount = parseInt(document.getElementById('characterCount').value) || 1000; // Default to 1000 if invalid input
+    const desiredCharacterCountt = parseInt(document.getElementById('characterCount').value) || 1000; // Default to 1000 if invalid input
     
-    async function fetchCharacters() {
+    // Add an event listener to the button
+    startButton.addEventListener('click',  
+    () => {
+          const desiredCharacterCount = parseInt(characterCountInput.value) || 1000;
+
+          // Fetch characters and start the duel system
+          fetchCharacters(desiredCharacterCountt); 
+        });
+
+        // Modify fetchCharacters to accept desiredCharacterCount as an argument
+    async function fetchCharacters(desiredCharacterCount){
     let currentPage = 1;
     let totalCharactersFetched = 0;
 
@@ -213,9 +230,6 @@
         board += '</ol>';
         finalBoard.innerHTML += board;
     }
-
-    // Fetch characters and start the duel system
-    fetchCharacters();
   </script>
 
 </body>
