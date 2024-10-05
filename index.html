@@ -2,14 +2,8 @@
 <html>
     <head>
         <title>František Křížek</title>
-        <style>
-            *{
-                font-family: monospace;
-            }
-            #bg{
-                background-image: repeating-linear-gradient(-45deg, transparent, transparent 100px, #282828 100px, #282828 200px);
-                background-color: #1e1e1e;
-            }
+        <link rel="stylesheet" href="style.css">
+        <style>            
             #back {
                 display: flex;
                 flex-direction: column;
@@ -128,7 +122,7 @@
 
             .button-87:hover {
                 transform: scale(1.01);
-                box-shadow: 0px 0px 10px -2px #ffffff;
+                box-shadow: 0px 0px 15px -3px #ffffff;
                 color: #fff;
                 text-decoration: none;
             }
@@ -138,7 +132,7 @@
             }
         </style>
       </head>
-    <body id="bg">
+    <body>
         <div id="back">
             <div onclick="nameFunc()" id="top">
                 <h1>František Křížek</h1>
@@ -159,9 +153,9 @@
                 <div id="links">
                     <h1>Links</h1>
                     <div style="display: flex; flex-direction: column;">
-                        <button class="button-87" onclick="transitionToPage("waifuChoose.html")">Waifu Tournament</button>
-                        <button class="button-87" onclick="transitionToPage("https://www.github.com/FKrizekk")">Github</button>
-                        <button class="button-87" onclick="transitionToPage("https://fkrizekk.itch.io/")">Itch</button>
+                        <button class="button-87" onclick="goToUrl('waifuChoose.html')">Waifu Tournament</button>
+                        <button class="button-87" onclick="goToUrl('https://github.com/FKrizekk')">Github</button>
+                        <button class="button-87" onclick="goToUrl('https://fkrizekk.itch.io/')">Itch</button>
                     </div>
                 </div>
                 <div id="usefulTools">

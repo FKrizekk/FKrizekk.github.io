@@ -1,0 +1,7 @@
+*{
+    font-family: monospace;
+}
+body{
+    background-image: repeating-linear-gradient(-45deg, transparent, transparent 100px, #282828 100px, #282828 200px);
+    background-color: #1e1e1e;
+}
