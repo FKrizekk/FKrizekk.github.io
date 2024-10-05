@@ -3,16 +3,10 @@
     <head>
         <title>František Křížek</title>
         <link rel="stylesheet" href="style.css">
-        <style>            
-            #back {
-                display: flex;
-                flex-direction: column;
-                height: 100vb;
-            }  
+        <style>
             #top {
                 text-align: center;
                 align-self: center;
-                width: auto;
                 cursor: pointer;
                 user-select: none;
             }
@@ -25,103 +19,77 @@
                 width: 100%;
                 height: 150px;
             }
-            .button-87 {
-                margin: 10px;
-                padding: 15px 30px;
-                text-align: center;
-                text-transform: uppercase;
-                transition: 0.25s;
-                background-size: 200% auto;
-                color: white;
-                border-radius: 6px;
-                display: block;
-                border: 0px;
-                font-weight: 700;
-                font-size: large;
-                background-color: #424242;
-                cursor: pointer;
-                user-select: none;
-                -webkit-user-select: none;
-                touch-action: manipulation;
-            }
-
-            .button-87:hover {
-                transform: scale(1.01);
-                box-shadow: 0px 0px 15px -3px #ffffff;
-                color: #fff;
-                text-decoration: none;
-            }
-
-            .button-87:active {
-                transform: scale(0.95);
+            .main{
+                display: flex;
+                flex-direction: row;
+                justify-content: center;
             }
         </style>
       </head>
     <body>
-        <div id="back">
-            <div onclick="nameFunc()" id="top" class="element">
-                <h1>František Křížek</h1>
-                <p>profesionální trouba.</p>
-            </div>
-            <div style="display: flex; flex-direction: row;">
-                <div style="display: flex; flex-direction: column;"> <!--kitty and links-->
-                    <div class="element" id="kitty">
-                        <h1>Kitty!!</h1>
-                        <img id="cat" src="https://cataas.com/cat" alt="cute kitty">
-                    </div>
-                    <div class="element" id="links">
-                        <h1>Links</h1>
-                        <div style="display: flex; flex-direction: column;">
-                            <button class="button-87" onclick="goToUrl('waifuChoose.html')">Waifu Tournament</button>
-                            <button class="button-87" onclick="goToUrl('https://github.com/FKrizekk')">Github</button>
-                            <button class="button-87" onclick="goToUrl('https://fkrizekk.itch.io/')">Itch</button>
-                        </div>
+        <div onclick="nameFunc()" id="top" class="element">
+            <h1>František Křížek</h1>
+            <p>profesionální trouba.</p>
+        </div>
+        <div class="main">
+            <div style="display: flex; flex-direction: column;"> <!--kitty and links-->
+                <div class="element" id="kitty">
+                    <h1>Kitty!!</h1>
+                    <img id="cat" src="https://cataas.com/cat" alt="cute kitty">
+                </div>
+                <div class="element" id="links">
+                    <h1>Links</h1>
+                    <div style="display: flex; flex-direction: column;">
+                        <button class="button" onclick="goToUrl('waifuChoose.html')">Waifu Tournament</button>
+                        <button class="button" onclick="goToUrl('https://github.com/FKrizekk')">Github</button>
+                        <button class="button" onclick="goToUrl('https://fkrizekk.itch.io/')">Itch</button>
                     </div>
                 </div>
-                <div class="element" id="usefulTools">
-                    <h1>Very Useful tools</h1>
-                    <div class="element2" id="heightcalc">
-                        <h1>Height Calculator</h1>
-                        Input your height in cm: <input type="number" id="inputField">
-                        <p style="margin-bottom: -20px;" class="output" id="output"></p>
-                        <script>
-                            let inputField = document.querySelector('#inputField');
-                            let output = document.querySelector('#output');
-            
-                            //when the input value of the input field changes => makes the calculation
-                            inputField.addEventListener('input', function() {
-                                let inputValue = inputField.value;
-                                let result = inputValue;
-                                //hard kalkulace
-                                if (result != ""){
-                                    output.textContent = "Your height: " + result + 'cm';
-                                    output.style.height = '25px';
-                                    output.style.marginBottom = '0px';
-                                }else{
-                                    output.textContent = ""
-                                    output.style.height = '0px';
-                                    output.style.marginBottom = '-20px';
-                                }
-                            });
-                        </script>
+            </div>
+            <div class="element" id="usefulTools">
+                <h1>Very Useful tools</h1>
+                <div class="element2" id="heightcalc">
+                    <h1>Height Calculator</h1>
+                    Input your height in cm: <input type="number" id="inputField">
+                    <p style="margin-bottom: -20px;" class="output" id="output"></p>
+                    <script>
+                        let inputField = document.querySelector('#inputField');
+                        let output = document.querySelector('#output');
+        
+                        //when the input value of the input field changes => makes the calculation
+                        inputField.addEventListener('input', function() {
+                            let inputValue = inputField.value;
+                            let result = inputValue;
+                            //hard kalkulace
+                            if (result != ""){
+                                output.textContent = "Your height: " + result + 'cm';
+                                output.style.height = '25px';
+                                output.style.marginBottom = '0px';
+                            }else{
+                                output.textContent = ""
+                                output.style.height = '0px';
+                                output.style.marginBottom = '-20px';
+                            }
+                        });
+                    </script>
+                </div>
+                <br>
+                <div class="element2" id="cubecalc">
+                    <h1>Cube Calculator</h1>
+                    Surface in cm²: <input type="number" id="cubecalcSInput"><br>
+                    Volume in cm³: <input type="number" id="cubecalcVInput"><br>
+                    Base diagonal v cm: <input type="number" id="cubecalcUInput"><br>
+                    Body diagonal v cm: <input type="number" id="cubecalcUtInput"><br>
+        
+                    <div class="output" id="cubecalcOutput">
+                        <p id="cubecalcSOut"></p>
+                        <p id="cubecalcVOut"></p>
+                        <p id="cubecalcUOut"></p>
+                        <p id="cubecalcUtOut"></p>
                     </div>
-                    <br>
-                    <div class="element2" id="cubecalc">
-                        <h1>Cube Calculator</h1>
-                        Surface in cm²: <input type="number" id="cubecalcSInput"><br>
-                        Volume in cm³: <input type="number" id="cubecalcVInput"><br>
-                        Base diagonal v cm: <input type="number" id="cubecalcUInput"><br>
-                        Body diagonal v cm: <input type="number" id="cubecalcUtInput"><br>
-            
-                        <div class="output" id="cubecalcOutput">
-                            <p id="cubecalcSOut"></p>
-                            <p id="cubecalcVOut"></p>
-                            <p id="cubecalcUOut"></p>
-                            <p id="cubecalcUtOut"></p>
-                        </div>
-                        
-            
-                        <script>
+                    
+        
+                    <script>
                             //Inputs
                             let povrchIn = document.querySelector('#cubecalcSInput');
                             let objemIn = document.querySelector('#cubecalcVInput');
@@ -188,12 +156,9 @@
                                     cubecalcOutput.style.height = '0px';
                                 }
                             }
-                        </script>
-                    </div>
+                    </script>
                 </div>
             </div>
-            
-            
         </div>
         <script src="script.js"></script>
     </body>
