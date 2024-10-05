@@ -65,9 +65,9 @@
   <div class="main" style="display: flex; flex-direction: column;">
     <div class="element">
       <h1>Anime Character Duel</h1>
-      <p>It will look for the most popular characters. It will try to find roughly the count specified and then filter out the males so it will get you like a bit over half of what you input i think</p>
+      <p>It will look for the most popular characters right now. It will try to find roughly the count specified.</p>
       <p>Choose your winner from each duel by pressing the left or right arrow key until only one remains!</p>
-      <p>I think because of the API rate limiting it will get you like 700 max characters but that is kinda fine idk what to do with it</p>
+      <p>If you choose above like 600 it will take like a minute because it has to wait for the API cooldown</p>
     </div>
     <div class="element">
       <label for="characterCount">Number of characters:</label>
@@ -97,20 +97,24 @@
     let round = 1;
 
     const charactersPerPage = 50; // Number of characters to fetch per page
-    const desiredCharacterCountt = parseInt(document.getElementById('characterCount').value);
+    let desiredCharacterCount = parseInt(document.getElementById('characterCount').value);
     
     // Add an event listener to the button
     startButton.addEventListener('click',  
     () => {
-          alert("AFTER CLICKING OK, WAIITTTT FOR ITTT TO LOADDD\nTHANK YOU!!!!")
-          const desiredCharacterCount = parseInt(characterCountInput.value);
+          desiredCharacterCount = parseInt(characterCountInput.value);
+          console.debug("Desired: " + desiredCharacterCount)
+          characters = [];
+          survivors = [];
+          currentDuel = [];
+          round = 1;
           
           // Fetch characters and start the duel system
-          fetchCharacters(desiredCharacterCountt); 
+          fetchCharacters(desiredCharacterCount); 
           document.querySelector('#body').style.paddingBottom = '50vh';
           document.querySelector('#status').classList.add("element");
         });
-
+    const pause = (time) => new Promise(resolve => setTimeout(resolve, time))    
         // Modify fetchCharacters to accept desiredCharacterCount as an argument
     async function fetchCharacters(desiredCharacterCount){
     let currentPage = 1;
@@ -150,16 +154,23 @@
         totalCharactersFetched += newCharacters.length;
         currentPage++;
 
+        console.debug(totalCharactersFetched)
+        document.getElementById('status').textContent = "Total characters fetched: " + totalCharactersFetched;
+
         // Break if we've reached the desired number of characters or there are no more characters
         if (totalCharactersFetched >= desiredCharacterCount || newCharacters.length === 0) {
-            break; 
+          console.debug("BREAK")
+          break; 
         }
 
         } catch (error) {
-        console.error('Error fetching characters:', error);
-        break;
+          console.error('Error fetching characters:', error);
+          currentPage--;
+          document.getElementById('status').textContent = "API limit reached. Please wait for access.";
+          await pause(60000)
         }
     }
+    console.debug(desiredCharacterCount)
     
     function shuffleArray(array) {
       for (let i = array.length - 1; i > 0; i--) {
@@ -181,7 +192,7 @@
 
     function updateStatus() {
       const statusElement = document.getElementById('status');
-      statusElement.innerHTML = `<h2>Round: ${round}</h2><p>Characters left: ${survivors.length}</p>`;
+      statusElement.innerHTML = `<h2>Round: ${round}</h2><p>Duels left: ${survivors.length}</p>`;
     }
 
     let duelsPerRound = 0; // Track the number of duels in the current round
