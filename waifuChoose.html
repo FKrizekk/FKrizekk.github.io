@@ -14,10 +14,22 @@
     .character-card {
       text-align: center;
       border: 1px solid #ddd;
+      border-radius: 6px;
       padding: 10px;
       width: 300px;
       background-color: #333;
       color: white;
+      cursor: pointer;
+      transition: all 0.3s ease-out;
+    }
+    .character-card:hover {
+      transform: scale(1.01);
+      box-shadow: 0px 0px 15px -3px #ffffff;
+      color: #fff;
+      text-decoration: none;
+    }
+    .character-card:active {
+      transform: scale(0.95);
     }
     .character-card img {
       max-height: 100%;
@@ -27,7 +39,9 @@
     }
     #status {
       text-align: center;
+      align-self: center;
       margin-top: 20px;
+      width: max-content;
     }
     .character-card.highlight {
       position: relative; /* Position the card absolutely */
@@ -47,7 +61,7 @@
     }
   </style>
 </head>
-<body>
+<body id="body">
   <div class="main" style="display: flex; flex-direction: column;">
     <div class="element">
       <h1>Anime Character Duel</h1>
@@ -89,10 +103,12 @@
     startButton.addEventListener('click',  
     () => {
           alert("AFTER CLICKING OK, WAIITTTT FOR ITTT TO LOADDD\nTHANK YOU!!!!")
-          const desiredCharacterCount = parseInt(characterCountInput.value) || 1000;
-
+          const desiredCharacterCount = parseInt(characterCountInput.value);
+          
           // Fetch characters and start the duel system
           fetchCharacters(desiredCharacterCountt); 
+          document.querySelector('#body').style.paddingBottom = '50vh';
+          document.querySelector('#status').classList.add("element");
         });
 
         // Modify fetchCharacters to accept desiredCharacterCount as an argument
@@ -211,7 +227,7 @@
       charImg.alt = character.name.full;
 
       // Add click event listener to the image
-      charImg.addEventListener('click', () => {
+      charDiv.addEventListener('click', () => {
         // Find the opponent in the current duel
         const opponent = currentDuel.find(char => char !== character);
         
