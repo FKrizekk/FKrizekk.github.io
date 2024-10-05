@@ -1,28 +1,35 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <link rel="shortcut icon" type="image/x-icon" href="https://www.rd.com/wp-content/uploads/2019/09/Cute-cat-lying-on-his-back-on-the-carpet.-Breed-British-mackerel-with-yellow-eyes-and-a-bushy-mustache.-Close-up-e1573490045672.jpg">
         <title>František Křížek</title>
         <style>
             *{
                 font-family: monospace;
             }
-            #back {
+            #bg{
                 background-image: repeating-linear-gradient(-45deg, transparent, transparent 100px, #282828 100px, #282828 200px);
                 background-color: #1e1e1e;
+            }
+            #back {
+                display: flex;
+                flex-direction: column;
+                height: 100vb;
             }  
             #top {
-                background-color: #6b6b6b;
+                background-color: rgba(48, 48, 48);
                 width: fit-content;
                 color: rgb(235, 235, 235);
                 text-align: center;
+                align-self: center;
                 margin: auto;
                 border-radius: 6px;
                 padding: 20px;
                 padding-top: 0px;
                 padding-bottom: 0px;
                 border: 2px solid rgb(75, 75, 75);
-                /* box-shadow: 10px 10px 5px rgb(20, 20, 20); */
+                margin: 10px;
+                cursor: pointer;
+                user-select: none;
             }
             #bio {
                 background-color: rgb(48, 48, 48);
@@ -32,8 +39,9 @@
                 padding: 20px;
                 padding-top: 0px;
                 box-shadow: 10px 10px 5px rgb(20, 20, 20);
+                margin: 10px;
             }
-            #testiky{
+            #usefulTools{
                 background-color: rgb(48, 48, 48);
                 color: rgb(218, 218, 218);
                 border: 2px solid rgb(116, 116, 116);
@@ -44,18 +52,18 @@
                 box-shadow: 10px 10px 5px rgb(20, 20, 20);
                 float: right;
                 width: 80%;
+                margin: 10px;
             }
             #links{
+                text-align: center;
+                font-size: xx-large;
                 background-color: rgb(48, 48, 48);
                 color: rgb(218, 218, 218);
                 border: 2px solid rgb(116, 116, 116);
                 border-radius: 6px;
-                padding: 20px;
-                padding-top: 0px;
                 box-shadow: 10px 10px 5px rgb(20, 20, 20);
-                overflow: hidden;
-                float: left;
-                width: 10%;
+                width: 20%;
+                margin: 10px;
             }
             #heightcalc{
                 background-color: rgb(88, 88, 88);
@@ -73,7 +81,7 @@
                 background-color: rgb(88, 88, 88);
                 color: rgb(218, 218, 218);
                 border: 2px solid rgb(116, 116, 116);
-                border-radius: 15px;
+                border-radius: 6px;
                 padding: 20px;
                 padding-top: 0px;
                 box-shadow: 10px 10px 5px rgb(20, 20, 20);
@@ -89,7 +97,7 @@
             }
             #cat{
                 border: 2px solid rgb(116, 116, 116);
-                border-radius: 15px;
+                border-radius: 6px;
             }
             #output{
                 color: red;
@@ -98,144 +106,177 @@
                 overflow: hidden;
                 transition: all 0.5s ease-in-out;
             }
+            .button-87 {
+                margin: 10px;
+                padding: 15px 30px;
+                text-align: center;
+                text-transform: uppercase;
+                transition: 0.25s;
+                background-size: 200% auto;
+                color: white;
+                border-radius: 6px;
+                display: block;
+                border: 0px;
+                font-weight: 700;
+                font-size: large;
+                background-color: #424242;
+                cursor: pointer;
+                user-select: none;
+                -webkit-user-select: none;
+                touch-action: manipulation;
+            }
+
+            .button-87:hover {
+                transform: scale(1.01);
+                box-shadow: 0px 0px 10px -2px #ffffff;
+                color: #fff;
+                text-decoration: none;
+            }
+
+            .button-87:active {
+                transform: scale(0.95);
+            }
         </style>
       </head>
-    <body id="back">
-        <div id="top">
-            <h1>František Křížek</h1>
-            <p>
-                <div>
-                    <span></span>
-                </div>
-                profesionální trouba.
-            </p>
-        </div>
-        <br>
-        <div id="bio">
-            <h1>Kitty!!</h1>
-            <img id="cat" width="320" height="180" src="https://cataas.com/cat">
-        </div>
-        <br>
-        <div id="links">
-            <h1>Links</h1>
-            <p>
-                <a href="waifuChoose.html">Waifu Tournament</a>
-                <br>
-                <a href="https://www.github.com/FKrizekk">Github</a>
-                <br>
-                <a href="https://fkrizekk.itch.io/">Itch.io</a>
-            </p>
-        </div>
-        <div id="testiky">
-            <h1>Very Useful tools</h1>
-            <div id="heightcalc">
-                <h1>Height Calculator</h1>
-                Input your height in cm: <input type="number" id="inputField">
-                <p id="output"></p>
-                <script>
-                    let inputField = document.querySelector('#inputField');
-                    let output = document.querySelector('#output');
-    
-                    //when the input value of the input field changes => makes the calculation
-                    inputField.addEventListener('input', function() {
-                        let inputValue = inputField.value;
-                        let result = inputValue;
-                        //hard kalkulace
-                        if (result != ""){
-                            output.textContent = "Your height: " + result + 'cm';
-                            output.style.height = '50px';
-                        }else{
-                            output.textContent = ""
-                            output.style.height = '0px';
-                        }
-                    });
-                </script>
+    <body id="bg">
+        <div id="back">
+            <div onclick="nameFunc()" id="top">
+                <h1>František Křížek</h1>
+                <p>
+                    <div>
+                        <span></span>
+                    </div>
+                    profesionální trouba.
+                </p>
             </div>
             <br>
-            <div id="cubecalc">
-                <h1>Cube Calculator</h1>
-                Surface in cm²: <input type="number" id="cubecalcSInput"><br>
-                Volume in cm³: <input type="number" id="cubecalcVInput"><br>
-                Base diagonal v cm: <input type="number" id="cubecalcUInput"><br>
-                Body diagonal v cm: <input type="number" id="cubecalcUtInput"><br>
-    
-                <div id="cubecalcOutput">
-                    <p id="cubecalcSOut"></p>
-                    <p id="cubecalcVOut"></p>
-                    <p id="cubecalcUOut"></p>
-                    <p id="cubecalcUtOut"></p>
+            <div id="bio">
+                <h1>Kitty!!</h1>
+                <img id="cat" width="320" height="180" src="https://cataas.com/cat">
+            </div>
+            <br>
+            <div style="display: flex;">
+                <div id="links">
+                    <h1>Links</h1>
+                    <div style="display: flex; flex-direction: column;">
+                        <button class="button-87" onclick="transitionToPage("waifuChoose.html")">Waifu Tournament</button>
+                        <button class="button-87" onclick="transitionToPage("https://www.github.com/FKrizekk")">Github</button>
+                        <button class="button-87" onclick="transitionToPage("https://fkrizekk.itch.io/")">Itch</button>
+                    </div>
                 </div>
-                
-    
-                <script>
-                    //Inputs
-                    let povrchIn = document.querySelector('#cubecalcSInput');
-                    let objemIn = document.querySelector('#cubecalcVInput');
-                    let uIn = document.querySelector('#cubecalcUInput');
-                    let utIn = document.querySelector('#cubecalcUtInput');
-    
-                    //Outputs
-                    let povrchOut = document.querySelector('#cubecalcSOut');
-                    let objemOut = document.querySelector('#cubecalcVOut');
-                    let uOut = document.querySelector('#cubecalcUOut');
-                    let utOut = document.querySelector('#cubecalcUtOut');
-    
-                    let cubecalcOutput = document.querySelector("#cubecalcOutput");
-                    
-                    povrchIn.addEventListener("input", function(){
-                        calc();
-                    });
-                    objemIn.addEventListener("input", function(){
-                        calc();
-                    });
-                    uIn.addEventListener("input", function(){
-                        calc();
-                    });
-                    utIn.addEventListener("input", function(){
-                        calc();
-                    });
-    
-                    function calc(){
-                        let a = 0
-                        let dict = {}
-                        dict["povrch"] = povrchIn.value
-                        dict["objem"] = objemIn.value
-                        dict["u"] = uIn.value
-                        dict["ut"] = utIn.value
-                        for (var key in dict) {
-                            if (dict[key] != null && dict[key] != ""){
-                                switch (key) {
-                                    case "povrch":
-                                        a = Math.sqrt(dict[key]/6)
-                                        break;
-                                    case "objem":
-                                        a = Math.cbrt(dict[key])
-                                        break;
-                                    case "u":
-                                        a = dict[key]/Math.sqrt(2)
-                                        break;
-                                    case "ut":
-                                        a = dict[key]/Math.sqrt(3)
-                                        break;
+                <div id="usefulTools">
+                    <h1>Very Useful tools</h1>
+                    <div id="heightcalc">
+                        <h1>Height Calculator</h1>
+                        Input your height in cm: <input type="number" id="inputField">
+                        <p id="output"></p>
+                        <script>
+                            let inputField = document.querySelector('#inputField');
+                            let output = document.querySelector('#output');
+            
+                            //when the input value of the input field changes => makes the calculation
+                            inputField.addEventListener('input', function() {
+                                let inputValue = inputField.value;
+                                let result = inputValue;
+                                //hard kalkulace
+                                if (result != ""){
+                                    output.textContent = "Your height: " + result + 'cm';
+                                    output.style.height = '50px';
+                                }else{
+                                    output.textContent = ""
+                                    output.style.height = '0px';
+                                }
+                            });
+                        </script>
+                    </div>
+                    <br>
+                    <div id="cubecalc">
+                        <h1>Cube Calculator</h1>
+                        Surface in cm²: <input type="number" id="cubecalcSInput"><br>
+                        Volume in cm³: <input type="number" id="cubecalcVInput"><br>
+                        Base diagonal v cm: <input type="number" id="cubecalcUInput"><br>
+                        Body diagonal v cm: <input type="number" id="cubecalcUtInput"><br>
+            
+                        <div id="cubecalcOutput">
+                            <p id="cubecalcSOut"></p>
+                            <p id="cubecalcVOut"></p>
+                            <p id="cubecalcUOut"></p>
+                            <p id="cubecalcUtOut"></p>
+                        </div>
+                        
+            
+                        <script>
+                            //Inputs
+                            let povrchIn = document.querySelector('#cubecalcSInput');
+                            let objemIn = document.querySelector('#cubecalcVInput');
+                            let uIn = document.querySelector('#cubecalcUInput');
+                            let utIn = document.querySelector('#cubecalcUtInput');
+            
+                            //Outputs
+                            let povrchOut = document.querySelector('#cubecalcSOut');
+                            let objemOut = document.querySelector('#cubecalcVOut');
+                            let uOut = document.querySelector('#cubecalcUOut');
+                            let utOut = document.querySelector('#cubecalcUtOut');
+            
+                            let cubecalcOutput = document.querySelector("#cubecalcOutput");
+                            
+                            povrchIn.addEventListener("input", function(){
+                                calc();
+                            });
+                            objemIn.addEventListener("input", function(){
+                                calc();
+                            });
+                            uIn.addEventListener("input", function(){
+                                calc();
+                            });
+                            utIn.addEventListener("input", function(){
+                                calc();
+                            });
+            
+                            function calc(){
+                                let a = 0
+                                let dict = {}
+                                dict["povrch"] = povrchIn.value
+                                dict["objem"] = objemIn.value
+                                dict["u"] = uIn.value
+                                dict["ut"] = utIn.value
+                                for (var key in dict) {
+                                    if (dict[key] != null && dict[key] != ""){
+                                        switch (key) {
+                                            case "povrch":
+                                                a = Math.sqrt(dict[key]/6)
+                                                break;
+                                            case "objem":
+                                                a = Math.cbrt(dict[key])
+                                                break;
+                                            case "u":
+                                                a = dict[key]/Math.sqrt(2)
+                                                break;
+                                            case "ut":
+                                                a = dict[key]/Math.sqrt(3)
+                                                break;
+                                        }
+                                    }
+                                }
+                                if(a != 0 && a != null){
+                                    povrchOut.textContent = "Surface: " + a*a*6 + "cm²"
+                                    objemOut.textContent = "Volume: " + a**3 + "cm³"
+                                    uOut.textContent = "Base diagonal: " + a*Math.sqrt(2) + "cm"
+                                    utOut.textContent = "Body diagonal: " + a*Math.sqrt(3) + "cm"
+                                    cubecalcOutput.style.height = '200px';
+                                }else{
+                                    povrchOut.textContent = null
+                                    objemOut.textContent = null
+                                    uOut.textContent = null
+                                    utOut.textContent = null
+                                    cubecalcOutput.style.height = '0px';
                                 }
                             }
-                        }
-                        if(a != 0 && a != null){
-                            povrchOut.textContent = "Surface: " + a*a*6 + "cm²"
-                            objemOut.textContent = "Volume: " + a**3 + "cm³"
-                            uOut.textContent = "Base diagonal: " + a*Math.sqrt(2) + "cm"
-                            utOut.textContent = "Body diagonal: " + a*Math.sqrt(3) + "cm"
-                            cubecalcOutput.style.height = '200px';
-                        }else{
-                            povrchOut.textContent = null
-                            objemOut.textContent = null
-                            uOut.textContent = null
-                            utOut.textContent = null
-                            cubecalcOutput.style.height = '0px';
-                        }
-                    }
-                </script>
+                        </script>
+                    </div>
+                </div>
             </div>
         </div>
+        <script src="script.js"></script>
     </body>
 </html>
