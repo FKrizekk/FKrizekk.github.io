@@ -6,11 +6,6 @@
   <title>AniList Character Duel</title>
   <link rel="stylesheet" href="style.css">
   <style>
-    body {
-      background-color: black;
-      color: white;
-      font-family: Arial, sans-serif;
-    }
     #duel-container {
       display: flex;
       justify-content: space-around;
@@ -43,15 +38,19 @@
   </style>
 </head>
 <body>
-
-  <h1>Anime Character Duel</h1>
-  <p>It will look for the most popular characters. It will try to find roughly the count specified and then filter out the males so it will get you like a bit over half of what you input i think</p>
-  <p>Choose your winner from each duel by pressing the left or right arrow key until only one remains!</p>
-  <p>I think because of the API rate limiting it will get you like 700 max characters but that is kinda fine idk what to do with it</p>
+  <div class="element">
+    <h1>Anime Character Duel</h1>
+    <p>It will look for the most popular characters. It will try to find roughly the count specified and then filter out the males so it will get you like a bit over half of what you input i think</p>
+    <p>Choose your winner from each duel by pressing the left or right arrow key until only one remains!</p>
+    <p>I think because of the API rate limiting it will get you like 700 max characters but that is kinda fine idk what to do with it</p>
+  </div>
+  <div class="element">
+    <label for="characterCount">Number of characters:</label>
+    <input type="number" id="characterCount" min="2" value="1000"> 
+    <button id="startButton">Start Duel</button>
+  </div>
   
-  <label for="characterCount">Number of characters:</label>
-  <input type="number" id="characterCount" min="2" value="1000"> 
-  <button id="startButton">Start Duel</button>
+  
 
   
   <div id="status"></div>
@@ -71,7 +70,7 @@
     let round = 1;
 
     const charactersPerPage = 50; // Number of characters to fetch per page
-    const desiredCharacterCountt = parseInt(document.getElementById('characterCount').value) || 1000; // Default to 1000 if invalid input
+    const desiredCharacterCountt = parseInt(document.getElementById('characterCount').value);
     
     // Add an event listener to the button
     startButton.addEventListener('click',  

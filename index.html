@@ -10,95 +10,20 @@
                 height: 100vb;
             }  
             #top {
-                background-color: rgba(48, 48, 48);
-                width: fit-content;
-                color: rgb(235, 235, 235);
                 text-align: center;
                 align-self: center;
-                margin: auto;
-                border-radius: 6px;
-                padding: 20px;
-                padding-top: 0px;
-                padding-bottom: 0px;
-                border: 2px solid rgb(75, 75, 75);
-                margin: 10px;
+                width: auto;
                 cursor: pointer;
                 user-select: none;
             }
-            #bio {
-                background-color: rgb(48, 48, 48);
-                color: rgb(218, 218, 218);
-                border: 2px solid rgb(116, 116, 116);
-                border-radius: 6px;
-                padding: 20px;
-                padding-top: 0px;
-                box-shadow: 10px 10px 5px rgb(20, 20, 20);
-                margin: 10px;
-            }
             #usefulTools{
-                background-color: rgb(48, 48, 48);
-                color: rgb(218, 218, 218);
-                border: 2px solid rgb(116, 116, 116);
-                border-radius: 6px;
-                padding: 20px;
-                padding-top: 0px;
-                margin-bottom: 200px;
-                box-shadow: 10px 10px 5px rgb(20, 20, 20);
                 float: right;
                 width: 80%;
-                margin: 10px;
-            }
-            #links{
-                text-align: center;
-                font-size: xx-large;
-                background-color: rgb(48, 48, 48);
-                color: rgb(218, 218, 218);
-                border: 2px solid rgb(116, 116, 116);
-                border-radius: 6px;
-                box-shadow: 10px 10px 5px rgb(20, 20, 20);
-                width: 20%;
-                margin: 10px;
-            }
-            #heightcalc{
-                background-color: rgb(88, 88, 88);
-                color: rgb(218, 218, 218);
-                border: 2px solid rgb(116, 116, 116);
-                border-radius: 6px;
-                padding: 20px;
-                padding-top: 0px;
-                padding-bottom: 0px;
-                overflow: hidden;
-                box-shadow: 10px 10px 5px rgb(20, 20, 20);
-                transition: all 0.5s ease-in-out;
-            }
-            #cubecalc{
-                background-color: rgb(88, 88, 88);
-                color: rgb(218, 218, 218);
-                border: 2px solid rgb(116, 116, 116);
-                border-radius: 6px;
-                padding: 20px;
-                padding-top: 0px;
-                box-shadow: 10px 10px 5px rgb(20, 20, 20);
-                overflow: hidden;
-                transition: all 0.5s ease-in-out;
-            }
-            #cubecalcOutput{
-                color: rgb(218, 218, 218);
-                font-size: medium;
-                height: 0;
-                overflow: hidden;
-                transition: all 0.5s ease-in-out;
             }
             #cat{
-                border: 2px solid rgb(116, 116, 116);
                 border-radius: 6px;
-            }
-            #output{
-                color: red;
-                font-size: xx-large;
-                height: 0;
-                overflow: hidden;
-                transition: all 0.5s ease-in-out;
+                width: 100%;
+                height: 150px;
             }
             .button-87 {
                 margin: 10px;
@@ -134,36 +59,31 @@
       </head>
     <body>
         <div id="back">
-            <div onclick="nameFunc()" id="top">
+            <div onclick="nameFunc()" id="top" class="element">
                 <h1>František Křížek</h1>
-                <p>
-                    <div>
-                        <span></span>
+                <p>profesionální trouba.</p>
+            </div>
+            <div style="display: flex; flex-direction: row;">
+                <div style="display: flex; flex-direction: column;"> <!--kitty and links-->
+                    <div class="element" id="kitty">
+                        <h1>Kitty!!</h1>
+                        <img id="cat" src="https://cataas.com/cat" alt="cute kitty">
                     </div>
-                    profesionální trouba.
-                </p>
-            </div>
-            <br>
-            <div id="bio">
-                <h1>Kitty!!</h1>
-                <img id="cat" width="320" height="180" src="https://cataas.com/cat">
-            </div>
-            <br>
-            <div style="display: flex;">
-                <div id="links">
-                    <h1>Links</h1>
-                    <div style="display: flex; flex-direction: column;">
-                        <button class="button-87" onclick="goToUrl('waifuChoose.html')">Waifu Tournament</button>
-                        <button class="button-87" onclick="goToUrl('https://github.com/FKrizekk')">Github</button>
-                        <button class="button-87" onclick="goToUrl('https://fkrizekk.itch.io/')">Itch</button>
+                    <div class="element" id="links">
+                        <h1>Links</h1>
+                        <div style="display: flex; flex-direction: column;">
+                            <button class="button-87" onclick="goToUrl('waifuChoose.html')">Waifu Tournament</button>
+                            <button class="button-87" onclick="goToUrl('https://github.com/FKrizekk')">Github</button>
+                            <button class="button-87" onclick="goToUrl('https://fkrizekk.itch.io/')">Itch</button>
+                        </div>
                     </div>
                 </div>
-                <div id="usefulTools">
+                <div class="element" id="usefulTools">
                     <h1>Very Useful tools</h1>
-                    <div id="heightcalc">
+                    <div class="element2" id="heightcalc">
                         <h1>Height Calculator</h1>
                         Input your height in cm: <input type="number" id="inputField">
-                        <p id="output"></p>
+                        <p style="margin-bottom: -20px;" class="output" id="output"></p>
                         <script>
                             let inputField = document.querySelector('#inputField');
                             let output = document.querySelector('#output');
@@ -175,23 +95,25 @@
                                 //hard kalkulace
                                 if (result != ""){
                                     output.textContent = "Your height: " + result + 'cm';
-                                    output.style.height = '50px';
+                                    output.style.height = '25px';
+                                    output.style.marginBottom = '0px';
                                 }else{
                                     output.textContent = ""
                                     output.style.height = '0px';
+                                    output.style.marginBottom = '-20px';
                                 }
                             });
                         </script>
                     </div>
                     <br>
-                    <div id="cubecalc">
+                    <div class="element2" id="cubecalc">
                         <h1>Cube Calculator</h1>
                         Surface in cm²: <input type="number" id="cubecalcSInput"><br>
                         Volume in cm³: <input type="number" id="cubecalcVInput"><br>
                         Base diagonal v cm: <input type="number" id="cubecalcUInput"><br>
                         Body diagonal v cm: <input type="number" id="cubecalcUtInput"><br>
             
-                        <div id="cubecalcOutput">
+                        <div class="output" id="cubecalcOutput">
                             <p id="cubecalcSOut"></p>
                             <p id="cubecalcVOut"></p>
                             <p id="cubecalcUOut"></p>
@@ -270,6 +192,8 @@
                     </div>
                 </div>
             </div>
+            
+            
         </div>
         <script src="script.js"></script>
     </body>
