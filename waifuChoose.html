@@ -35,20 +35,33 @@
       transition: all 0.5s ease; /* Smooth transition for the animation */
       z-index: 10;        /* Ensure the highlighted card is on top */
     }
+    .main{
+      width: 60%;
+      align-self: center;
+    }
+    #startButton{
+      height: 100px;
+      font-weight: 900;
+      font-size: xx-large;
+      text-transform: uppercase;
+    }
   </style>
 </head>
 <body>
-  <div class="element">
-    <h1>Anime Character Duel</h1>
-    <p>It will look for the most popular characters. It will try to find roughly the count specified and then filter out the males so it will get you like a bit over half of what you input i think</p>
-    <p>Choose your winner from each duel by pressing the left or right arrow key until only one remains!</p>
-    <p>I think because of the API rate limiting it will get you like 700 max characters but that is kinda fine idk what to do with it</p>
+  <div class="main" style="display: flex; flex-direction: column;">
+    <div class="element">
+      <h1>Anime Character Duel</h1>
+      <p>It will look for the most popular characters. It will try to find roughly the count specified and then filter out the males so it will get you like a bit over half of what you input i think</p>
+      <p>Choose your winner from each duel by pressing the left or right arrow key until only one remains!</p>
+      <p>I think because of the API rate limiting it will get you like 700 max characters but that is kinda fine idk what to do with it</p>
+    </div>
+    <div class="element">
+      <label for="characterCount">Number of characters:</label>
+      <input class="button" type="number" id="characterCount" min="2" value="1000"> 
+      <button class="button" id="startButton">Start Duel</button>
+    </div>
   </div>
-  <div class="element">
-    <label for="characterCount">Number of characters:</label>
-    <input type="number" id="characterCount" min="2" value="1000"> 
-    <button id="startButton">Start Duel</button>
-  </div>
+  
   
   
 
