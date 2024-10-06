@@ -139,7 +139,21 @@
           document.querySelector('#body').style.paddingBottom = '50vh';
           document.querySelector('#status').classList.add("element");
         });
-    const pause = (time) => new Promise(resolve => setTimeout(resolve, time))    
+    const pause = (time) => new Promise(resolve => setTimeout(resolve, time))
+    function countdown(seconds, outputElementId) {
+      const outputElement = document.getElementById(outputElementId);
+      let remainingTime = seconds;
+
+      function updateCountdown() {
+        if (remainingTime > 0) {
+          outputElement.textContent = `API Cooldown time remaining: ${remainingTime} seconds`;
+          remainingTime--;
+          setTimeout(updateCountdown, 1000); // Schedule the next update
+        }
+      }
+
+      updateCountdown(); // Start the countdown
+    }
         // Modify fetchCharacters to accept desiredCharacterCount as an argument
     async function fetchCharacters(desiredCharacterCount){
     let currentPage = 1;
@@ -192,7 +206,8 @@
           console.error('Error fetching characters:', error);
           currentPage--;
           document.getElementById('status').textContent = "API limit reached. Please wait 1 minute for access.";
-          await pause(60000)
+          countdown(60, "status");
+          await pause(60000); 
         }
     }
     console.debug("Desired: " + desiredCharacterCount)
