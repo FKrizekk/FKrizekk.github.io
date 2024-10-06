@@ -90,7 +90,6 @@
       <p>It will look for the most popular characters right now. It will try to find roughly the count specified.</p>
       <p>Choose your winner from each duel by clicking on them or pressing the left or right arrow key until only one remains!</p>
       <p>If you choose above like 600 it will take like a minute because it has to wait for the API cooldown.</p>
-      <p>If you spam it and break it that is on you.</p>
     </div>
     <div class="element">
       <label for="characterCount">Number of characters:</label>
@@ -211,6 +210,8 @@
 
     survivors = [...characters];
     updateStatus();
+    gameEnded = false;
+    inputBlocked = false;
     startDuel();
     }
 
@@ -223,37 +224,43 @@
     let duelsPerRound = 0; // Track the number of duels in the current round
 
     function startDuel() {
-    console.debug(survivors.length)
-    if (survivors.length <= 1) {
-        showFinalBoard();
-        return;
+      console.debug(survivors.length);
+
+      if (survivors.length <= 1) {
+          showFinalBoard();
+          gameEnded = true; // Block input after the game ends
+          return;
+      }
+
+      if (duelsPerRound === 0) {
+          duelsPerRound = Math.floor(survivors.length / 2);
+      }
+
+      const duelContainer = document.getElementById('duel-container');
+      duelContainer.innerHTML = '';
+
+      if (survivors.length % 2 !== 0) {
+          survivors.push(survivors.shift()); // Move the first survivor to the next round if odd number of survivors
+      }
+
+      const char1 = survivors.shift();
+      const char2 = survivors.shift();
+
+      currentDuel = [char1, char2];
+
+      displayCharacter(char1, duelContainer);
+      displayCharacter(char2, duelContainer);
+
+      duelsPerRound--;
+
+      if (duelsPerRound === 0) {
+          round++;
+      }
+
+      updateStatus();
     }
-
-    if (duelsPerRound === 0) { 
-        // Start of a new round, calculate the number of duels
-        duelsPerRound = survivors.length / 2; 
-    }
-
-    const duelContainer = document.getElementById('duel-container');
-    duelContainer.innerHTML = '';
-
-    const char1 = survivors.shift();
-    const char2 = survivors.shift();
-
-    currentDuel = [char1, char2];
-
-    displayCharacter(char1, duelContainer);
-    displayCharacter(char2, duelContainer);
-
-    duelsPerRound--; // Decrement the number of duels left in this round
-
-    if (duelsPerRound === 0) {
-        // All duels for this round are done, move to the next round
-        round++;
-    }
-
-    updateStatus();
-    }
+    let inputBlocked = false; // New flag to block input during animation
+    let gameEnded = false; // Flag to prevent input after the game ends
 
     function displayCharacter(character, container) {
       const charDiv = document.createElement('div');
@@ -281,6 +288,9 @@
     }
 
     function selectWinner(winner, loser) {
+      if (inputBlocked || gameEnded) return; // If input is blocked or game ended, do nothing
+
+      inputBlocked = true; // Block input during the animation
       survivors.push(winner);
       eliminated.push(loser);
 
@@ -288,25 +298,26 @@
       winnerCard.classList.add('highlight');
 
       setTimeout(() => {
-        winnerCard.classList.remove('highlight');
-
-        // Delay starting the next duel to allow the animation to finish
-        setTimeout(() => {
-          if (survivors.length === 2) {
-            round++;
-          }
-          startDuel();
-        }, 500); // Adjust the delay (in milliseconds) as needed
+          winnerCard.classList.remove('highlight');
+          
+          // Delay starting the next duel to allow the animation to finish
+          setTimeout(() => {
+              if (survivors.length === 2) {
+                  round++;
+              }
+              inputBlocked = false; // Unblock input after the animation ends
+              startDuel(); // Start next duel
+          }, 500); // Adjust the delay (in milliseconds) as needed
       }, 500); 
     }
     // Handle key press for left and right arrows
     document.addEventListener('keydown', function(event) {
+      if (inputBlocked || gameEnded) return; // Block input if input is blocked or game is over
+
       if (event.key === 'ArrowLeft') {
-        // Left arrow key selects the first character
-        selectWinner(currentDuel[0], currentDuel[1]);
+          selectWinner(currentDuel[0], currentDuel[1]);
       } else if (event.key === 'ArrowRight') {
-        // Right arrow key selects the second character
-        selectWinner(currentDuel[1], currentDuel[0]);
+          selectWinner(currentDuel[1], currentDuel[0]);
       }
     });
 
@@ -321,15 +332,15 @@
         eliminated.reverse();
         console.debug(eliminated);
         eliminated.forEach(char => {
-          board += `${rank}. ${char.name.full}<img class="topElimImg" src=${char.image.large} alt=""><br>`; // Use backticks and add <br> for line breaks
+          board += `<img class="topElimImg" src=${char.image.large} alt=""><div style="font-size: larger;">${rank}. ${char.name.full}</div><br>`; // Use backticks and add <br> for line breaks
           rank++; // Increment rank, not board
         });
 
         board += "</div>"; // Close the div
         finalBoard.innerHTML += board;
 
+        gameEnded = true; // Block input after the final board is displayed
     }
   </script>
-  
 </body>
 </html>
