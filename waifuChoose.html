@@ -59,6 +59,28 @@
       font-size: xx-large;
       text-transform: uppercase;
     }
+    .topElimImg{
+      width: 10%;
+    }
+    .finalWinner {
+      border: 5px solid gold;
+      box-shadow: 0 0 20px rgba(255, 215, 0, 0.8), 0 0 10px rgba(255, 140, 0, 0.6);
+      animation: winner-spin 3s infinite linear;
+      transform-style: preserve-3d;
+      transform: scale(1.1);
+      border-radius: 10px;
+      display: block;
+      margin: 50px auto; /* Centers the image horizontally */
+    }
+
+    @keyframes winner-spin {
+      from {
+        transform: rotateZ(0deg);
+      }
+      to {
+        transform: rotateZ(360deg);
+      }
+    }
   </style>
 </head>
 <body id="body">
@@ -93,6 +115,7 @@
 
 
     let characters = [];
+    let eliminated = [];
     let survivors = [];
     let currentDuel = [];
     let round = 1;
@@ -108,6 +131,8 @@
           characters = [];
           survivors = [];
           currentDuel = [];
+          eliminated = [];
+          document.getElementById('final-board').innerHTML = "";
           round = 1;
           
           // Fetch characters and start the duel system
@@ -155,7 +180,7 @@
         totalCharactersFetched += newCharacters.length;
         currentPage++;
 
-        console.debug(totalCharactersFetched)
+        console.debug("Total fetched: " + totalCharactersFetched)
         document.getElementById('status').textContent = "Total characters fetched: " + totalCharactersFetched;
 
         // Break if we've reached the desired number of characters or there are no more characters
@@ -171,7 +196,7 @@
           await pause(60000)
         }
     }
-    console.debug(desiredCharacterCount)
+    console.debug("Desired: " + desiredCharacterCount)
     
     function shuffleArray(array) {
       for (let i = array.length - 1; i > 0; i--) {
@@ -189,7 +214,6 @@
     startDuel();
     }
 
-    // ... (rest of the code remains the same)
 
     function updateStatus() {
       const statusElement = document.getElementById('status');
@@ -199,6 +223,7 @@
     let duelsPerRound = 0; // Track the number of duels in the current round
 
     function startDuel() {
+    console.debug(survivors.length)
     if (survivors.length <= 1) {
         showFinalBoard();
         return;
@@ -255,11 +280,9 @@
       container.appendChild(charDiv);
     }
 
-    let eliminationRounds = []; // Track the round in which each character was eliminated
-
     function selectWinner(winner, loser) {
       survivors.push(winner);
-      eliminationRounds[characters.indexOf(loser)] = round;
+      eliminated.push(loser);
 
       const winnerCard = document.querySelector(`.character-card img[src="${winner.image.large}"]`).parentElement;
       winnerCard.classList.add('highlight');
@@ -289,34 +312,24 @@
 
     function showFinalBoard() {
         const finalBoard = document.getElementById('final-board');
-        finalBoard.innerHTML = `<h2>Final Winner: ${survivors[0].name.full}</h2>`;
-        finalBoard.innerHTML += `<img src="${survivors[0].image.large}" alt="${survivors[0].name.full}">`;
+        finalBoard.innerHTML = `<div class=element><h2>1. Final Winner: ${survivors[0].name.full}</h2>`;
+        finalBoard.innerHTML += `<img class="finalWinner" src="${survivors[0].image.large}" alt="${survivors[0].name.full}"></div>`;
 
-        // Display who survived the longest, sorted by elimination order (most recent losers first)
-        let board = '<h3>Survival Board</h3><ol>'; // Use <ol> for numbered list
-        let rank = 1; // Initialize rank counter
+        let board = '<div class="element"><h3>Top Eliminated</h3>'; // Use <ol> for numbered list
+        let rank = 2; // Initialize rank counter
 
-        characters.sort((a, b) => {
-            const aEliminated = !survivors.includes(a);
-            const bEliminated = !survivors.includes(b);
-
-            if (aEliminated && !bEliminated) return -1; 
-            if (!aEliminated && bEliminated) return 1; 
-
-            if (aEliminated && bEliminated) {
-            return eliminationRounds[characters.indexOf(b)] - eliminationRounds[characters.indexOf(a)]; 
-            }
-
-            return 0; 
-        }).forEach(character => {
-            board += `<li>${character.name.full} - ${survivors.includes(character) ? 'Survived' : 'Eliminated'}</li>`;
-            rank++; // Increment rank for each character
+        eliminated.reverse();
+        console.debug(eliminated);
+        eliminated.forEach(char => {
+          board += `${rank}. ${char.name.full}<img class="topElimImg" src=${char.image.large} alt=""><br>`; // Use backticks and add <br> for line breaks
+          rank++; // Increment rank, not board
         });
 
-        board += '</ol>';
+        board += "</div>"; // Close the div
         finalBoard.innerHTML += board;
+
     }
   </script>
-
+  
 </body>
 </html>
