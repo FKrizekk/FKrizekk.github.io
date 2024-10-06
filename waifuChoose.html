@@ -323,7 +323,7 @@
 
     function showFinalBoard() {
         const finalBoard = document.getElementById('final-board');
-        finalBoard.innerHTML = `<div class=element><h2>1. Final Winner: ${survivors[0].name.full}</h2>`;
+        finalBoard.innerHTML = `<div style="text-align: center;" class=element><h2>1. Final Winner: ${survivors[0].name.full}</h2>`;
         finalBoard.innerHTML += `<img class="finalWinner" src="${survivors[0].image.large}" alt="${survivors[0].name.full}"></div>`;
 
         let board = '<div class="element"><h3>Top Eliminated</h3>'; // Use <ol> for numbered list
