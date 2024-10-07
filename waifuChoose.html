@@ -92,9 +92,9 @@
       <p>If you choose above like 600 it will take like a minute because it has to wait for the API cooldown.</p>
     </div>
     <div class="element">
-      <label for="characterCount">Number of characters:</label>
-      <input class="button" type="number" id="characterCount" min="2" value="1000"> 
-      <button class="button" id="startButton">Start Duel</button>
+      <label style="font-family: KitchoScript-Slim;" for="characterCount">Number of characters:</label>
+      <input style="font-family: KitchoScript-Slim;" class="button" type="number" id="characterCount" min="2" value="1000"> 
+      <button style="font-family: KitchoScript-Slim;" class="button" id="startButton">Start Duel</button>
     </div>
   </div>
   
@@ -297,6 +297,7 @@
       charDiv.appendChild(charImg);
       const charName = document.createElement('p');
       charName.textContent = character.name.full;
+      charName.style="font-family: KitchoScript-Slim;" 
       charDiv.appendChild(charName);
 
       container.appendChild(charDiv);
