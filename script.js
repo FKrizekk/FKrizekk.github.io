@@ -25,7 +25,7 @@ function saveElementAsJPG(elementId, fileName = 'screenshot.jpg') {
     });
 }
 
-function saveElementAsMultipleJPGs(elementId, fileName = 'screenshot-part-', maxHeight = 20000) {
+function saveElementAsMultipleJPGs(elementId, fileName = 'screenshot-part-', maxHeight = 30000) {
     const element = document.getElementById(elementId);
     const elementHeight = element.scrollHeight; // Total height of the element
     const totalParts = Math.ceil(elementHeight / maxHeight); // Number of images to split into
