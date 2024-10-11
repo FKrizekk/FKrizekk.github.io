@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AniList Character Duel</title>
+  <title>Anime Character Tournament</title>
   <link rel="stylesheet" href="style.css">
   <style>
     #duel-container {
@@ -33,9 +33,15 @@
     }
     .character-card img {
       max-height: 100%;
+      border-radius: 6px;
     }
     #final-board {
       margin-top: 20px;
+      display: flex;
+      align-self: center;
+      align-items: center;
+      flex-direction: column;
+      width: fit-content;
     }
     #status {
       text-align: center;
@@ -59,9 +65,6 @@
       font-size: xx-large;
       text-transform: uppercase;
     }
-    .topElimImg{
-      width: 10%;
-    }
     .finalWinner {
       border: 5px solid gold;
       box-shadow: 0 0 20px rgba(255, 215, 0, 0.8), 0 0 10px rgba(255, 140, 0, 0.6);
@@ -81,20 +84,38 @@
         transform: rotateZ(360deg);
       }
     }
+    h1{
+      font-family: "KitchoScript-Slim";
+    }
+    #saveButton{
+      width: fit-content;
+      font-family: 'KitchoScript-Slim';
+    }
+    #charName{
+      font-size: x-large;
+    }
+    .topElimImg{
+      height: 100%;
+      width: 100%;
+    }
+    body{
+      display: flex;
+      flex-direction: column;
+      justify-items: center;
+    }
   </style>
 </head>
 <body id="body">
   <div class="main" style="display: flex; flex-direction: column;">
     <div class="element">
-      <h1>Anime Character Duel</h1>
+      <h1>Anime Character Tournament</h1>
       <p>It will look for the most popular characters right now. It will try to find roughly the count specified.</p>
       <p>Choose your winner from each duel by clicking on them or pressing the left or right arrow key until only one remains!</p>
-      <p>If you choose above like 600 it will take like a minute because it has to wait for the API cooldown.</p>
     </div>
     <div class="element">
       <label style="font-family: KitchoScript-Slim;" for="characterCount">Number of characters:</label>
-      <input style="font-family: KitchoScript-Slim;" class="button" type="number" id="characterCount" min="2" value="1000"> 
-      <button style="font-family: KitchoScript-Slim;" class="button" id="startButton">Start Duel</button>
+      <input style="font-family: KitchoScript-Slim;" class="button" type="number" id="characterCount" min="2" value="750"> 
+      <button style="font-family: KitchoScript-Slim;" class="button" id="startButton">START TOURNAMENT</button>
     </div>
   </div>
   
@@ -107,6 +128,7 @@
   <div id="final-board"></div>
 
   <script src="script.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <script>
     // Get references to the input and button elements
     const characterCountInput = document.getElementById('characterCount');
@@ -212,6 +234,8 @@
     }
     console.debug("Desired: " + desiredCharacterCount)
     
+    document.body.style.overflow = 'auto';
+
     function shuffleArray(array) {
       for (let i = array.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));  
@@ -233,7 +257,7 @@
 
     function updateStatus() {
       const statusElement = document.getElementById('status');
-      statusElement.innerHTML = `<h2>Round: ${round}</h2><p>Duels left: ${survivors.length}</p>`;
+      statusElement.innerHTML = `<h2>Round: ${round}</h2><p>Characters Remaining: ${survivors.length}</p>`;
     }
 
     let duelsPerRound = 0; // Track the number of duels in the current round
@@ -296,6 +320,7 @@
 
       charDiv.appendChild(charImg);
       const charName = document.createElement('p');
+      charName.id = 'charName';
       charName.textContent = character.name.full;
       charDiv.appendChild(charName);
 
@@ -336,10 +361,17 @@
       }
     });
 
+    function saveFinalBoard(){
+      saveElementAsJPG('final-board', 'final-board.jpg');
+    }
+
     function showFinalBoard() {
         const finalBoard = document.getElementById('final-board');
         finalBoard.innerHTML = `<div style="text-align: center;" class=element><h2>1. Final Winner: ${survivors[0].name.full}</h2>`;
         finalBoard.innerHTML += `<img class="finalWinner" src="${survivors[0].image.large}" alt="${survivors[0].name.full}"></div>`;
+        finalBoard.innerHTML += '<button onclick="saveFinalBoard()" class="button" id="saveButton">SAVE RESULT</button>';
+
+
 
         let board = '<div class="element"><h3>Top Eliminated</h3>'; // Use <ol> for numbered list
         let rank = 2; // Initialize rank counter
@@ -347,7 +379,7 @@
         eliminated.reverse();
         console.debug(eliminated);
         eliminated.forEach(char => {
-          board += `<img class="topElimImg" src=${char.image.large} alt=""><div style="font-size: larger;">${rank}. ${char.name.full}</div><br>`; // Use backticks and add <br> for line breaks
+          board += `<img class="topElimImg" src=${char.image.large} alt=""><div id='charName'>&#11165 ${rank}. ${char.name.full}</div><br>`; // Use backticks and add <br> for line breaks
           rank++; // Increment rank, not board
         });
 
