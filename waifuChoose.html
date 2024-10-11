@@ -42,6 +42,7 @@
       align-items: center;
       flex-direction: column;
       width: fit-content;
+      max-width: 275px;
     }
     #status {
       text-align: center;
@@ -103,6 +104,9 @@
       display: flex;
       flex-direction: column;
       justify-items: center;
+    }
+    #finalWinner{
+      overflow-wrap: anywhere;
     }
   </style>
 </head>
@@ -368,7 +372,7 @@
 
     function showFinalBoard() {
         const finalBoard = document.getElementById('final-board');
-        finalBoard.innerHTML = `<div style="text-align: center;" class=element><h2>1. Final Winner: ${survivors[0].name.full}</h2>`;
+        finalBoard.innerHTML = `<div style="text-align: center;" class=element><h2 id="finalWinner">1. Winner: <br>${survivors[0].name.full}</h2>`;
         finalBoard.innerHTML += `<img class="finalWinner" src="${survivors[0].image.large}" alt="${survivors[0].name.full}"></div>`;
         finalBoard.innerHTML += '<button onclick="saveFinalBoard()" class="button" id="saveButton">SAVE RESULT</button>';
 
