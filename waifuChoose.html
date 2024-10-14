@@ -159,7 +159,7 @@
           currentDuel = [];
           eliminated = [];
           document.getElementById('final-board').innerHTML = "";
-          round = 1;
+          round = 0;
           
           // Fetch characters and start the duel system
           fetchCharacters(desiredCharacterCount); 
@@ -241,6 +241,11 @@
     
     document.body.style.overflow = 'auto';
 
+    if(characters.length > desiredCharacterCount){
+      characters = characters.slice(0, desiredCharacterCount)
+    }
+    console.debug([...characters]);
+
     if(characters.length % 2 != 0){
       characters.pop();
     }
@@ -281,7 +286,8 @@
       }
 
       if (duelsPerRound === 0) {
-          duelsPerRound = survivors.length / 2;
+        round++;
+        duelsPerRound = survivors.length / 2;
       }
 
       const duelContainer = document.getElementById('duel-container');
@@ -290,6 +296,8 @@
       // if (survivors.length % 2 !== 0) {
       //     survivors.push(survivors.shift()); // Move the first survivor to the next round if odd number of survivors
       // }
+      
+      updateStatus();
 
       const char1 = survivors.shift();
       const char2 = survivors.shift();
@@ -300,12 +308,10 @@
       displayCharacter(char2, duelContainer);
 
       duelsPerRound--;
-
-      if (duelsPerRound === 0) {
-          round++;
-      }
-
-      updateStatus();
+      
+      
+      
+      
     }
     let inputBlocked = false; // New flag to block input during animation
     let gameEnded = false; // Flag to prevent input after the game ends
@@ -352,7 +358,7 @@
           // Delay starting the next duel to allow the animation to finish
           setTimeout(() => {
               if (survivors.length === 2) {
-                  round++;
+                //round++;
               }
               inputBlocked = false; // Unblock input after the animation ends
               startDuel(); // Start next duel
@@ -375,6 +381,9 @@
     }
 
     function showFinalBoard() {
+        updateStatus();
+
+
         const finalBoard = document.getElementById('final-board');
         finalBoard.innerHTML = `<div style="text-align: center;" class=element><h2 id="finalWinner">1. Winner: <br>${survivors[0].name.full}</h2>`;
         finalBoard.innerHTML += `<img class="finalWinner" src="${survivors[0].image.large}" alt="${survivors[0].name.full}"></div>`;
