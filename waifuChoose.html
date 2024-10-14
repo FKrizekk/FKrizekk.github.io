@@ -241,6 +241,10 @@
     
     document.body.style.overflow = 'auto';
 
+    if(characters.length % 2 != 0){
+      characters.pop();
+    }
+
     function shuffleArray(array) {
       for (let i = array.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));  
@@ -262,7 +266,7 @@
 
     function updateStatus() {
       const statusElement = document.getElementById('status');
-      statusElement.innerHTML = `<h2>Round: ${round}</h2><p>Characters Remaining: ${survivors.length}</p>`;
+      statusElement.innerHTML = `<h2>Round: ${round}</h2><p>Survivors Remaining: ${survivors.length}</p>`;
     }
 
     let duelsPerRound = 0; // Track the number of duels in the current round
@@ -277,15 +281,15 @@
       }
 
       if (duelsPerRound === 0) {
-          duelsPerRound = Math.floor(survivors.length / 2);
+          duelsPerRound = survivors.length / 2;
       }
 
       const duelContainer = document.getElementById('duel-container');
       duelContainer.innerHTML = '';
 
-      if (survivors.length % 2 !== 0) {
-          survivors.push(survivors.shift()); // Move the first survivor to the next round if odd number of survivors
-      }
+      // if (survivors.length % 2 !== 0) {
+      //     survivors.push(survivors.shift()); // Move the first survivor to the next round if odd number of survivors
+      // }
 
       const char1 = survivors.shift();
       const char2 = survivors.shift();
