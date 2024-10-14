@@ -22,7 +22,6 @@ body{
     flex-direction: column;
     background-repeat: no-repeat;
     min-height: 100vh;
-    overflow: hidden;
 }
 .element{
     background-color: rgb(48, 48, 48);
