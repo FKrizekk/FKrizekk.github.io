@@ -146,7 +146,7 @@
     let eliminated = [];
     let survivors = [];
     let currentDuel = [];
-    let round = 1;
+    let round = 0;
 
     const charactersPerPage = 50; // Number of characters to fetch per page
     let desiredCharacterCount = parseInt(document.getElementById('characterCount').value);
@@ -160,8 +160,9 @@
           survivors = [];
           currentDuel = [];
           eliminated = [];
+          duelsPerRound = 0;
           document.getElementById('final-board').innerHTML = "";
-          round = 1;
+          round = 0;
           
           // Fetch characters and start the duel system
           fetchCharacters(desiredCharacterCount); 
@@ -287,14 +288,18 @@
           return;
       }
 
-      if (duelsPerRound === 0) {
-        round++;
-        duelsPerRound = survivors.length / 2;
-      }
+      
 
       const duelContainer = document.getElementById('duel-container');
       duelContainer.innerHTML = '';
       
+      if(duelsPerRound === 0){
+        duelsPerRound = survivors.length / 2;
+        round++;
+      }
+      duelsPerRound--;
+      
+
       updateStatus();
 
       const char1 = survivors.shift();
@@ -316,8 +321,10 @@
       duelContainer.appendChild(vsText);
 
       displayCharacter(char2, duelContainer);
+      
+      
 
-      duelsPerRound--;
+
     }
     let inputBlocked = false; // New flag to block input during animation
     let gameEnded = false; // Flag to prevent input after the game ends
@@ -364,7 +371,7 @@
           // Delay starting the next duel to allow the animation to finish
           setTimeout(() => {
               if (survivors.length === 2) {
-                //round++;
+                round++;
               }
               inputBlocked = false; // Unblock input after the animation ends
               startDuel(); // Start next duel
