@@ -25,7 +25,7 @@ function saveElementAsJPG(elementId, fileName = 'screenshot.jpg') {
     });
 }
 
-function saveElementAsMultipleJPGs(elementId, fileName = 'final-board-part', maxHeight = 30000) {
+function saveElementAsMultipleJPGs(elementId, fileName = 'final-board-part', maxHeight = 20000) {
     const element = document.getElementById(elementId);
     const elementHeight = element.scrollHeight; // Total height of the element
     const totalParts = Math.ceil(elementHeight / maxHeight); // Number of images to split into
