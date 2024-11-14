@@ -125,7 +125,7 @@
     }
     #elimBoard{
       display: flex;
-      justify-content: flex-start;
+      justify-content: space-evenly;
       align-items: stretch;
       flex-direction: row;
       flex-wrap: wrap;
@@ -141,12 +141,15 @@
   <div class="main" style="display: flex; flex-direction: column;">
     <div class="element">
       <h1>Anime Character Tournament</h1>
-      <p>It will look for the most popular characters right now. It will try to find roughly the count specified.</p>
+      <p>It will look for the most popular characters right now.</p>
       <p>Choose your winner from each duel by clicking on them or pressing the left or right arrow key until only one remains!</p>
+      <p>Alt-Clicking a character will open their AniList page.</p>
     </div>
     <div class="element">
       <label style="font-family: KitchoScript-Slim;" for="characterCount">Number of characters:</label>
       <input style="font-family: KitchoScript-Slim;" class="button" type="number" id="characterCount" min="2" value="750"> 
+      <label style="font-family: KitchoScript-Slim;" for="characterCount">Minimum age:</label>
+      <input style="font-family: KitchoScript-Slim;" class="button" type="number" id="minAge" min="0" value="0"> 
       <button style="font-family: KitchoScript-Slim;" class="button" id="startButton">START TOURNAMENT</button>
     </div>
   </div>
@@ -164,6 +167,7 @@
   <script>
     // Get references to the input and button elements
     const characterCountInput = document.getElementById('characterCount');
+    const minAgeInput = document.getElementById('minAge');
     const startButton = document.getElementById('startButton');
 
 
@@ -175,11 +179,13 @@
 
     const charactersPerPage = 50; // Number of characters to fetch per page
     let desiredCharacterCount = parseInt(document.getElementById('characterCount').value);
+    let desiredMinAge = parseInt(document.getElementById('minAge').value);
     
     // Add an event listener to the button
     startButton.addEventListener('click',  
     () => {
           desiredCharacterCount = parseInt(characterCountInput.value);
+          desiredMinAge = parseInt(minAgeInput.value);
           console.debug("Desired: " + desiredCharacterCount)
           characters = [];
           survivors = [];
@@ -209,6 +215,8 @@
 
       updateCountdown(); // Start the countdown
     }
+
+    let emptyPages = 0;
         // Modify fetchCharacters to accept desiredCharacterCount as an argument
     async function fetchCharacters(desiredCharacterCount){
     let currentPage = 1;
@@ -228,6 +236,8 @@
                 large
                 }
                 gender
+                age
+                siteUrl
             }
             }
         }
@@ -244,7 +254,8 @@
         });
 
         const result = await response.json();
-        const newCharacters = result.data.Page.characters.filter(character => character.gender === 'Female');
+        console.log(result.data.Page.characters);
+        const newCharacters = result.data.Page.characters.filter(character => character.gender === 'Female' && parseInt(character.age) >= desiredMinAge);
 
         characters = characters.concat(newCharacters);
         totalCharactersFetched += newCharacters.length;
@@ -253,9 +264,16 @@
         console.debug("Total fetched: " + totalCharactersFetched)
         document.getElementById('status').textContent = "Total characters fetched: " + totalCharactersFetched;
 
+        if(newCharacters.length === 0){
+          emptyPages++;
+        }else{
+          emptyPages = 0;
+        }
+        
         // Break if we've reached the desired number of characters or there are no more characters
-        if (totalCharactersFetched >= desiredCharacterCount || newCharacters.length === 0) {
+        if (totalCharactersFetched >= desiredCharacterCount || emptyPages > 10) {
           console.debug("BREAK")
+          emptyPages = 0;
           break; 
         }
 
@@ -366,11 +384,18 @@
 
       // Add click event listener to the image
       charDiv.addEventListener('click', () => {
-        // Find the opponent in the current duel
-        const opponent = currentDuel.find(char => char !== character);
-        
-        // Call selectWinner with the clicked character as the winner
-        selectWinner(character, opponent);
+
+        if(isAltPressed){
+          openUrlInNewTab(character.siteUrl);
+          isAltPressed = false;
+        }else{
+          // Find the opponent in the current duel
+          const opponent = currentDuel.find(char => char !== character);
+          
+          // Call selectWinner with the clicked character as the winner
+          selectWinner(character, opponent);
+        }
+
       });
 
       charDiv.appendChild(charImg);
@@ -388,6 +413,8 @@
       inputBlocked = true; // Block input during the animation
       survivors.push(winner);
       eliminated.push(loser);
+
+      console.log(`Age of winner: ${parseInt(winner.age)}`);
 
       const winnerCard = document.querySelector(`.character-card img[src="${winner.image.large}"]`).parentElement;
       winnerCard.classList.add('highlight');

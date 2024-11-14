@@ -7,6 +7,10 @@ function goToUrl(url) {
     window.location.href = url;
 }
 
+function openUrlInNewTab(url){
+    window.open(url, '_blank').focus();
+}
+
 function saveElementAsJPG(elementId, fileName = 'screenshot.jpg') {
     const element = document.getElementById(elementId);
     
@@ -62,3 +66,17 @@ function saveElementAsMultipleJPGs(elementId, fileName = 'final-board-part', max
 
     capturePart(); // Start capturing the first part
 }
+
+let isAltPressed = false;
+
+window.addEventListener("keydown", (event) => {
+    if (event.key === "Alt") {
+        isAltPressed = true;
+    }
+});
+
+window.addEventListener("keyup", (event) => {
+    if (event.key === "Alt") {
+        isAltPressed = false;
+    }
+});
