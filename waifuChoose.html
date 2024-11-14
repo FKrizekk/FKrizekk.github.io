@@ -254,8 +254,7 @@
         });
 
         const result = await response.json();
-        console.log(result.data.Page.characters);
-        const newCharacters = result.data.Page.characters.filter(character => character.gender === 'Female' && parseInt(character.age) >= desiredMinAge);
+        const newCharacters = result.data.Page.characters.filter(character => character.gender === 'Female' && parseInt(character.age) >= desiredMinAge && !(character in characters));
 
         characters = characters.concat(newCharacters);
         totalCharactersFetched += newCharacters.length;
