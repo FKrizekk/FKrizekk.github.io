@@ -44,8 +44,8 @@
       align-self: center;
       align-items: center;
       flex-direction: column;
-      width: fit-content;
-      max-width: 275px;
+      flex-wrap: wrap;
+      width: 100vw;
     }
     #status {
       text-align: center;
@@ -56,7 +56,7 @@
     .character-card.highlight {
       position: relative; /* Position the card absolutely */
       transform: scale(1.4); /* Adjust scale as needed */
-      transition: all 0.5s ease; /* Smooth transition for the animation */
+      transition: all 0.2s ease; /* Smooth transition for the animation */
       z-index: 10;        /* Ensure the highlighted card is on top */
     }
     .main{
@@ -96,12 +96,20 @@
       font-family: 'KitchoScript-Slim';
     }
     #charName{
+      white-space: nowrap;
       font-size: x-large;
-      overflow-wrap: anywhere;
     }
     .topElimImg{
       height: 100%;
       width: 100%;
+      border-radius: 8px;
+      object-fit: cover;
+    }
+    .elimDiv{
+      display: flex;
+      flex-direction: column;
+      margin: 20px;
+      max-width: 200px;
     }
     body{
       display: flex;
@@ -110,6 +118,22 @@
     }
     #finalWinner{
       overflow-wrap: anywhere;
+    }
+    #board{
+      display: flex;
+      flex-direction: column;
+    }
+    #elimBoard{
+      display: flex;
+      justify-content: flex-start;
+      align-items: stretch;
+      flex-direction: row;
+      flex-wrap: wrap;
+    }
+    #board h3{
+      text-align: center;
+      font-size: xx-large;
+      font-weight: bolder;
     }
   </style>
 </head>
@@ -196,8 +220,10 @@
             Page(perPage: ${charactersPerPage}, page: ${currentPage}) {
             characters(sort: FAVOURITES_DESC) {
                 name {
-                full
+                full,
+                first
                 }
+                id
                 image {
                 large
                 }
@@ -376,8 +402,8 @@
               }
               inputBlocked = false; // Unblock input after the animation ends
               startDuel(); // Start next duel
-          }, 500); // Adjust the delay (in milliseconds) as needed
-      }, 500); 
+          }, 200); // Adjust the delay (in milliseconds) as needed
+      }, 200); 
     }
     // Handle key press for left and right arrows
     document.addEventListener('keydown', function(event) {
@@ -402,20 +428,20 @@
         finalBoard.innerHTML = `<div style="text-align: center;" class=element><h2 id="finalWinner">1. Winner: <br>${survivors[0].name.full}</h2>`;
         finalBoard.innerHTML += `<img class="finalWinner" src="${survivors[0].image.large}" alt="${survivors[0].name.full}"></div>`;
         finalBoard.innerHTML += '<button onclick="saveFinalBoard()" class="button" id="saveButton">SAVE RESULT</button>';
+        
 
 
-
-        let board = '<div class="element"><h3>Top Eliminated</h3>'; // Use <ol> for numbered list
+        let board = '<div id="board" class="element"><h3>Elimination Rankings</h3><div id="elimBoard">'; // Use <ol> for numbered list
         let rank = 2; // Initialize rank counter
 
         eliminated.reverse();
         console.debug(eliminated);
         eliminated.forEach(char => {
-          board += `<img class="topElimImg" src=${char.image.large} alt=""><div id='charName'>&#11165 ${rank}. ${char.name.full}</div><br>`; // Use backticks and add <br> for line breaks
+          board += `<div class="elimDiv"><img class="topElimImg" src=${char.image.large} alt=""></img><div id='charName'>&#11165 ${rank}. ${char.name.first}</div><br></div>`; // Use backticks and add <br> for line breaks
           rank++; // Increment rank, not board
         });
 
-        board += "</div>"; // Close the div
+        board += "</div></div>"; // Close the div
         finalBoard.innerHTML += board;
 
         gameEnded = true; // Block input after the final board is displayed
