@@ -106,6 +106,9 @@
       border-radius: 8px;
       object-fit: cover;
     }
+    .elimDiv:hover{
+      cursor: pointer;
+    }
     .elimDiv{
       display: flex;
       flex-direction: column;
@@ -474,9 +477,17 @@
 
         eliminated.reverse();
         console.debug(eliminated);
+        // eliminated.forEach(char => {
+        //   board += `<div class="elimDiv"><img class="topElimImg" src=${char.image.large} alt=""></img><div id='charName'>&#11165 ${rank}. ${char.name.first}</div><br></div>`; // Use backticks and add <br> for line breaks
+        //   rank++; // Increment rank, not board
+        // });
+
         eliminated.forEach(char => {
-          board += `<div class="elimDiv"><img class="topElimImg" src=${char.image.large} alt=""></img><div id='charName'>&#11165 ${rank}. ${char.name.first}</div><br></div>`; // Use backticks and add <br> for line breaks
-          rank++; // Increment rank, not board
+          board += `<div class="elimDiv" onclick="openUrlInNewTab('${char.siteUrl}')">
+                      <img class="topElimImg" src=${char.image.large} alt="">
+                      <div id='charName'>&#11165 ${rank}. ${char.name.first}</div>
+                    </div>`;
+          rank++;
         });
 
         board += "</div></div>"; // Close the div

@@ -80,3 +80,7 @@ window.addEventListener("keyup", (event) => {
         isAltPressed = false;
     }
 });
+
+window.addEventListener('focus', () => {
+    isAltPressed = false;
+});
