@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Anime Character Tournament</title>
   <link rel="stylesheet" href="style.css">
+  <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
   <style>
     #duel-container {
       display: flex;
@@ -135,21 +136,32 @@
       font-size: xx-large;
       font-weight: bolder;
     }
+    #inputs{
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+    }
   </style>
 </head>
 <body id="body">
   <div class="main" style="display: flex; flex-direction: column;">
     <div class="element">
       <h1>Anime Character Tournament</h1>
-      <p>It will look for the most popular characters right now.</p>
+      <p>It will look for characters from the most popular anime shows/movies right now using the AniList API.</p>
       <p>Choose your winner from each duel by clicking on them or pressing the left or right arrow key until only one remains!</p>
       <p>Alt-Clicking a character will open their AniList page.</p>
     </div>
     <div class="element">
-      <label style="font-family: KitchoScript-Slim;" for="characterCount">Number of characters:</label>
-      <input style="font-family: KitchoScript-Slim;" class="button" type="number" id="characterCount" min="2" value="750"> 
-      <label style="font-family: KitchoScript-Slim;" for="characterCount">Minimum age:</label>
-      <input style="font-family: KitchoScript-Slim;" class="button" type="number" id="minAge" min="0" value="0"> 
+      <section id="inputs">
+        <article>
+          <label style="font-family: KitchoScript-Slim;" for="characterCount">Number of characters:</label>
+          <input style="font-family: KitchoScript-Slim;" class="button" type="number" id="characterCount" min="2" value="750"> 
+        </article>
+        <article>
+          <label style="font-family: KitchoScript-Slim;" for="characterCount">Minimum age:</label>
+          <input style="font-family: KitchoScript-Slim;" class="button" type="number" id="minAge" min="0" value="0"> 
+        </article>
+      </section>
       <button style="font-family: KitchoScript-Slim;" class="button" id="startButton">START TOURNAMENT</button>
     </div>
   </div>
