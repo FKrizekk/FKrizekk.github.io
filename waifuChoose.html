@@ -79,6 +79,7 @@
       border-radius: 10px;
       display: block;
       margin: 50px auto; /* Centers the image horizontally */
+      cursor: pointer;
     }
 
     @keyframes winner-spin {
@@ -467,7 +468,7 @@
 
         const finalBoard = document.getElementById('final-board');
         finalBoard.innerHTML = `<div style="text-align: center;" class=element><h2 id="finalWinner">1. Winner: <br>${survivors[0].name.full}</h2>`;
-        finalBoard.innerHTML += `<img class="finalWinner" src="${survivors[0].image.large}" alt="${survivors[0].name.full}"></div>`;
+        finalBoard.innerHTML += `<img class="finalWinner" onclick="openUrlInNewTab('${survivors[0].siteUrl}')" src="${survivors[0].image.large}" alt="${survivors[0].name.full}"></div>`;
         finalBoard.innerHTML += '<button onclick="saveFinalBoard()" class="button" id="saveButton">SAVE RESULT</button>';
         
 
