@@ -18,12 +18,17 @@
       text-align: center;
       border: 1px solid #ddd;
       border-radius: 6px;
-      padding: 10px;
-      width: 300px;
+      padding: 20px;
+      width: 15vw;
       background-color: #333;
       color: white;
       cursor: pointer;
       transition: all 0.3s ease-out;
+      box-shadow: 0px 0px 25px rgb(20, 20, 20);
+      margin: 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
     }
     .character-card:hover {
       transform: scale(1.01);
@@ -35,9 +40,12 @@
       transform: scale(0.95);
     }
     .character-card img {
-      max-height: 100%;
       border-radius: 6px;
       cursor: pointer;
+      box-shadow: 0px 0px 25px rgb(20, 20, 20);
+    }
+    .character-card p{
+      margin-bottom: 5px;
     }
     #final-board {
       margin-top: 20px;
@@ -52,7 +60,7 @@
       text-align: center;
       align-self: center;
       margin-top: 20px;
-      width: max-content;
+      width: 200px;
     }
     .character-card.highlight {
       position: relative; /* Position the card absolutely */
@@ -72,7 +80,7 @@
     }
     .finalWinner {
       border: 5px solid gold;
-      box-shadow: 0 0 20px rgba(255, 215, 0, 0.8), 0 0 10px rgba(255, 140, 0, 0.6);
+      box-shadow: 0 0 50px rgba(255, 215, 0, 0.8), 0 0 10px rgba(255, 140, 0, 0.6);
       animation: winner-spin 3s infinite linear;
       transform-style: preserve-3d;
       transform: scale(1.1);
@@ -100,12 +108,14 @@
     #charName{
       white-space: nowrap;
       font-size: x-large;
+      text-shadow: 5px 5px 10px rgb(20, 20, 20);
     }
     .topElimImg{
       height: 100%;
       width: 100%;
       border-radius: 8px;
       object-fit: cover;
+      box-shadow: 0px 0px 25px rgb(20, 20, 20);
     }
     .elimDiv:hover{
       cursor: pointer;
@@ -120,6 +130,7 @@
       display: flex;
       flex-direction: column;
       justify-items: center;
+      transition: all 1s ease-out;
     }
     #finalWinner{
       overflow-wrap: anywhere;
@@ -145,6 +156,9 @@
       flex-direction: row;
       align-items: center;
     }
+    h3{
+      text-shadow: 0px 0px 10px rgb(20, 20, 20);
+    }
   </style>
 </head>
 <body id="body">
@@ -165,6 +179,10 @@
           <label style="font-family: KitchoScript-Slim;" for="characterCount">Minimum age:</label>
           <input style="font-family: KitchoScript-Slim;" class="button" type="number" id="minAge" min="0" value="0"> 
         </article>
+        <article>
+          <label style="font-family: KitchoScript-Slim;" for="characterCount">Maximum age:</label>
+          <input style="font-family: KitchoScript-Slim;" class="button" type="number" id="maxAge" min="0" value="99999999"> 
+        </article>
       </section>
       <button style="font-family: KitchoScript-Slim;" class="button" id="startButton">START TOURNAMENT</button>
     </div>
@@ -184,6 +202,7 @@
     // Get references to the input and button elements
     const characterCountInput = document.getElementById('characterCount');
     const minAgeInput = document.getElementById('minAge');
+    const maxAgeInput = document.getElementById('maxAge');
     const startButton = document.getElementById('startButton');
 
 
@@ -196,12 +215,14 @@
     const charactersPerPage = 50; // Number of characters to fetch per page
     let desiredCharacterCount = parseInt(document.getElementById('characterCount').value);
     let desiredMinAge = parseInt(document.getElementById('minAge').value);
+    let desiredMaxAge = parseInt(document.getElementById('maxAge').value);
     
     // Add an event listener to the button
     startButton.addEventListener('click',  
     () => {
           desiredCharacterCount = parseInt(characterCountInput.value);
           desiredMinAge = parseInt(minAgeInput.value);
+          desiredMaxAge = parseInt(maxAgeInput.value);
           console.debug("Desired: " + desiredCharacterCount)
           characters = [];
           survivors = [];
@@ -270,7 +291,7 @@
         });
 
         const result = await response.json();
-        const newCharacters = result.data.Page.characters.filter(character => character.gender === 'Female' && parseInt(character.age) >= desiredMinAge && !(character in characters));
+        const newCharacters = result.data.Page.characters.filter(character => character.gender === 'Female' && parseInt(character.age) >= desiredMinAge && parseInt(character.age) <= desiredMaxAge && !(character in characters));
 
         characters = characters.concat(newCharacters);
         totalCharactersFetched += newCharacters.length;
@@ -329,6 +350,7 @@
     gameEnded = false;
     inputBlocked = false;
     startDuel();
+    scrollToElement("duel-container");
     }
 
 
@@ -381,10 +403,6 @@
       duelContainer.appendChild(vsText);
 
       displayCharacter(char2, duelContainer);
-      
-      
-
-
     }
     let inputBlocked = false; // New flag to block input during animation
     let gameEnded = false; // Flag to prevent input after the game ends
@@ -468,7 +486,7 @@
 
         const finalBoard = document.getElementById('final-board');
         finalBoard.innerHTML = `<div style="text-align: center;" class=element><h2 id="finalWinner">1. Winner: <br>${survivors[0].name.full}</h2>`;
-        finalBoard.innerHTML += `<img class="finalWinner" onclick="openUrlInNewTab('${survivors[0].siteUrl}')" src="${survivors[0].image.large}" alt="${survivors[0].name.full}"></div>`;
+        finalBoard.innerHTML += `<img id="winner-img" class="finalWinner" onclick="openUrlInNewTab('${survivors[0].siteUrl}')" src="${survivors[0].image.large}" alt="${survivors[0].name.full}"></div>`;
         finalBoard.innerHTML += '<button onclick="saveFinalBoard()" class="button" id="saveButton">SAVE RESULT</button>';
         
 
@@ -495,6 +513,7 @@
         finalBoard.innerHTML += board;
 
         gameEnded = true; // Block input after the final board is displayed
+        scrollToElement("winner-img");
     }
   </script>
 </body>

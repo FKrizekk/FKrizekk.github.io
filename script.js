@@ -3,6 +3,10 @@ function nameFunc(){
     audio.play();
 }
 
+function scrollToElement(id){
+    document.getElementById(id).scrollIntoView({ behavior: "smooth", block: "center" });
+}
+
 function goToUrl(url) {
     window.location.href = url;
 }

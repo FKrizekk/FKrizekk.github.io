@@ -29,7 +29,7 @@ body{
     border: 2px solid rgb(116, 116, 116);
     border-radius: 6px;
     padding: 15px;
-    box-shadow: 10px 10px 5px rgb(20, 20, 20);
+    box-shadow: 0px 0px 25px rgb(20, 20, 20);
     margin: 10px;
     transition: all 0.3s ease-in-out;
     display: flex;
@@ -42,7 +42,7 @@ body{
     border: 2px solid rgb(116, 116, 116);
     border-radius: 6px;
     padding: 15px;
-    box-shadow: 10px 10px 5px rgb(20, 20, 20);
+    box-shadow: 0px 0px 25px rgb(20, 20, 20);
     margin: 10px;
     transition: all 0.3s ease-in-out;
     display: flex;
@@ -59,9 +59,7 @@ body{
 h1{
     margin-top: 0;
     font-family: monospace;
-}
-input{
-    width: 200px;
+    text-shadow: 0px 0px 10px rgb(20, 20, 20);
 }
 .button {
     margin: 10px;
@@ -84,8 +82,17 @@ input{
     touch-action: manipulation;
     appearance: none;
     -moz-appearance: textfield;
+    box-shadow: 5px 5px 15px rgb(20, 20, 20);
 }
-
+input.button{
+    width: 200px;
+    border:1px solid transparent;
+}
+input:focus {
+    outline: none !important;
+    border:1px solid white;
+    box-shadow: 0 0 10px white;
+}
 .button:hover {
     transform: scale(1.01);
     box-shadow: 0px 0px 15px -3px #ffffff;
