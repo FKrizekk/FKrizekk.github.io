@@ -34,7 +34,6 @@ body{
     transition: all 0.3s ease-in-out;
     display: flex;
     flex-direction: column;
-    flex-wrap: wrap;
 }
 .element2{
     background-color: rgb(36, 36, 36);
@@ -61,10 +60,12 @@ h1{
     font-family: monospace;
     text-shadow: 0px 0px 10px rgb(20, 20, 20);
 }
-.button {
-    margin: 10px;
+.buttonParent{
+    margin: 8px;
     margin-left: 0;
-    padding: 15px 30px;
+    min-width: 0;
+}
+.button {
     text-align: center;
     text-transform: uppercase;
     transition: 0.25s;
@@ -74,7 +75,7 @@ h1{
     display: block;
     border: 0px;
     font-weight: 700;
-    font-size: large;
+    font-size: 200%;
     background-color: #424242;
     cursor: pointer;
     user-select: none;
@@ -83,9 +84,13 @@ h1{
     appearance: none;
     -moz-appearance: textfield;
     box-shadow: 5px 5px 15px rgb(20, 20, 20);
+    min-height: 40px;
+    margin: 8px;
+    margin-left: 0;
+    padding: 8px;
 }
 input.button{
-    width: 200px;
+    max-width: 200px;
     border:1px solid transparent;
 }
 input:focus {

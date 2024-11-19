@@ -32,6 +32,7 @@
     }
     .character-card:hover {
       transform: scale(1.01);
+      transform: translateY(-3%);
       box-shadow: 0px 0px 15px -3px #ffffff;
       color: #fff;
       text-decoration: none;
@@ -75,8 +76,11 @@
     #startButton{
       height: 100px;
       font-weight: 900;
-      font-size: xx-large;
+      font-size: 400%;
       text-transform: uppercase;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
     }
     .finalWinner {
       border: 5px solid gold;
@@ -124,6 +128,7 @@
       display: flex;
       flex-direction: column;
       margin: 20px;
+      margin-bottom: 0;
       max-width: 200px;
     }
     body{
@@ -155,9 +160,13 @@
       display: flex;
       flex-direction: row;
       align-items: center;
+      flex-wrap: wrap;
     }
     h3{
       text-shadow: 0px 0px 10px rgb(20, 20, 20);
+    }
+    #elimBoard img{
+      border: white 3px solid;
     }
   </style>
 </head>
@@ -171,15 +180,15 @@
     </div>
     <div class="element">
       <section id="inputs">
-        <article>
+        <article class="buttonParent">
           <label style="font-family: KitchoScript-Slim;" for="characterCount">Number of characters:</label>
           <input style="font-family: KitchoScript-Slim;" class="button" type="number" id="characterCount" min="2" value="750"> 
         </article>
-        <article>
+        <article class="buttonParent">
           <label style="font-family: KitchoScript-Slim;" for="characterCount">Minimum age:</label>
           <input style="font-family: KitchoScript-Slim;" class="button" type="number" id="minAge" min="0" value="0"> 
         </article>
-        <article>
+        <article class="buttonParent">
           <label style="font-family: KitchoScript-Slim;" for="characterCount">Maximum age:</label>
           <input style="font-family: KitchoScript-Slim;" class="button" type="number" id="maxAge" min="0" value="99999999"> 
         </article>
