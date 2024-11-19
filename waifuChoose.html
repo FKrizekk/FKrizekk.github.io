@@ -145,6 +145,8 @@
       display: flex;
       flex-direction: column;
       justify-items: center;
+      width: 100vw;
+      overflow-x: hidden;
       transition: all 1s ease-out;
     }
     #finalWinner{
@@ -377,7 +379,7 @@
     }
     console.debug("Desired: " + desiredCharacterCount)
     
-    document.body.style.overflow = 'auto';
+    // document.body.style.overflow = 'auto';
 
     if(characters.length > desiredCharacterCount){
       characters = characters.slice(0, desiredCharacterCount)
