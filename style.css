@@ -22,6 +22,8 @@ body{
     flex-direction: column;
     background-repeat: no-repeat;
     min-height: 100vh;
+    background-attachment: fixed;
+    background-size: 100% auto;
 }
 .element{
     background-color: rgb(48, 48, 48);
