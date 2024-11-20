@@ -95,8 +95,8 @@
       transform: scale(1.1);
       border-radius: 10px;
       display: block;
-      margin: 50px auto; /* Centers the image horizontally */
       cursor: pointer;
+      margin: auto;
     }
 
     #final-board div,#final-board img,#final-board button{
@@ -199,8 +199,9 @@
 
     #finalBanner{
       width: 100vw;
-      margin-bottom: -23%;
-      filter: brightness(50%) blur(5px);
+      background-repeat: no-repeat;
+      background-position-x: center ;
+      padding: 10px 0;
     }
   </style>
 </head>
@@ -559,7 +560,9 @@
 
         const finalBoard = document.getElementById('final-board');
         finalBoard.innerHTML = `<div style="text-align: center;" class=element><h2 id="finalWinner">1. Winner: <br>${survivors[0].name.full}</h2>`;
-        finalBoard.innerHTML += `<img id="finalBanner" src="${survivors[0].media.nodes[0].bannerImage}"><img id="winner-img" class="finalWinner" onclick="openUrlInNewTab('${survivors[0].siteUrl}')" src="${survivors[0].image.large}" alt="${survivors[0].name.full}"></img></div>`;
+        finalBoard.innerHTML += `<div id="finalBanner" style="width: 100vw; background-image: url(${survivors[0].media.nodes[0].bannerImage})">
+                                  <img id="winner-img" class="finalWinner" onclick="openUrlInNewTab('${survivors[0].siteUrl}')" src="${survivors[0].image.large}" alt="${survivors[0].name.full}">
+                                </div>`
         finalBoard.innerHTML += '<button onclick="saveFinalBoard()" class="button" id="saveButton">SAVE RESULT</button>';
 
         let board = '<div id="board" class="element"><h3>Elimination Rankings</h3><div id="elimBoard">'; // Use <ol> for numbered list
