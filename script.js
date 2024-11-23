@@ -42,31 +42,40 @@ function saveElementAsJPG(elementId, fileName = 'screenshot.jpg') {
 
 function saveElementAsMultipleJPGs(elementId, fileName = 'final-board-part', maxHeight = 20000) {
     const element = document.getElementById(elementId);
-    const elementHeight = element.scrollHeight; // Total height of the element
-    const totalParts = Math.ceil(elementHeight / maxHeight); // Number of images to split into
-
-    let currentPart = 0; // Track the part being captured
-    let offsetY = 0; // Vertical offset for scrolling
+    const elementHeight = element.scrollHeight;
+    const totalParts = Math.ceil(elementHeight / maxHeight);
+    let currentPart = 0;
+    let offsetY = 0;
 
     function capturePart() {
         html2canvas(element, {
             useCORS: true,
             backgroundColor: null,
             y: offsetY,
-            height: Math.min(maxHeight, elementHeight - offsetY), // Limit the capture area
-            windowHeight: maxHeight, // Limit the canvas size
+            height: Math.min(maxHeight, elementHeight - offsetY),
+            windowHeight: maxHeight,
+            onclone: (clonedDoc) => {
+                // Find all animated elements in the cloned document
+                const clonedElement = clonedDoc.getElementById(elementId);
+                if (clonedElement) {
+                    // Force all animated elements to their final state
+                    clonedElement.querySelectorAll('*').forEach(el => {
+                        el.style.animation = 'none';
+                        el.style.opacity = '1';
+                    });
+                    clonedElement.style.animation = 'none';
+                    clonedElement.style.opacity = '1';
+                }
+            }
         }).then(canvas => {
-            // Create file name for each part
             const link = document.createElement('a');
             link.href = canvas.toDataURL('image/jpeg');
             link.download = `${fileName}${currentPart + 1}.jpg`;
             link.click();
 
-            // Move to the next part
             currentPart++;
             offsetY += maxHeight;
 
-            // If there are more parts to capture, call capturePart recursively
             if (currentPart < totalParts) {
                 capturePart();
             }
@@ -75,7 +84,7 @@ function saveElementAsMultipleJPGs(elementId, fileName = 'final-board-part', max
         });
     }
 
-    capturePart(); // Start capturing the first part
+    capturePart();
 }
 
 let isAltPressed = false;
