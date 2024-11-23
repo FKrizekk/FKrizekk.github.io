@@ -171,6 +171,7 @@
       width: 100vw;
       overflow-x: hidden;
       transition: all 1s ease-out;
+      margin: 0;
     }
 
     #finalWinner {
@@ -235,6 +236,9 @@
       background-position-x: center;
       padding: 10px 0;
     }
+    #genderInput{
+      border: 2px solid transparent;
+    }
   </style>
 </head>
 
@@ -242,7 +246,7 @@
   <div class="main" style="display: flex; flex-direction: column;">
     <div class="element">
       <h1>Anime Character Tournament</h1>
-      <p>It will look for characters from the most popular anime shows/movies right now using the AniList API.</p>
+      <p>It will look for the most popular characters from anime shows/movies using the AniList API.</p>
       <p>Choose your winner from each duel by clicking on them or pressing the left or right arrow key until only one
         remains!</p>
       <p>Alt-Clicking a character will open their AniList page.</p>
@@ -262,6 +266,14 @@
           <label style="font-family: KitchoScript-Slim;" for="characterCount">Maximum age:</label>
           <input style="font-family: KitchoScript-Slim;" class="button" type="number" id="maxAge" min="0"
             value="99999999">
+        </article>
+        <article class="buttonParent">
+          <label style="font-family: KitchoScript-Slim;" for="dropdown">Gender:</label>
+          <select style="font-family: KitchoScript-Slim;" class="button" id="genderInput">
+            <option value="Female">Female</option>
+            <option value="Male">Male</option>
+            <option value="Both">Both</option>
+          </select>
         </article>
       </section>
       <button style="font-family: KitchoScript-Slim;" class="button" id="startButton">START TOURNAMENT</button>
@@ -283,6 +295,7 @@
     const characterCountInput = document.getElementById('characterCount');
     const minAgeInput = document.getElementById('minAge');
     const maxAgeInput = document.getElementById('maxAge');
+    const genderInput = document.getElementById('genderInput');
     const startButton = document.getElementById('startButton');
 
 
@@ -296,6 +309,7 @@
     let desiredCharacterCount = parseInt(document.getElementById('characterCount').value);
     let desiredMinAge = parseInt(document.getElementById('minAge').value);
     let desiredMaxAge = parseInt(document.getElementById('maxAge').value);
+    let desiredGender = document.getElementById('genderInput').value;
 
     // Add an event listener to the button
     startButton.addEventListener('click',
@@ -303,6 +317,7 @@
         desiredCharacterCount = parseInt(characterCountInput.value);
         desiredMinAge = parseInt(minAgeInput.value);
         desiredMaxAge = parseInt(maxAgeInput.value);
+        desiredGender = genderInput.value;
         console.debug("Desired: " + desiredCharacterCount)
         characters = [];
         survivors = [];
@@ -382,9 +397,16 @@
             },
             body: JSON.stringify({ query: query }),
           });
+          
+          console.log(`Desired gender: ${(desiredGender === "Both" ? ["Female" || "Male"] : desiredGender)}`);
 
           const result = await response.json();
-          const newCharacters = result.data.Page.characters.filter(character => character.gender === 'Female' && parseInt(character.age) >= desiredMinAge && parseInt(character.age) <= desiredMaxAge && !(character in characters));
+          let newCharacters;
+          if(desiredGender === "Both"){
+            newCharacters = result.data.Page.characters.filter(character => parseInt(character.age) >= desiredMinAge && parseInt(character.age) <= desiredMaxAge && !(character in characters));
+          }else{
+            newCharacters = result.data.Page.characters.filter(character => character.gender === desiredGender && parseInt(character.age) >= desiredMinAge && parseInt(character.age) <= desiredMaxAge && !(character in characters));
+          }
 
           characters = characters.concat(newCharacters);
           totalCharactersFetched += newCharacters.length;
