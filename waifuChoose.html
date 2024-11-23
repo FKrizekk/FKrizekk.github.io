@@ -170,7 +170,6 @@
       justify-items: center;
       width: 100vw;
       overflow-x: hidden;
-      transition: all 1s ease-out;
       margin: 0;
     }
 
@@ -239,8 +238,11 @@
       background-size: contain;
       display: flex;
     }
-    #genderInput{
+    #genderInput,#searchTypeInput{
       border: 2px solid transparent;
+    }
+    option{
+      font-family: KitchoScript-Slim;
     }
   </style>
 </head>
@@ -259,7 +261,7 @@
         <article class="buttonParent">
           <label style="font-family: KitchoScript-Slim;" for="characterCount">Number of characters:</label>
           <input style="font-family: KitchoScript-Slim;" class="button" type="number" id="characterCount" min="2"
-            value="750">
+            value="400">
         </article>
         <article class="buttonParent">
           <label style="font-family: KitchoScript-Slim;" for="characterCount">Minimum age:</label>
@@ -281,8 +283,8 @@
         <article class="buttonParent">
           <label style="font-family: KitchoScript-Slim;" for="dropdown">Search type:</label>
           <select style="font-family: KitchoScript-Slim;" class="button" id="searchTypeInput">
-            <option value="Favorites">Favorites</option>
             <option value="Trending">Trending</option>
+            <option value="Favorites">Favorites</option>
           </select>
         </article>
       </section>
@@ -311,6 +313,7 @@
 
 
     let characters = [];
+    let allMedia = [];
     let eliminated = [];
     let survivors = [];
     let currentDuel = [];
@@ -333,6 +336,7 @@
         desiredSearchType = searchTypeInput.value;
         console.debug("Desired: " + desiredCharacterCount)
         characters = [];
+        allMedia = [];
         survivors = [];
         currentDuel = [];
         eliminated = [];
@@ -453,6 +457,8 @@
             newCharactersRaw = result.data.Page.characters;
           }else{
             let temp = result.data.Page.media.map(element => element.characters);
+            allMedia.push(...result.data.Page.media);
+
 
             temp.forEach(char => {
               newCharactersRaw.push(...char.nodes)
@@ -620,9 +626,11 @@
         media = character.media.nodes[0];
       }else{
         //media = character.media.edges[0].node;
-        media = result.data.Page.media.find(item => {
+        console.log(allMedia);
+        media = allMedia.find(item => {
           return item.characters.nodes.some(char => char.id === character.id);
         });
+        console.log(media);
       }
 
       if (media.title.english !== null) {
@@ -690,7 +698,7 @@
       if(desiredSearchType === "Favorites"){
         media = survivors[0].media.nodes[0];
       }else{
-        media = result.data.Page.media.find(item => {
+        media = allMedia.find(item => {
           return item.characters.nodes.some(char => char.id === survivors[0].id);
         });
       }
