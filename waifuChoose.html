@@ -129,12 +129,11 @@
       }
     }
 
-    h1 {
-      font-family: "KitchoScript-Slim";
-    }
-
     #saveButton {
       width: fit-content;
+    }
+
+    h1,#saveButton,option,label,input,button,select{
       font-family: 'KitchoScript-Slim';
     }
 
@@ -241,9 +240,6 @@
     #genderInput,#searchTypeInput{
       border: 2px solid transparent;
     }
-    option{
-      font-family: KitchoScript-Slim;
-    }
   </style>
 </head>
 
@@ -259,36 +255,36 @@
     <div class="element">
       <section id="inputs">
         <article class="buttonParent">
-          <label style="font-family: KitchoScript-Slim;" for="characterCount">Number of characters:</label>
-          <input style="font-family: KitchoScript-Slim;" class="button" type="number" id="characterCount" min="2"
+          <label for="characterCount">Number of characters:</label>
+          <input class="button" type="number" id="characterCount" min="2"
             value="400">
         </article>
         <article class="buttonParent">
-          <label style="font-family: KitchoScript-Slim;" for="characterCount">Minimum age:</label>
-          <input style="font-family: KitchoScript-Slim;" class="button" type="number" id="minAge" min="0" value="0">
+          <label for="characterCount">Minimum age:</label>
+          <input class="button" type="number" id="minAge" min="0" value="0">
         </article>
         <article class="buttonParent">
-          <label style="font-family: KitchoScript-Slim;" for="characterCount">Maximum age:</label>
-          <input style="font-family: KitchoScript-Slim;" class="button" type="number" id="maxAge" min="0"
+          <label for="characterCount">Maximum age:</label>
+          <input class="button" type="number" id="maxAge" min="0"
             value="99999999">
         </article>
         <article class="buttonParent">
-          <label style="font-family: KitchoScript-Slim;" for="dropdown">Gender:</label>
-          <select style="font-family: KitchoScript-Slim;" class="button" id="genderInput">
+          <label for="dropdown">Gender:</label>
+          <select class="button" id="genderInput">
             <option value="Female">Female</option>
             <option value="Male">Male</option>
             <option value="Both">Both</option>
           </select>
         </article>
         <article class="buttonParent">
-          <label style="font-family: KitchoScript-Slim;" for="dropdown">Search type:</label>
-          <select style="font-family: KitchoScript-Slim;" class="button" id="searchTypeInput">
+          <label for="dropdown">Search type:</label>
+          <select class="button" id="searchTypeInput">
             <option value="Trending">Trending</option>
             <option value="Favorites">Favorites</option>
           </select>
         </article>
       </section>
-      <button style="font-family: KitchoScript-Slim;" class="button" id="startButton">START TOURNAMENT</button>
+      <button class="button" id="startButton">START TOURNAMENT</button>
     </div>
   </div>
 
@@ -451,17 +447,16 @@
 
           result = await response.json();
           let newCharactersRaw = [];
-          let newCharacters;
+          let newCharacters = [];
 
           if(desiredSearchType === "Favorites"){
             newCharactersRaw = result.data.Page.characters;
           }else{
             let temp = result.data.Page.media.map(element => element.characters);
             allMedia.push(...result.data.Page.media);
-
-
+            
             temp.forEach(char => {
-              newCharactersRaw.push(...char.nodes)
+              newCharactersRaw.push(...char.nodes);
             });
           }
 
@@ -470,7 +465,25 @@
           if(desiredGender === "Both"){
             newCharacters = newCharactersRaw.filter(character => ((parseInt(character.age) >= desiredMinAge && parseInt(character.age) <= desiredMaxAge) || character.age == null) && !(character in characters));
           }else{
-            newCharacters = newCharactersRaw.filter(character => character.gender === desiredGender && ((parseInt(character.age) >= desiredMinAge && parseInt(character.age) <= desiredMaxAge) || character.age == null) && !(character in characters));
+            let seenIds = new Set(); // Track IDs we've already processed
+
+            newCharactersRaw.forEach(character => {
+                // Skip if we've already seen this ID in the current batch
+                if (seenIds.has(character.id)) {
+                    return;
+                }
+                
+                let age = character.age ? parseInt(character.age) : null;
+                
+                // Check all conditions
+                if (character.gender === desiredGender && 
+                    (age === null || (age >= desiredMinAge && age <= desiredMaxAge)) && 
+                    !characters.some(c => c.id === character.id)) {
+                    
+                    newCharacters.push(character);
+                    seenIds.add(character.id); // Mark this ID as processed
+                }
+            });
           }
 
           characters = characters.concat(newCharacters);
@@ -490,6 +503,11 @@
           // Break if we've reached the desired number of characters or there are no more characters
           if (totalCharactersFetched >= desiredCharacterCount || emptyPages > 10) {
             console.debug("BREAK")
+            characters.forEach(element => {
+              if(element.name.full.trim() === "Mikasa Ackerman"){
+                console.log("1")
+              }
+            });
             emptyPages = 0;
             break;
           }
@@ -626,11 +644,9 @@
         media = character.media.nodes[0];
       }else{
         //media = character.media.edges[0].node;
-        console.log(allMedia);
         media = allMedia.find(item => {
           return item.characters.nodes.some(char => char.id === character.id);
         });
-        console.log(media);
       }
 
       if (media.title.english !== null) {
