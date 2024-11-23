@@ -3,6 +3,13 @@ function nameFunc(){
     audio.play();
 }
 
+const getMeta = (url, cb) => {
+    const img = new Image();
+    img.onload = () => cb(null, img);
+    img.onerror = (err) => cb(err);
+    img.src = url;
+};
+
 function scrollToElement(id){
     document.getElementById(id).scrollIntoView({ behavior: "smooth", block: "center" });
 }

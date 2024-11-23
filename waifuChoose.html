@@ -103,7 +103,7 @@
 
     .finalWinner {
       border: 5px solid gold;
-      box-shadow: 0 0 50px rgba(255, 215, 0, 0.8), 0 0 10px rgba(255, 140, 0, 0.6);
+      box-shadow: 0 0 200px 30px rgba(255, 215, 0, 0.8), 0 0 10px rgba(255, 140, 0, 0.6);
       transform-style: preserve-3d;
       transform: scale(1.1);
       border-radius: 10px;
@@ -235,6 +235,9 @@
       background-repeat: no-repeat;
       background-position-x: center;
       padding: 10px 0;
+      background-position: center;
+      background-size: contain;
+      display: flex;
     }
     #genderInput{
       border: 2px solid transparent;
@@ -275,6 +278,13 @@
             <option value="Both">Both</option>
           </select>
         </article>
+        <article class="buttonParent">
+          <label style="font-family: KitchoScript-Slim;" for="dropdown">Search type:</label>
+          <select style="font-family: KitchoScript-Slim;" class="button" id="searchTypeInput">
+            <option value="Favorites">Favorites</option>
+            <option value="Trending">Trending</option>
+          </select>
+        </article>
       </section>
       <button style="font-family: KitchoScript-Slim;" class="button" id="startButton">START TOURNAMENT</button>
     </div>
@@ -296,6 +306,7 @@
     const minAgeInput = document.getElementById('minAge');
     const maxAgeInput = document.getElementById('maxAge');
     const genderInput = document.getElementById('genderInput');
+    const searchTypeInput = document.getElementById('searchTypeInput');
     const startButton = document.getElementById('startButton');
 
 
@@ -310,6 +321,7 @@
     let desiredMinAge = parseInt(document.getElementById('minAge').value);
     let desiredMaxAge = parseInt(document.getElementById('maxAge').value);
     let desiredGender = document.getElementById('genderInput').value;
+    let desiredSearchType = document.getElementById('searchTypeInput').value;
 
     // Add an event listener to the button
     startButton.addEventListener('click',
@@ -318,6 +330,7 @@
         desiredMinAge = parseInt(minAgeInput.value);
         desiredMaxAge = parseInt(maxAgeInput.value);
         desiredGender = genderInput.value;
+        desiredSearchType = searchTypeInput.value;
         console.debug("Desired: " + desiredCharacterCount)
         characters = [];
         survivors = [];
@@ -349,13 +362,14 @@
     }
 
     let emptyPages = 0;
+    let result;
     // Modify fetchCharacters to accept desiredCharacterCount as an argument
     async function fetchCharacters(desiredCharacterCount) {
       let currentPage = 1;
       let totalCharactersFetched = 0;
-
+      document.getElementById('status').textContent = "Fetching characters...";
       while (true) { // Keep fetching until we break explicitly
-        const query = `
+        const queryFavorites = `
         query {
             Page(perPage: ${charactersPerPage}, page: ${currentPage}) {
             characters(sort: FAVOURITES_DESC) {
@@ -387,6 +401,37 @@
             }
         }
         `;
+        const queryTrending = `
+        query{
+          Page(perPage: ${charactersPerPage}, page: ${currentPage}) {
+            media(sort: TRENDING_DESC, format_in: [MOVIE, ONA, ONE_SHOT, OVA, SPECIAL, TV, TV_SHORT], status_not: NOT_YET_RELEASED) {
+              title {
+                english
+                romaji
+              }
+              coverImage {
+                extraLarge
+              }
+              bannerImage
+              characters(role: MAIN) {
+                nodes {
+                  name {
+                    full
+                    first
+                  }
+                  id
+                  image {
+                    large
+                  }
+                  gender
+                  age
+                  siteUrl
+                }
+              }
+            }
+          }
+        }
+        `;
 
         try {
           const response = await fetch('https://graphql.anilist.co/', {
@@ -395,20 +440,35 @@
               'Content-Type': 'application/json',
               'Accept': 'application/json',
             },
-            body: JSON.stringify({ query: query }),
+            body: JSON.stringify({ query: desiredSearchType === "Favorites" ? queryFavorites : queryTrending }),
           });
           
           console.log(`Desired gender: ${(desiredGender === "Both" ? ["Female" || "Male"] : desiredGender)}`);
 
-          const result = await response.json();
+          result = await response.json();
+          let newCharactersRaw = [];
           let newCharacters;
-          if(desiredGender === "Both"){
-            newCharacters = result.data.Page.characters.filter(character => parseInt(character.age) >= desiredMinAge && parseInt(character.age) <= desiredMaxAge && !(character in characters));
+
+          if(desiredSearchType === "Favorites"){
+            newCharactersRaw = result.data.Page.characters;
           }else{
-            newCharacters = result.data.Page.characters.filter(character => character.gender === desiredGender && parseInt(character.age) >= desiredMinAge && parseInt(character.age) <= desiredMaxAge && !(character in characters));
+            let temp = result.data.Page.media.map(element => element.characters);
+
+            temp.forEach(char => {
+              newCharactersRaw.push(...char.nodes)
+            });
+          }
+
+          console.log(newCharactersRaw)
+
+          if(desiredGender === "Both"){
+            newCharacters = newCharactersRaw.filter(character => ((parseInt(character.age) >= desiredMinAge && parseInt(character.age) <= desiredMaxAge) || character.age == null) && !(character in characters));
+          }else{
+            newCharacters = newCharactersRaw.filter(character => character.gender === desiredGender && ((parseInt(character.age) >= desiredMinAge && parseInt(character.age) <= desiredMaxAge) || character.age == null) && !(character in characters));
           }
 
           characters = characters.concat(newCharacters);
+          console.log(characters)
           totalCharactersFetched += newCharacters.length;
           currentPage++;
 
@@ -554,15 +614,26 @@
 
       const charMedia = document.createElement('p');
       charMedia.id = 'charMedia';
-      if (character.media.nodes[0].title.english !== null) {
-        charMedia.textContent = character.media.nodes[0].title.english;
+
+      let media;
+      if(desiredSearchType === "Favorites"){
+        media = character.media.nodes[0];
+      }else{
+        //media = character.media.edges[0].node;
+        media = result.data.Page.media.find(item => {
+          return item.characters.nodes.some(char => char.id === character.id);
+        });
+      }
+
+      if (media.title.english !== null) {
+        charMedia.textContent = media.title.english;
       } else {
-        charMedia.textContent = character.media.nodes[0].title.romaji;
+        charMedia.textContent = media.title.romaji;
       }
       charDiv.appendChild(charMedia);
 
 
-      charDiv.style.backgroundImage = `linear-gradient(rgba(100, 100, 100, 0.6), rgba(0, 0, 0, 1)), url(${character.media.nodes[0].coverImage.extraLarge})`;
+      charDiv.style.backgroundImage = `linear-gradient(rgba(100, 100, 100, 0.6), rgba(0, 0, 0, 1)), url(${media.coverImage.extraLarge})`;
 
 
       container.appendChild(charDiv);
@@ -615,13 +686,28 @@
     function showFinalBoard() {
       updateStatus();
 
+      let media;
+      if(desiredSearchType === "Favorites"){
+        media = survivors[0].media.nodes[0];
+      }else{
+        media = result.data.Page.media.find(item => {
+          return item.characters.nodes.some(char => char.id === survivors[0].id);
+        });
+      }
 
       const finalBoard = document.getElementById('final-board');
       finalBoard.innerHTML = `<div style="text-align: center;" class=element><h2 id="finalWinner">1. Winner: <br>${survivors[0].name.full}</h2>`;
-      finalBoard.innerHTML += `<div id="finalBanner" style="width: 100vw; background-image: url(${survivors[0].media.nodes[0].bannerImage})">
+      finalBoard.innerHTML += `<div id="finalBanner" style="width: 100vw; background-image: url(${media.bannerImage})">
                                   <img id="winner-img" class="finalWinner" onclick="openUrlInNewTab('${survivors[0].siteUrl}')" src="${survivors[0].image.large}" alt="${survivors[0].name.full}">
                                 </div>`
       finalBoard.innerHTML += '<button onclick="saveFinalBoard()" class="button" id="saveButton">SAVE RESULT</button>';
+
+      getMeta(media.bannerImage, (err, img) => {
+        let ratio = img.naturalWidth / img.naturalHeight
+        let height = 100/ratio
+        document.getElementById("finalBanner").style.height = height + "vw";
+      });
+      
 
       let board = '<div id="board" class="element"><h3>Elimination Rankings</h3><div id="elimBoard">'; // Use <ol> for numbered list
       let rank = 2; // Initialize rank counter
