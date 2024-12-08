@@ -7,15 +7,18 @@
     <link rel="stylesheet" href="https://meyerweb.com/eric/tools/css/reset/reset.css">
     <script src="sharedScript.js"></script>
     <link rel="stylesheet" href="sharedStyle.css">
+    <link href="fontawesome/css/fontawesome.css" rel="stylesheet">
+    <link rel="stylesheet" href="fontawesome/css/solid.css">
     <title>František Křížek</title>
     <style>
         header{
             display: flex;
+            box-sizing: border-box;
             flex-direction: row;
             justify-content: space-between;
             align-items: center;
             padding: 5px 20%;
-            height: 35px;
+            height: 5%;
             border-bottom: 1px solid var(--primary);
         }
         h1{
@@ -37,6 +40,21 @@
         }
         main{
             margin: 0 20%;
+            height: 95%;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+        }
+        h2{
+            font-size: 5rem;
+        }
+        span{
+            color: var(--linearPrimarySecondary);
+        }
+        img{
+            height: 300px;
+            box-shadow: 0 0 50px 0 black;
         }
     </style>
 </head>
@@ -47,10 +65,12 @@
             <button class="navButton" onclick="goToUrl('waifuChoose.html')">Anime Character Tournament</button>
             <button class="navButton" onclick="goToUrl('https://github.com/FKrizekk')">Github</button>
             <button class="navButton" onclick="goToUrl('https://fkrizekk.itch.io/')">Itch</button>
+            <button class="navButton" onclick="toggleTheme()"><i class="fa-solid fa-circle-half-stroke"></i></button>
         </nav>
     </header>
     <main>
-        
+        <h2>I am<br>a <span>dumbass</span>.</h2>
+        <img src="https://i1.sndcdn.com/artworks-zyYqA8D0BdfuyH28-WeeHrw-t1080x1080.jpg" alt="a silly cat">
     </main>
 </body>
 </html>

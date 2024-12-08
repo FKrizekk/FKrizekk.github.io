@@ -22,6 +22,18 @@
 }
 
 body {
+    font-family: monospace;
     color: var(--text);
     background-color: var(--background);
+}
+
+button{
+    cursor: pointer;
+    color: var(--text);
+    background-color: var(--background);
+    border: none;
+}
+button:hover{
+    color: var(--background);
+    background-color: var(--text);
 }

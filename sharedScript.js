@@ -105,6 +105,12 @@ window.addEventListener('focus', () => {
     isAltPressed = false;
 });
 
+function toggleTheme(){
+    const currentTheme = document.documentElement.getAttribute('data-theme');
+    const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+    document.documentElement.setAttribute('data-theme', newTheme);
+    localStorage.setItem('theme', newTheme); // Save theme
+}
 
 
 
@@ -114,5 +120,10 @@ window.addEventListener('focus', () => {
 
 
 
-
-document.documentElement.setAttribute('data-theme', 'dark'); // Default theme
+// Load saved theme
+const savedTheme = localStorage.getItem('theme');
+if (savedTheme) {
+    document.documentElement.setAttribute('data-theme', savedTheme);
+}else{
+    document.documentElement.setAttribute('data-theme', 'dark'); // Default theme
+}
