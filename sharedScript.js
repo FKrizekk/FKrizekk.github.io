@@ -104,3 +104,15 @@ window.addEventListener("keyup", (event) => {
 window.addEventListener('focus', () => {
     isAltPressed = false;
 });
+
+
+
+
+
+
+
+
+
+
+
+document.documentElement.setAttribute('data-theme', 'dark'); // Default theme
