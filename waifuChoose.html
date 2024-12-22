@@ -5,14 +5,14 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Anime Character Tournament</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="sharedStyle.css">
   <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
   <style>
     #duel-container {
       display: flex;
       width: 60%;
       align-self: center;
-      justify-content: space-between;
+      justify-content: center;
       margin-top: 20px;
     }
 
@@ -61,7 +61,7 @@
       align-items: center;
       flex-direction: column;
       flex-wrap: wrap;
-      width: 100vw;
+      width: 100%;
     }
 
     #status {
@@ -110,6 +110,7 @@
       display: block;
       cursor: pointer;
       margin: auto;
+      height: 90%;
     }
 
     #final-board div,
@@ -133,8 +134,12 @@
       width: fit-content;
     }
 
-    h1,#saveButton,option,label,input,button,select{
+    #saveButton,button{
       font-family: 'KitchoScript-Slim';
+    }
+    label{
+      font-size: 16px;
+      font-weight: 900;
     }
 
     #charName {
@@ -167,8 +172,9 @@
       display: flex;
       flex-direction: column;
       justify-items: center;
-      width: 100vw;
       overflow-x: hidden;
+      overflow-y: scroll;
+      box-sizing: border-box;
       margin: 0;
     }
 
@@ -229,7 +235,7 @@
     }
 
     #finalBanner {
-      width: 100vw;
+      width: 100%;
       background-repeat: no-repeat;
       background-position-x: center;
       padding: 10px 0;
@@ -721,7 +727,7 @@
 
       const finalBoard = document.getElementById('final-board');
       finalBoard.innerHTML = `<div style="text-align: center;" class=element><h2 id="finalWinner">1. Winner: <br>${survivors[0].name.full}</h2>`;
-      finalBoard.innerHTML += `<div id="finalBanner" style="width: 100vw; background-image: url(${media.bannerImage})">
+      finalBoard.innerHTML += `<div id="finalBanner" style="width: 100%; background-image: url(${media.bannerImage})">
                                   <img id="winner-img" class="finalWinner" onclick="openUrlInNewTab('${survivors[0].siteUrl}')" src="${survivors[0].image.large}" alt="${survivors[0].name.full}">
                                 </div>`
       finalBoard.innerHTML += '<button onclick="saveFinalBoard()" class="button" id="saveButton">SAVE RESULT</button>';

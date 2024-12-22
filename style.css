@@ -10,12 +10,12 @@
     font-family: 'AsteroidBeat';
     src: url("fonts/Y1AsteroidBeat.otf") format('opentype');
 }
-
-
 *{
     font-family: monospace;
 }
-body{
+body {
+    color: var(--text);
+
     background-image: repeating-linear-gradient(-45deg, transparent, transparent 100px, #282828 100px, #282828 200px);
     background-color: #1e1e1e;
     display: flex;
@@ -24,6 +24,18 @@ body{
     min-height: 100vh;
     background-attachment: fixed;
     background-size: 100% auto;
+}
+input[type="number"] {
+    -moz-appearance: textfield; /* Firefox */
+    -webkit-appearance: none; /* Safari and Chrome */
+    appearance: none; /* Default property for modern browsers */
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    appearance: none;
+    margin: 0;
 }
 .element{
     background-color: rgb(48, 48, 48);
