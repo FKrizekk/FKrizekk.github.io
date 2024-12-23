@@ -555,7 +555,9 @@
       gameEnded = false;
       inputBlocked = false;
       startDuel();
-      scrollToElement("duel-container");
+      setTimeout(() => {
+        scrollToElement("duel-container");
+      }, 100);
     }
 
 
@@ -757,7 +759,9 @@
       finalBoard.innerHTML += board;
 
       gameEnded = true; // Block input after the final board is displayed
-      scrollToElement("winner-img");
+      setTimeout(() => {
+        scrollToElement("winner-img");
+      }, 100);
     }
   </script>
 </body>
