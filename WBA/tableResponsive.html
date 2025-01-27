@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dokument</title>
+    <link rel="stylesheet" href="https://api.ssps.cajthaml.eu/file/64d9f18f79dad891e8a07c73">
+    <!-- https://chatgpt.com/share/67372ff0-98a0-8013-b6d6-2395752ceb57 -->
+    <style>
+        body{
+            font-family: 'Lucida Sans';
+            color: white;
+            width: 100vw;
+            background-color: #2d3e50;
+            display: flex;
+            justify-content: center;
+        }
+        main{
+            width: 30vw;
+            background-color: #556773;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-evenly;
+            align-items: center;
+        }
+        main > h1{
+            font-size: 50px;
+        }
+        table{
+            width: 90%;
+        }
+        th{
+            font-weight: 900;
+            font-size: large;
+            text-align: center;
+            padding: 5px;
+            padding-bottom: 15px;
+        }
+        td{
+            padding:7px;
+            text-align: center;
+        }
+        tr:nth-child(even){
+            background-color: #44525b;
+        }
+        th:nth-child(2){
+            text-align: left;
+        }
+        td:nth-child(1){
+            text-decoration: underline;
+            padding-left: 0;
+        }
+        td:nth-child(2){
+            text-align: left;
+            padding-left: 0;
+        }
+        tr:nth-child(10n) td:nth-child(1) {
+            border-bottom: 3px green solid;
+        }
+        tr:nth-child(6n) td:nth-child(2), tr:nth-child(6n) td:nth-child(4), tr:nth-child(6n) td:nth-child(6) {
+            color: #ca15d0;
+        }
+        tr:nth-child(7n) td:nth-child(3){
+            color: #06edee;
+        }
+        td[colspan="5"] {
+            background-color: #5f5377;
+            border: 3px #71558a solid;
+            font-size: xx-large;
+            font-weight: 900;
+            vertical-align: middle;
+        }
+        @media (min-width: 1620px){
+            main{
+                height: 100vh;
+            }
+            body{
+                height: 100vh;
+            }
+        }
+        @media (max-width: 1620px){
+            main{
+                width: 70vw;
+                min-height: 100vh;
+            }
+        }
+        @media (max-width: 590px){
+            main{
+                width: 100vw;
+            }
+        }
+        @media (max-width: 390px){
+            td,tr{
+                font-size: 8px;
+            }
+            th{
+                font-size: 12px;
+            }
+            main{
+                justify-content: flex-start;
+                gap: 30px;
+            }
+            main > h1{
+                font-size: 30px;
+                margin-top: 50px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <h1>Výsledky</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Jméno</th>
+                    <th>Výher</th>
+                    <th>Proher</th>
+                    <th>K</th>
+                    <th>D</th>
+                    <th>A</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>1</td><td>SSPŠ Team</td><td>10</td><td>0</td><td colspan="3">perfect</td></tr>
+                <tr><td>2</td><td>Úžlabina</td><td>9</td><td>1</td><td>3</td><td>11</td><td>4</td></tr>
+                <tr><td>3</td><td>Angry Departure</td><td>4</td><td>2</td><td>6</td><td>107</td><td>18</td></tr>
+                <tr><td>4</td><td>Parallel Abuse</td><td>6</td><td>0</td><td>5</td><td>24</td><td>86</td></tr>
+                <tr><td>5</td><td>Flawless Human</td><td>0</td><td>2</td><td>3</td><td>60</td><td>40</td></tr>
+                <tr><td>6</td><td>Salty Hope</td><td>3</td><td>5</td><td>5</td><td>5</td><td>51</td></tr>
+                <tr><td>7</td><td>Affectionate Stroke</td><td>5</td><td>2</td><td>4</td><td>7</td><td>75</td></tr>
+                <tr><td>8</td><td>Key Plan</td><td>5</td><td>2</td><td>8</td><td>51</td><td>83</td></tr>
+                <tr><td>9</td><td>Dependent Media</td><td>0</td><td>3</td><td>9</td><td>35</td><td>10</td></tr>
+                <tr><td>10</td><td>Realistic Case</td><td>9</td><td>0</td><td>5</td><td>146</td><td>22</td></tr>
+                <tr><td>11</td><td>Huge Stone</td><td>8</td><td>3</td><td colspan="3">perfect</td></tr>
+                <tr><td>12</td><td>Hearty Discipline</td><td>3</td><td>4</td><td>3</td><td>51</td><td>9</td></tr>
+                <tr><td>13</td><td>Slow Hurt</td><td>2</td><td>2</td><td>7</td><td>26</td><td>76</td></tr>
+                <tr><td>14</td><td>Reasonable Survey</td><td>0</td><td>0</td><td>9</td><td>114</td><td>99</td></tr>
+                <tr><td>15</td><td>Austere Command</td><td>5</td><td>3</td><td>1</td><td>105</td><td>89</td></tr>
+                <tr><td>16</td><td>Sneaky Window</td><td>6</td><td>2</td><td>5</td><td>152</td><td>32</td></tr>
+                <tr><td>17</td><td>Glum Leg</td><td>4</td><td>3</td><td>9</td><td>120</td><td>29</td></tr>
+                <tr><td>18</td><td>Trivial Buy</td><td>5</td><td>0</td><td>0</td><td>39</td><td>99</td></tr>
+                <tr><td>19</td><td>Kind Voice</td><td>3</td><td>2</td><td>1</td><td>140</td><td>88</td></tr>
+                <tr><td>20</td><td>Utilized Responsibility</td><td colspan="5" rowspan="3">X</td></tr>
+                <tr><td>21</td><td>Honorable Constant</td></tr>
+                <tr><td>22</td><td>Flippant Fishing</td></tr>
+            </tbody>
+          </table>
+          
+    </main>
+</body>
+</html>
