@@ -1,29 +1,26 @@
 @font-face {
     font-family: 'CosmicIndustry';
-    src: url('fonts/Y1CosmicIndustry.otf') format('opentype');
+    src: url('/fonts/Y1CosmicIndustry.otf') format('opentype');
 }
 @font-face {
     font-family: 'KitchoScript-Slim';
-    src: url("fonts/KitchoScript-Slim.otf") format('opentype');
+    src: url("/fonts/KitchoScript-Slim.otf") format('opentype');
 }
 @font-face {
     font-family: 'AsteroidBeat';
-    src: url("fonts/Y1AsteroidBeat.otf") format('opentype');
+    src: url("/fonts/Y1AsteroidBeat.otf") format('opentype');
 }
 *{
     font-family: monospace;
 }
 body {
     color: var(--text);
-
-    background-image: repeating-linear-gradient(-45deg, transparent, transparent 100px, #282828 100px, #282828 200px);
-    background-color: #1e1e1e;
     display: flex;
     flex-direction: column;
-    background-repeat: no-repeat;
+    justify-content: center;
+    align-items: center;
     min-height: 100vh;
-    background-attachment: fixed;
-    background-size: 100% auto;
+    background-color: black;
 }
 input[type="number"] {
     -moz-appearance: textfield; /* Firefox */
