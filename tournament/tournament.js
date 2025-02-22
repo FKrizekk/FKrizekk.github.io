@@ -238,6 +238,7 @@ function updateStatus() {
 let duelsPerRound = 0; // Track the number of duels in the current round
 
 function startDuel() {
+    document.getElementById("loader").style.display = "none";
     console.debug(survivors.length);
 
     if (survivors.length <= 1) {
@@ -271,7 +272,6 @@ function startDuel() {
     vsText.textContent = "VS";
     vsText.style.color = 'white';
     vsText.style.fontFamily = "KitchoScript-Slim";
-    vsText.style.fontSize = '200px';
     vsText.style.margin = '0';
     vsText.style.marginLeft = '50px';
     vsText.style.marginRight = '50px';
@@ -282,6 +282,19 @@ function startDuel() {
 }
 let inputBlocked = false; // New flag to block input during animation
 let gameEnded = false; // Flag to prevent input after the game ends
+
+function addDownloadButton(element) {
+    // Position the element absolutely and ensure it's on top
+    element.style.position = 'fixed';
+    element.style.zIndex = '9999';
+
+    // Apply positioning or default to top-right
+    const position = { bottom: '10px', right: '10px' };
+    Object.assign(element.style, position);
+
+    // Add to document body
+    document.body.appendChild(element);
+}
 
 function displayCharacter(character, container) {
     const charDiv = document.createElement('div');
@@ -308,10 +321,12 @@ function displayCharacter(character, container) {
     });
 
     charDiv.appendChild(charImg);
+    infoContainer = document.createElement('div');
+    charDiv.appendChild(infoContainer);
     const charName = document.createElement('p');
     charName.id = 'charName';
     charName.textContent = character.name.full;
-    charDiv.appendChild(charName);
+    infoContainer.appendChild(charName);
 
     const charMedia = document.createElement('p');
     charMedia.id = 'charMedia';
@@ -331,7 +346,7 @@ function displayCharacter(character, container) {
     } else {
         charMedia.textContent = media.title.romaji;
     }
-    charDiv.appendChild(charMedia);
+    infoContainer.appendChild(charMedia);
 
 
     charDiv.style.backgroundImage = `linear-gradient(rgba(100, 100, 100, 0.6), rgba(0, 0, 0, 1)), url(${media.coverImage.extraLarge})`;
@@ -385,6 +400,13 @@ function saveFinalBoard() {
 }
 
 function showFinalBoard() {
+    document.getElementById('status').textContent = "";
+    // Create your element
+    const downloadButton = document.createElement('div');
+    downloadButton.innerHTML = '<button onclick="saveFinalBoard()" class="Btn"><svg class="svgIcon" viewBox="0 0 384 512" height="1em" xmlns="http://www.w3.org/2000/svg"><path d="M169.4 470.6c12.5 12.5 32.8 12.5 45.3 0l160-160c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 370.8 224 64c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 306.7L54.6 265.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l160 160z"></path></svg><span class="icon2"></span><span class="tooltip">Download</span></button>';
+    // Add it to the bottom-left corner
+    addDownloadButton(downloadButton);
+
     updateStatus();
 
     let media;
@@ -396,12 +418,12 @@ function showFinalBoard() {
         });
     }
 
+    document.body.style.justifyContent = 'flex-start';
     const finalBoard = document.getElementById('final-board');
     finalBoard.innerHTML = `<div style="text-align: center;" class=element><h2 id="finalWinner">1. Winner: <br>${survivors[0].name.full}</h2>`;
     finalBoard.innerHTML += `<div id="finalBanner" style="width: 100%; background-image: url(${media.bannerImage})">
                               <img id="winner-img" class="finalWinner" onclick="openUrlInNewTab('${survivors[0].siteUrl}')" src="${survivors[0].image.large}" alt="${survivors[0].name.full}">
                             </div>`
-    finalBoard.innerHTML += '<button onclick="saveFinalBoard()" class="button" id="saveButton">SAVE RESULT</button>';
 
     getMeta(media.bannerImage, (err, img) => {
         let ratio = img.naturalWidth / img.naturalHeight

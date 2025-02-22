@@ -8,12 +8,304 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
     <script src="tournament.js"></script>
     <script src="/sharedScript.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <link rel="stylesheet" href="style.css">
+    <script src="style.js"></script>
     <title>Document</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+        #duel-container {
+            display: flex;
+            width: 60%;
+            align-self: center;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .character-card {
+            text-align: center;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            padding: 20px;
+            width: 15vw;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease-out;
+            box-shadow: 0px 0px 25px rgb(20, 20, 20);
+            margin: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .character-card:hover {
+            transform: scale(1.01);
+            transform: translateY(-3%);
+            box-shadow: 0px 0px 15px -3px #ffffff;
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .character-card:active {
+            transform: scale(0.95);
+        }
+
+        .character-card img {
+            border-radius: 6px;
+            cursor: pointer;
+            box-shadow: 0px 0px 25px rgb(20, 20, 20);
+        }
+
+        .character-card p {
+            margin-bottom: 5px;
+        }
+
+        #final-board {
+            margin-top: 20px;
+            display: flex;
+            align-self: center;
+            align-items: center;
+            flex-direction: column;
+            flex-wrap: wrap;
+            width: 100%;
+        }
+
+        #status {
+            text-align: center;
+            align-self: center;
+            margin-top: 20px;
+            width: 200px;
+        }
+
+        .character-card.highlight {
+            position: relative;
+            transform: scale(1.4);
+            transition: all 0.2s ease;
+            z-index: 10;
+        }
+
+        .character-card.loser {
+            position: relative;
+            /* transform: translateY(100%); */
+            filter: blur(50px);
+            opacity: 0;
+            transition: all 0.2s ease;
+        }
+
+        .main {
+            width: 60vw;
+            align-self: center;
+        }
+
+        .finalWinner {
+            border: 5px solid gold;
+            box-shadow: 0 0 200px 30px rgba(255, 215, 0, 0.8), 0 0 10px rgba(255, 140, 0, 0.6);
+            transform-style: preserve-3d;
+            transform: scale(1.1);
+            border-radius: 5px;
+            display: block;
+            cursor: pointer;
+            margin: auto;
+            height: 90%;
+        }
+
+        #final-board div,
+        #final-board img,
+        #final-board button {
+            opacity: 0;
+            animation: fadeIn 2s forwards ease-in-out;
+        }
+
+        @keyframes winner-spin {
+            from {
+                transform: rotateZ(0deg);
+            }
+
+            to {
+                transform: rotateZ(360deg);
+            }
+        }
+
+        #saveButton {
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+
+        label {
+            font-size: 16px;
+            font-weight: 900;
+        }
+
+        #charName {
+            margin-top: 20px;
+            white-space: nowrap;
+            font-size: x-large;
+            text-shadow: 5px 5px 10px rgb(20, 20, 20);
+        }
+
+        .topElimImg {
+            height: 100%;
+            width: 100%;
+            border-radius: 8px;
+            object-fit: cover;
+            box-shadow: 0px 0px 25px rgb(20, 20, 20);
+        }
+
+        .elimDiv:hover {
+            cursor: pointer;
+        }
+
+        .elimDiv {
+            display: flex;
+            flex-direction: column;
+            margin: 20px;
+            margin-bottom: 0;
+            max-width: 200px;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-items: center;
+            overflow-x: hidden;
+            overflow-y: scroll;
+            box-sizing: border-box;
+            margin: 0;
+        }
+
+        #finalWinner {
+            overflow-wrap: anywhere;
+        }
+
+        #board {
+            display: flex;
+            flex-direction: column;
+            padding-bottom: 30px;
+        }
+
+        #elimBoard {
+            display: flex;
+            justify-content: space-evenly;
+            align-items: stretch;
+            flex-direction: row;
+            flex-wrap: wrap;
+        }
+
+        #board h3 {
+            text-align: center;
+            font-size: xx-large;
+            font-weight: bolder;
+        }
+
+        h3 {
+            text-shadow: 0px 0px 10px rgb(20, 20, 20);
+        }
+
+        #elimBoard img {
+            border: white 3px solid;
+        }
+
+        #charMedia {
+            color: #8d8d8d;
+        }
+
+        .character-card img {
+            opacity: 0;
+            transform: translateY(-5%);
+            animation: fadeIn 0.5s forwards ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        #finalBanner {
+            width: 100%;
+            background-repeat: no-repeat;
+            background-position-x: center;
+            padding: 10px 0;
+            background-position: center;
+            background-size: contain;
+            display: flex;
+        }
+
+        #duel-container > p{
+            font-size: 100px;
+        }
+        @media (orientation: portrait) {
+            *{
+                display: none;
+            }
+            html{
+                display: block;
+            }
+            body::before {
+                content: "Please rotate your device to landscape mode!";
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100vw;
+                height: 100vh;
+                background: #1a1a2e;
+                color: white;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                z-index: 9999;
+                font-size: 1.5rem;
+                text-align: center;
+            }
+
+            /* Hide original content in portrait */
+            body>*:not(:before) {
+                display: none;
+            }
+        }
+        @media (max-width: 1300px) {
+            body{
+                height: 100vh;
+            }
+            .character-card {
+                width: 33vw;
+                height: 50vh;
+                flex-direction: row;
+                justify-content: space-evenly;
+                align-items: center;
+                flex-shrink: 0;
+            }
+            .character-card div{
+                margin: 10px;
+            }
+            .character-card img{
+                height: 50vh;
+                width: auto;
+            }
+            #status{
+                position: absolute;
+                top: 10px;
+                width: 20%;
+            }
+            #duel-container > p{
+                font-size: 3rem;
+            }
+            #charName{
+                white-space: normal;
+            }
+        }
+    </style>
 </head>
 
 <body>
-    <p id="status"></p>
+    <div id="status"></div>
+    <div class="loader" id="loader">
+        <li class="dots" id="dot-1"></li>
+        <li class="dots" id="dot-2"></li>
+        <li class="dots" id="dot-3"></li>
+    </div>
     <div id="duel-container"></div>
     <div id="final-board"></div>
 </body>
