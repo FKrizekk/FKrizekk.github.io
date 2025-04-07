@@ -44,7 +44,6 @@ body {
         #16213e 100%);
     background-attachment: fixed;  /* Makes gradient viewport-relative */
     background-size: cover;
-    min-height: 100vh;
     /* Keep existing flex properties */
     display: flex;
     justify-content: center;
@@ -54,13 +53,10 @@ body {
 }
 
 form {
-    width: 50vw;
     display: flex;
     justify-content: center;
     align-items: stretch;
-    align-items: left;
     flex-direction: column;
-    gap: 0.5rem;
 }
 
 .typewriter span {
@@ -130,26 +126,31 @@ form {
     }
 }
 
+html{
+    height: 100%;
+}
 /* Add to your style.css */
 body {
     background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-    min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
     font-family: 'Poppins', sans-serif;
     color: white;
+    height: 100%;
 }
 
 form {
     background: rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(10px);
     padding: 2rem;
+    padding-top: 1rem;
     border-radius: 15px;
     border: 1px solid rgba(255, 255, 255, 0.2);
-    max-width: 500px;
-    width: 90%;
     box-shadow: 0 0 30px rgba(0, 0, 0, 0.3);
+    width: 40vw;
+    overflow: auto;
+    height: fit-content;
 }
 
 .typewriter {
