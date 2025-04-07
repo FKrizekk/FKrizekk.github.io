@@ -36,6 +36,13 @@ button {
     font-family: Poppins;
 }
 
+select,option{
+    cursor: pointer;
+}
+option{
+    background-color: var(--background);
+}
+
 body {
     background: linear-gradient(135deg, 
         #1a1a2e 0%, 

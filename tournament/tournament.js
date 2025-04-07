@@ -6,6 +6,8 @@ let characters = [];
 let allMedia = [];
 let eliminated = [];
 let survivors = [];
+let robinChars = [];
+let robinScore = [];
 let currentDuel = [];
 let round = 0;
 
@@ -15,6 +17,7 @@ let desiredMinAge = params.get("minAge");
 let desiredMaxAge = params.get("maxAge");
 let desiredGender = params.get("genderFilter");
 let desiredSearchType = params.get("searchType");
+let tournamentType = params.get("system");
 
 document.addEventListener("DOMContentLoaded", function () {
     fetchCharacters(desiredCharacterCount);
@@ -216,10 +219,21 @@ async function fetchCharacters(desiredCharacterCount) {
         }
     }
 
+    let robinCharacters = [...characters];
+    shuffleArray(robinCharacters);
+    if(tournamentType === "robin"){
+        [...robinCharacters].forEach(char => {
+            removeValue(robinCharacters, char).forEach(oChar => {
+                robinChars.push(char, oChar);
+            })
+        })
+    }
+    console.log(robinChars);
     shuffleArray(characters);
-
-
-    survivors = [...characters];
+    survivors = tournamentType === "robin" ? [...robinChars] : [...characters];
+    characters.forEach(char => {
+        robinScore[char.id] = 0; // Initialize scores for each character
+    });
     updateStatus();
     gameEnded = false;
     inputBlocked = false;
@@ -228,11 +242,20 @@ async function fetchCharacters(desiredCharacterCount) {
         scrollToElement("duel-container");
     }, 100);
 }
-
-
+function removeValue(array, value) {
+    const index = array.indexOf(value);
+    if (index > -1) {
+        array.splice(index, 1);
+    }
+    return array;
+}
 function updateStatus() {
     const statusElement = document.getElementById('status');
-    statusElement.innerHTML = `<h2>Round: ${round}</h2><p>Survivors Remaining: ${survivors.length}</p>`;
+    if(tournamentType === "robin"){
+        statusElement.innerHTML = `<p>Duels Remaining: ${Math.floor(survivors.length/2)}</p>`;
+    }else{
+        statusElement.innerHTML = `<h2>Round: ${round}</h2><p>Survivors Remaining: ${survivors.length}</p>`;
+    }
 }
 
 let duelsPerRound = 0; // Track the number of duels in the current round
@@ -359,8 +382,13 @@ function selectWinner(winner, loser) {
     if (inputBlocked || gameEnded) return; // If input is blocked or game ended, do nothing
 
     inputBlocked = true; // Block input during the animation
-    survivors.push(winner);
-    eliminated.push(loser);
+    if(tournamentType !== "robin"){
+        survivors.push(winner);
+        eliminated.push(loser);
+    }else{
+        robinScore[winner.id] = robinScore[winner.id] + 1;
+        console.log(robinScore);
+    }
 
     console.log(`Age of winner: ${parseInt(winner.age)}`);
 
@@ -400,6 +428,18 @@ function saveFinalBoard() {
 }
 
 function showFinalBoard() {
+    if(tournamentType === "robin"){
+        const items = Object.entries(robinScore);
+        items.sort(([, a], [, b]) => b - a);
+        items.forEach(([id, score]) => {
+            eliminated.push(characters.find(char => char.id == id));
+        });
+        survivors.push(eliminated.shift());
+        eliminated.reverse();
+        console.log(items);
+        console.log(eliminated);
+    }
+
     document.getElementById('status').textContent = "";
     // Create your element
     const downloadButton = document.createElement('div');
@@ -420,7 +460,11 @@ function showFinalBoard() {
 
     document.body.style.justifyContent = 'flex-start';
     const finalBoard = document.getElementById('final-board');
-    finalBoard.innerHTML = `<div style="text-align: center;" class=element><h2 id="finalWinner">1. Winner: <br>${survivors[0].name.full}</h2>`;
+    if(tournamentType === "robin"){
+        finalBoard.innerHTML = `<div s  tyle="text-align: center;" class=element><h2 id="finalWinner">1. [${robinScore[survivors[0].id]}] Winner: <br>${survivors[0].name.full}</h2>`;
+    }else{
+        finalBoard.innerHTML = `<div s  tyle="text-align: center;" class=element><h2 id="finalWinner">1. Winner: <br>${survivors[0].name.full}</h2>`;
+    }
     finalBoard.innerHTML += `<div id="finalBanner" style="width: 100%; background-image: url(${media.bannerImage})">
                               <img id="winner-img" class="finalWinner" onclick="openUrlInNewTab('${survivors[0].siteUrl}')" src="${survivors[0].image.large}" alt="${survivors[0].name.full}">
                             </div>`
@@ -436,15 +480,25 @@ function showFinalBoard() {
     let rank = 2; // Initialize rank counter
 
     eliminated.reverse();
-    console.debug(eliminated);
 
-    eliminated.forEach(char => {
-        board += `<div class="elimDiv" onclick="openUrlInNewTab('${char.siteUrl}')">
-                  <img class="topElimImg" src=${char.image.large} alt="">
-                  <div id='charName'>&#11165 ${rank}. ${char.name.first}</div>
-                </div>`;
-        rank++;
-    });
+    if(tournamentType === "robin"){
+        eliminated.forEach(char => {
+            board += `<div class="elimDiv" onclick="openUrlInNewTab('${char.siteUrl}')">
+                      <img class="topElimImg" src=${char.image.large} alt="">
+                      <div id='charName'>&#11165 ${rank}. [${robinScore[char.id]}] ${char.name.first}</div>
+                    </div>`;
+            rank++;
+        });
+    }else{
+        eliminated.forEach(char => {
+            board += `<div class="elimDiv" onclick="openUrlInNewTab('${char.siteUrl}')">
+                      <img class="topElimImg" src=${char.image.large} alt="">
+                      <div id='charName'>&#11165 ${rank}. ${char.name.first}</div>
+                    </div>`;
+            rank++;
+        });
+    }
+    
 
     board += "</div></div>"; // Close the div
     finalBoard.innerHTML += board;
