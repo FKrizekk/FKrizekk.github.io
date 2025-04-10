@@ -2,6 +2,8 @@
 const params = new URLSearchParams(window.location.search);
 
 
+
+
 let characters = [];
 let allMedia = [];
 let eliminated = [];
@@ -21,6 +23,13 @@ let tournamentType = params.get("system");
 
 document.addEventListener("DOMContentLoaded", function () {
     fetchCharacters(desiredCharacterCount);
+    if (params.get("system") === "robin") {
+        document.querySelector(".robin").style.opacity = "1";
+        document.querySelector(".knockout").style.opacity = "0";
+    } else {
+        document.querySelector(".robin").style.opacity = "0";
+        document.querySelector(".knockout").style.opacity = "1";
+    }
 });
 
 const pause = (time) => new Promise(resolve => setTimeout(resolve, time))
@@ -372,7 +381,7 @@ function displayCharacter(character, container) {
     infoContainer.appendChild(charMedia);
 
 
-    charDiv.style.backgroundImage = `linear-gradient(rgba(100, 100, 100, 0.6), rgba(0, 0, 0, 1)), url(${media.coverImage.extraLarge})`;
+    charDiv.style.backgroundImage = `linear-gradient(rgba(100, 100, 100, 0.6), rgb(10, 11, 43)), url(${media.coverImage.extraLarge})`;
 
 
     container.appendChild(charDiv);
