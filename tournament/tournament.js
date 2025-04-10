@@ -381,7 +381,7 @@ function displayCharacter(character, container) {
     infoContainer.appendChild(charMedia);
 
 
-    charDiv.style.backgroundImage = `linear-gradient(rgba(100, 100, 100, 0.6), rgb(10, 11, 43)), url(${media.coverImage.extraLarge})`;
+    charDiv.style.backgroundImage = `linear-gradient(rgba(100, 100, 100, 0.6), rgb(16 18 39)), url(${media.coverImage.extraLarge})`;
 
 
     container.appendChild(charDiv);
