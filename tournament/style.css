@@ -34,6 +34,11 @@ select,
 h2,
 button {
     font-family: Poppins;
+    font-family: monospace;
+}
+
+.textBG-text{
+    font-family: 'KitchoScript-Slim';
 }
 
 select,option{
@@ -56,6 +61,7 @@ body {
     justify-content: center;
     align-items: center;
     font-family: 'Poppins', sans-serif;
+    font-family: monospace;
     color: white;
 }
 
@@ -142,7 +148,6 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    font-family: 'Poppins', sans-serif;
     height: 100%;
 }
 form {
@@ -206,7 +211,7 @@ button{
     align-items: center;
     padding: 5px 30px;
     text-decoration: none;
-    font-family: 'Poppins', sans-serif;
+    font-family: inherit;
     font-weight: 600;
     font-size: 30px;
     color: var(--color-text);

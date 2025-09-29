@@ -61,6 +61,7 @@
     align-self: center;
     margin-top: 20px;
     width: 200px;
+    font-size: 1rem;
 }
 
 .character-card.highlight {

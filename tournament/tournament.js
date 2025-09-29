@@ -12,6 +12,8 @@ let robinChars = [];
 let robinScore = [];
 let currentDuel = [];
 let round = 0;
+let chosenAges = [];
+let averageAge = 0;
 
 const charactersPerPage = 50; // Number of characters to fetch per page
 let desiredCharacterCount = params.get("charCount");;
@@ -359,6 +361,14 @@ function displayCharacter(character, container) {
     charName.id = 'charName';
     charName.textContent = character.name.full;
     infoContainer.appendChild(charName);
+    ageText = document.createElement('p');
+    ageText.id = 'ageText';
+    if (character.age !== null && !isNaN(character.age)) {
+        ageText.textContent = `Age: ${character.age}`;
+    } else {
+        ageText.textContent = "Age: N/A";
+    }
+    infoContainer.appendChild(ageText);
 
     const charMedia = document.createElement('p');
     charMedia.id = 'charMedia';
@@ -400,6 +410,7 @@ function selectWinner(winner, loser) {
     }
 
     console.log(`Age of winner: ${parseInt(winner.age)}`);
+    chosenAges.push(parseInt(winner.age));
 
     const winnerCard = document.querySelector(`.character-card img[src="${winner.image.large}"]`).parentElement;
     winnerCard.classList.add('highlight');
@@ -472,7 +483,10 @@ function showFinalBoard() {
     if(tournamentType === "robin"){
         finalBoard.innerHTML = `<div s  tyle="text-align: center;" class=element><h2 id="finalWinner">1. [${robinScore[survivors[0].id]}] Winner: <br>${survivors[0].name.full}</h2>`;
     }else{
-        finalBoard.innerHTML = `<div s  tyle="text-align: center;" class=element><h2 id="finalWinner">1. Winner: <br>${survivors[0].name.full}</h2>`;
+        chosenAges = chosenAges.filter(age => !isNaN(age)); // Remove NaN values
+        averageAge = chosenAges.reduce((a, b) => a + b, 0) / chosenAges.length;
+        averageAge = Math.round(averageAge * 10) / 10; // Round to one decimal place
+        finalBoard.innerHTML = `<div s  tyle="text-align: center;" class=element><h2 id="finalWinner">Winner: ${survivors[0].name.full}<br>Average age: ${averageAge}</h2>`;
     }
     finalBoard.innerHTML += `<div id="finalBanner" style="width: 100%; background-image: url(${media.bannerImage})">
                               <img id="winner-img" class="finalWinner" onclick="openUrlInNewTab('${survivors[0].siteUrl}')" src="${survivors[0].image.large}" alt="${survivors[0].name.full}">
