@@ -13,6 +13,7 @@ let robinScore = [];
 let currentDuel = [];
 let round = 0;
 let chosenAges = [];
+let chosenIds = [];
 let averageAge = 0;
 
 const charactersPerPage = 50; // Number of characters to fetch per page
@@ -410,8 +411,9 @@ function selectWinner(winner, loser) {
     }
 
     console.log(`Age of winner: ${parseInt(winner.age)}`);
-    if (parseAnilistCharacterAge(winner.age) !== null)
+    if (parseAnilistCharacterAge(winner.age) !== null && chosenIds.indexOf(winner.id) === -1)
         chosenAges.push(parseAnilistCharacterAge(winner.age));
+    chosenIds.push(winner.id);
 
     const winnerCard = document.querySelector(`.character-card img[src="${winner.image.large}"]`).parentElement;
     winnerCard.classList.add('highlight');
