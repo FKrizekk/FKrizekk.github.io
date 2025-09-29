@@ -207,6 +207,13 @@ select {
     display: none;
 }
 
+#showAge{
+    width: 1rem;
+    aspect-ratio: 1;
+    cursor: pointer;
+    accent-color: #45b7af;
+}
+
 input:focus,
 select:focus,
 select:hover,

@@ -20,6 +20,7 @@ const charactersPerPage = 50; // Number of characters to fetch per page
 let desiredCharacterCount = params.get("charCount");;
 let desiredMinAge = params.get("minAge");
 let desiredMaxAge = params.get("maxAge");
+let showAge = params.get("showAge");
 let desiredGender = params.get("genderFilter");
 let desiredSearchType = params.get("searchType");
 let tournamentType = params.get("system");
@@ -153,7 +154,7 @@ async function fetchCharacters(desiredCharacterCount) {
             console.log(newCharactersRaw)
 
             if (desiredGender === "Both") {
-                newCharacters = newCharactersRaw.filter(character => ((parseInt(character.age) >= desiredMinAge && parseInt(character.age) <= desiredMaxAge) || character.age == null) && !(character in characters));
+                newCharacters = newCharactersRaw.filter(character => ((parseAnilistCharacterAge(character.age) >= desiredMinAge && parseAnilistCharacterAge(character.age) <= desiredMaxAge) || character.age == null) && !(character in characters));
             } else {
                 let seenIds = new Set(); // Track IDs we've already processed
 
@@ -369,6 +370,9 @@ function displayCharacter(character, container) {
     } else {
         ageText.textContent = "Age: N/A";
     }
+    if(!showAge){
+        ageText.style.display = "none";
+    }
     infoContainer.appendChild(ageText);
 
     const charMedia = document.createElement('p');
@@ -504,7 +508,7 @@ function showFinalBoard() {
     petermeter.style.display = "block";
     let stars = petermeter.querySelector(".stars");
     stars.style.backgroundSize = Math.max(0, Math.min(100, 100 - ((averageAge - 15) * (100 / 3)))) + "%";
-    petermeter.querySelector("p").textContent = "Average age: " + averageAge;
+    petermeter.querySelector("p").textContent = "Age median: " + averageAge;
     
 
     let board = '<div id="board" class="element"><h3>Elimination Rankings</h3><div id="elimBoard">'; // Use <ol> for numbered list
