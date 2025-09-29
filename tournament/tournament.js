@@ -410,7 +410,8 @@ function selectWinner(winner, loser) {
     }
 
     console.log(`Age of winner: ${parseInt(winner.age)}`);
-    chosenAges.push(parseInt(winner.age));
+    if (parseAnilistCharacterAge(winner.age) !== null)
+        chosenAges.push(parseAnilistCharacterAge(winner.age));
 
     const winnerCard = document.querySelector(`.character-card img[src="${winner.image.large}"]`).parentElement;
     winnerCard.classList.add('highlight');
@@ -483,7 +484,6 @@ function showFinalBoard() {
     if(tournamentType === "robin"){
         finalBoard.innerHTML = `<div s  tyle="text-align: center;" class=element><h2 id="finalWinner">1. [${robinScore[survivors[0].id]}] Winner: <br>${survivors[0].name.full}</h2>`;
     }else{
-        chosenAges = chosenAges.filter(age => !isNaN(age)); // Remove NaN values
         averageAge = chosenAges.reduce((a, b) => a + b, 0) / chosenAges.length;
         averageAge = Math.round(averageAge * 10) / 10; // Round to one decimal place
         finalBoard.innerHTML = `<div s  tyle="text-align: center;" class=element><h2 id="finalWinner">Winner: ${survivors[0].name.full}</h2>`;
@@ -536,4 +536,21 @@ function showFinalBoard() {
     setTimeout(() => {
         scrollToElement("winner-img");
     }, 100);
+}
+
+function parseAnilistCharacterAge(value) {
+  if (!value) return null;
+
+  // match numbers in the string
+  const numbers = value.match(/\d+/g);
+  if (!numbers) return null;
+
+  // single age
+  if (numbers.length === 1) {
+    return parseInt(numbers[0], 10);
+  }
+
+  // range like "16-18" → take average
+  const ints = numbers.map(n => parseInt(n, 10));
+  return Math.round(ints.reduce((a, b) => a + b, 0) / ints.length);
 }
