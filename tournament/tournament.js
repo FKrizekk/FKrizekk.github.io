@@ -363,8 +363,8 @@ function displayCharacter(character, container) {
     infoContainer.appendChild(charName);
     ageText = document.createElement('p');
     ageText.id = 'ageText';
-    if (character.age !== null && !isNaN(character.age)) {
-        ageText.textContent = `Age: ${character.age}`;
+    if (parseAnilistCharacterAge(character.age) !== null) {
+        ageText.textContent = "Age: " + parseAnilistCharacterAge(character.age);
     } else {
         ageText.textContent = "Age: N/A";
     }
