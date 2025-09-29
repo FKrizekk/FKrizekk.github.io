@@ -486,7 +486,7 @@ function showFinalBoard() {
     if(tournamentType === "robin"){
         finalBoard.innerHTML = `<div s  tyle="text-align: center;" class=element><h2 id="finalWinner">1. [${robinScore[survivors[0].id]}] Winner: <br>${survivors[0].name.full}</h2>`;
     }else{
-        averageAge = chosenAges.reduce((a, b) => a + b, 0) / chosenAges.length;
+        averageAge = median(chosenAges);
         averageAge = Math.round(averageAge * 10) / 10; // Round to one decimal place
         finalBoard.innerHTML = `<div s  tyle="text-align: center;" class=element><h2 id="finalWinner">Winner: ${survivors[0].name.full}</h2>`;
     }
@@ -555,4 +555,14 @@ function parseAnilistCharacterAge(value) {
   // range like "16-18" → take average
   const ints = numbers.map(n => parseInt(n, 10));
   return Math.round(ints.reduce((a, b) => a + b, 0) / ints.length);
+}
+
+function median(arr) {
+  if (arr.length === 0) return null;
+  const sorted = [...arr].sort((a, b) => a - b);
+  const mid = Math.floor(sorted.length / 2);
+
+  return sorted.length % 2 !== 0
+    ? sorted[mid]
+    : (sorted[mid - 1] + sorted[mid]) / 2;
 }
