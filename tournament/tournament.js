@@ -486,7 +486,7 @@ function showFinalBoard() {
         chosenAges = chosenAges.filter(age => !isNaN(age)); // Remove NaN values
         averageAge = chosenAges.reduce((a, b) => a + b, 0) / chosenAges.length;
         averageAge = Math.round(averageAge * 10) / 10; // Round to one decimal place
-        finalBoard.innerHTML = `<div s  tyle="text-align: center;" class=element><h2 id="finalWinner">Winner: ${survivors[0].name.full}<br>Average age: ${averageAge}</h2>`;
+        finalBoard.innerHTML = `<div s  tyle="text-align: center;" class=element><h2 id="finalWinner">Winner: ${survivors[0].name.full}</h2>`;
     }
     finalBoard.innerHTML += `<div id="finalBanner" style="width: 100%; background-image: url(${media.bannerImage})">
                               <img id="winner-img" class="finalWinner" onclick="openUrlInNewTab('${survivors[0].siteUrl}')" src="${survivors[0].image.large}" alt="${survivors[0].name.full}">
@@ -498,6 +498,12 @@ function showFinalBoard() {
         document.getElementById("finalBanner").style.height = height + "vw";
     });
 
+    petermeter = document.getElementById("peter-meter");
+    petermeter.style.display = "block";
+    let stars = petermeter.querySelector(".stars");
+    stars.style.backgroundSize = Math.max(0, Math.min(100, 100 - ((averageAge - 15) * (100 / 3)))) + "%";
+    petermeter.querySelector("p").textContent = "Average age: " + averageAge;
+    
 
     let board = '<div id="board" class="element"><h3>Elimination Rankings</h3><div id="elimBoard">'; // Use <ol> for numbered list
     let rank = 2; // Initialize rank counter
