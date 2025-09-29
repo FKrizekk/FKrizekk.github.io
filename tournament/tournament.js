@@ -20,7 +20,7 @@ const charactersPerPage = 50; // Number of characters to fetch per page
 let desiredCharacterCount = params.get("charCount");;
 let desiredMinAge = params.get("minAge");
 let desiredMaxAge = params.get("maxAge");
-let showAge = params.get("showAge");
+let showAge = params.get("showAge") === "true";
 let desiredGender = params.get("genderFilter");
 let desiredSearchType = params.get("searchType");
 let tournamentType = params.get("system");

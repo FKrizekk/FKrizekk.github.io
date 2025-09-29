@@ -23,7 +23,29 @@
         <label class="typewriter" for="maxAge">Max Age</label>
         <input type="number" name="maxAge" id="maxAge" value="99999">
         <label class="typewriter" for="showAge">Show Age</label>
-        <input type="checkbox" name="showAge" id="showAge" checked>
+        <div id="showAgeContainer">
+            <div id="showAgeBG" class="active"></div>
+            <p>
+                <span>E</span>
+                <span>N</span>
+                <span>A</span>
+                <span>B</span>
+                <span>L</span>
+                <span>E</span>
+                <span>D</span>
+            </p>
+            <p>
+                <span>D</span>
+                <span>I</span>
+                <span>S</span>
+                <span>A</span>
+                <span>B</span>
+                <span>L</span>
+                <span>E</span>
+                <span>D</span>
+            </p>
+        </div>
+        <input type="checkbox" name="showAge" id="showAge" value="true" checked>
         <label class="typewriter" for="genderFilter">Gender Filter</label>
         <select name="genderFilter" id="genderFilter">
             <option value="Female">Female</option>
@@ -101,6 +123,14 @@
 </body>
 
 <script>
+    document.getElementById("showAgeBG").classList.toggle("active", document.getElementById("showAge").checked);
+    document.getElementById("showAgeContainer").addEventListener("click", () => {
+        let showAgeBG = document.getElementById("showAgeBG");
+        showAgeBG.classList.toggle("active");
+        document.getElementById("showAge").checked = showAgeBG.classList.contains("active");
+    });
+
+
     document.getElementById("system").addEventListener("change", (e) => {
         if (e.target.value === "robin") {
             document.querySelector(".robin").style.opacity = "1";
