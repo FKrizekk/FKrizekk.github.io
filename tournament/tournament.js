@@ -12,11 +12,15 @@ let robinChars = [];
 let robinScore = [];
 let currentDuel = [];
 let round = 0;
+let chosenAges = [];
+let chosenIds = [];
+let averageAge = 0;
 
 const charactersPerPage = 50; // Number of characters to fetch per page
 let desiredCharacterCount = params.get("charCount");;
 let desiredMinAge = params.get("minAge");
 let desiredMaxAge = params.get("maxAge");
+let showAge = params.get("showAge") === "true";
 let desiredGender = params.get("genderFilter");
 let desiredSearchType = params.get("searchType");
 let tournamentType = params.get("system");
@@ -150,7 +154,7 @@ async function fetchCharacters(desiredCharacterCount) {
             console.log(newCharactersRaw)
 
             if (desiredGender === "Both") {
-                newCharacters = newCharactersRaw.filter(character => ((parseInt(character.age) >= desiredMinAge && parseInt(character.age) <= desiredMaxAge) || character.age == null) && !(character in characters));
+                newCharacters = newCharactersRaw.filter(character => ((parseAnilistCharacterAge(character.age) >= desiredMinAge && parseAnilistCharacterAge(character.age) <= desiredMaxAge) || character.age == null) && !(character in characters));
             } else {
                 let seenIds = new Set(); // Track IDs we've already processed
 
@@ -359,6 +363,17 @@ function displayCharacter(character, container) {
     charName.id = 'charName';
     charName.textContent = character.name.full;
     infoContainer.appendChild(charName);
+    ageText = document.createElement('p');
+    ageText.id = 'ageText';
+    if (parseAnilistCharacterAge(character.age) !== null) {
+        ageText.textContent = "Age: " + parseAnilistCharacterAge(character.age);
+    } else {
+        ageText.textContent = "Age: N/A";
+    }
+    if(!showAge){
+        ageText.style.display = "none";
+    }
+    infoContainer.appendChild(ageText);
 
     const charMedia = document.createElement('p');
     charMedia.id = 'charMedia';
@@ -400,6 +415,9 @@ function selectWinner(winner, loser) {
     }
 
     console.log(`Age of winner: ${parseInt(winner.age)}`);
+    if (parseAnilistCharacterAge(winner.age) !== null && chosenIds.indexOf(winner.id) === -1)
+        chosenAges.push(parseAnilistCharacterAge(winner.age));
+    chosenIds.push(winner.id);
 
     const winnerCard = document.querySelector(`.character-card img[src="${winner.image.large}"]`).parentElement;
     winnerCard.classList.add('highlight');
@@ -472,7 +490,9 @@ function showFinalBoard() {
     if(tournamentType === "robin"){
         finalBoard.innerHTML = `<div s  tyle="text-align: center;" class=element><h2 id="finalWinner">1. [${robinScore[survivors[0].id]}] Winner: <br>${survivors[0].name.full}</h2>`;
     }else{
-        finalBoard.innerHTML = `<div s  tyle="text-align: center;" class=element><h2 id="finalWinner">1. Winner: <br>${survivors[0].name.full}</h2>`;
+        averageAge = median(chosenAges);
+        averageAge = Math.round(averageAge * 10) / 10; // Round to one decimal place
+        finalBoard.innerHTML = `<div s  tyle="text-align: center;" class=element><h2 id="finalWinner">Winner: ${survivors[0].name.full}</h2>`;
     }
     finalBoard.innerHTML += `<div id="finalBanner" style="width: 100%; background-image: url(${media.bannerImage})">
                               <img id="winner-img" class="finalWinner" onclick="openUrlInNewTab('${survivors[0].siteUrl}')" src="${survivors[0].image.large}" alt="${survivors[0].name.full}">
@@ -484,6 +504,12 @@ function showFinalBoard() {
         document.getElementById("finalBanner").style.height = height + "vw";
     });
 
+    petermeter = document.getElementById("peter-meter");
+    petermeter.style.display = "block";
+    let stars = petermeter.querySelector(".stars");
+    stars.style.backgroundSize = Math.max(0, Math.min(100, 100 - ((averageAge - 15) * (100 / 3)))) + "%";
+    petermeter.querySelector("p").textContent = "Age median: " + averageAge;
+    
 
     let board = '<div id="board" class="element"><h3>Elimination Rankings</h3><div id="elimBoard">'; // Use <ol> for numbered list
     let rank = 2; // Initialize rank counter
@@ -516,4 +542,31 @@ function showFinalBoard() {
     setTimeout(() => {
         scrollToElement("winner-img");
     }, 100);
+}
+
+function parseAnilistCharacterAge(value) {
+  if (!value) return null;
+
+  // match numbers in the string
+  const numbers = value.match(/\d+/g);
+  if (!numbers) return null;
+
+  // single age
+  if (numbers.length === 1) {
+    return parseInt(numbers[0], 10);
+  }
+
+  // range like "16-18" → take average
+  const ints = numbers.map(n => parseInt(n, 10));
+  return Math.round(ints.reduce((a, b) => a + b, 0) / ints.length);
+}
+
+function median(arr) {
+  if (arr.length === 0) return null;
+  const sorted = [...arr].sort((a, b) => a - b);
+  const mid = Math.floor(sorted.length / 2);
+
+  return sorted.length % 2 !== 0
+    ? sorted[mid]
+    : (sorted[mid - 1] + sorted[mid]) / 2;
 }
