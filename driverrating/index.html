@@ -221,7 +221,12 @@
         document.getElementById('registerYesButton').addEventListener('click', () => {
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
-            supabase.auth.signUp({ email, password })
+            supabase.auth.signUp({
+                email: email,
+                password: password
+                }, {
+                redirectTo: 'https://fkrizekk.github.io/driverrating/'  // your desired URL
+                })
                 .then(({ data, error }) => {
                     if (error) {
                         console.error('Registration error:', error);
