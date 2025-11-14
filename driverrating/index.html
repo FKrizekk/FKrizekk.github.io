@@ -11,6 +11,13 @@
 </head>
 
 <body>
+    <div id="statsPanel">
+        <h2>My Stats</h2>
+        <div id="statsContent">
+            <!-- Stats will be dynamically loaded here -->
+        </div>
+    </div>
+    
     <main>
         <div id="ratingPanel">
             <h1>rate my drive</h1>
@@ -54,12 +61,7 @@
         </div>
     </div>
 
-    <div id="statsPanel">
-        <h2>My Stats</h2>
-        <div id="statsContent">
-            <!-- Stats will be dynamically loaded here -->
-        </div>
-    </div>
+    
 
 
     <script type="module">
@@ -103,11 +105,13 @@
 
                     const totalRatings = data.length;
                     const averageRating = (data.reduce((sum, entry) => sum + entry.rating, 0) / totalRatings).toFixed(2);
+                    const totalUsers = new Set(data.map(entry => entry.user_id)).size;
 
                     const statsContent = document.getElementById('statsContent');
                     statsContent.innerHTML = `
                         <p>Total Ratings: ${totalRatings}</p>
                         <p>Average Rating: ${averageRating}</p>
+                        <p>Total Users Rated: ${totalUsers}</p>
                     `;
                 });
         }

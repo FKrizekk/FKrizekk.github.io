@@ -110,13 +110,12 @@ button{
 
 #statsPanel{
     position: absolute;
-    left: 0;
+    left: 1rem;
     top: 30%;
     margin-top: 2rem;
     padding: 1rem;
     border: 1px solid white;
     width: 20rem;
-    max-width: 600px;
     background-color: rgb(40, 40, 40);
 }
 
@@ -125,4 +124,22 @@ button{
     flex-direction: column;
     gap: 0.5rem;
     margin-top: 1rem;
+}
+
+
+@media (max-width: 1400px) {
+    #statsPanel {
+        position: static;
+        width: auto;
+        margin: 1rem;
+    }
+
+    body{
+        height: auto;
+        width: auto;
+    }
+
+    main{
+        height: auto;
+    }
 }
