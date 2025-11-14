@@ -1,0 +1,128 @@
+body{
+    background-color: rgb(31, 31, 31);
+    color: white;
+    font-family: monospace;
+    margin: 0;
+    height: 100vh;
+}
+
+h1{
+    text-align: center;
+    font-size: 5rem;
+}
+
+h2{
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+main{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    gap: 2rem;
+    height: 100%;
+}
+
+#loginPanel, #ratingPanel{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+.starContainer{
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+}
+.star{
+    font-size: 5rem;
+    color: gray;
+    cursor: pointer;
+}
+.star.rated{
+    color: gold;
+}
+
+#registerModalContainer{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: none;
+    align-items: center;
+    justify-content: center;
+}
+
+#registerModal{
+    background-color: rgb(50, 50, 50);
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    border: 1px solid white;
+}
+
+#userPanel{
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+.modalButtons{
+    display: flex;
+    gap: 1rem;
+}
+
+button{
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    border: none;
+    cursor: pointer;
+}
+
+.notificationContainer{
+    position: absolute;
+    top: 1rem;
+    width: 100%;
+    height: 50%;
+    pointer-events: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: start;
+    gap: 1rem;
+}
+
+.notification{
+    background-color: rgb(50, 50, 50);
+    padding: 1rem 2rem;
+    border: 1px solid white;
+    border-radius: 5px;
+}
+
+#statsPanel{
+    position: absolute;
+    left: 0;
+    top: 30%;
+    margin-top: 2rem;
+    padding: 1rem;
+    border: 1px solid white;
+    width: 20rem;
+    max-width: 600px;
+    background-color: rgb(40, 40, 40);
+}
+
+#statsContent{
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: 1rem;
+}

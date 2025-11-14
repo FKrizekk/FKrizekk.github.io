@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://meyerweb.com/eric/tools/css/reset/reset.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <title>Dokument</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <main>
+        <div id="ratingPanel">
+            <h1>rate my drive</h1>
+    
+            <div class="starContainer">
+                <div class="star" style="--i:1;">&#9733;</div>
+                <div class="star" style="--i:2;">&#9733;</div>
+                <div class="star" style="--i:3;">&#9733;</div>
+                <div class="star" style="--i:4;">&#9733;</div>
+                <div class="star" style="--i:5;">&#9733;</div>
+            </div>
+
+            <button id="submitRatingButton">Submit</button>
+        </div>
+
+        <div id="loginPanel">
+            <h2>login</h2>
+            <input type="email" id="email" placeholder="Email">
+            <input type="password" id="password" placeholder="Password">
+            <button id="loginButton">Login</button>
+        </div>
+        <div id="userPanel">
+            <p>You are logged in as:</p>
+            <p id="userEmail">example@example.com</p>
+            <button id="logoutButton">Logout</button>
+        </div>
+    </main>
+
+    <div class="notificationContainer">
+
+    </div>
+
+    <div id="registerModalContainer">
+        <div id="registerModal">
+            <h2>Login failed</h2>
+            <p>Incorrect login or you aren't registered, would you like to register?</p>
+            <div class="modalButtons">
+                <button id="registerYesButton">Yes</button>
+                <button id="registerNoButton">No</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="statsPanel">
+        <h2>My Stats</h2>
+        <div id="statsContent">
+            <!-- Stats will be dynamically loaded here -->
+        </div>
+    </div>
+
+
+    <script type="module">
+        import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm'
+    
+        const supabaseUrl = 'https://cffytuffshfszpsybegc.supabase.co';
+        const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNmZnl0dWZmc2hmc3pwc3liZWdjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjMxMzg2OTIsImV4cCI6MjA3ODcxNDY5Mn0.oh7nWmofqKWtzHJmm8tfGpr62r7IoESNC3stg2YSOm4';
+        export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+
+        class UiNotification extends HTMLElement {
+            connectedCallback() {
+                const msg = document.createElement("p");
+                msg.className = "notificationMessage";
+                msg.textContent = this.getAttribute("message") || "";
+
+                this.appendChild(msg);
+                this.classList.add("notification");
+            }
+        }
+        customElements.define('notification-item', UiNotification);
+
+        function showNotification(message) {
+            const notification = document.createElement('notification-item'); // create the custom element
+            notification.setAttribute('message', message); // pass the message safely
+            document.querySelector('.notificationContainer').appendChild(notification);
+            setTimeout(() => {
+                document.querySelector('.notificationContainer').removeChild(notification);
+            }, 3000);
+        }
+
+        function fetchAndDisplayStats() {
+            supabase
+                .from('drive_ratings')
+                .select('rating')
+                .then(({ data, error }) => {
+                    if (error) {
+                        console.error('Error fetching stats:', error);
+                        showNotification('Error fetching stats: ' + error.message);
+                        return;
+                    }
+
+                    const totalRatings = data.length;
+                    const averageRating = (data.reduce((sum, entry) => sum + entry.rating, 0) / totalRatings).toFixed(2);
+
+                    const statsContent = document.getElementById('statsContent');
+                    statsContent.innerHTML = `
+                        <p>Total Ratings: ${totalRatings}</p>
+                        <p>Average Rating: ${averageRating}</p>
+                    `;
+                });
+        }
+
+        fetchAndDisplayStats();
+
+
+        function rateDrive(rating) {
+            // Submit the rating to the Supabase database if the user hasn't rated in the last hour
+
+            supabase.auth.getUser().then(({ data: { user } }) => {
+                if (!user) {
+                    showNotification('You must be logged in to submit a rating.');
+                    return;
+                }
+
+                const userId = user.id;
+                const now = new Date();
+                const oneHourAgo = new Date(now.getTime() - (60 * 60 * 1000));
+
+                supabase
+                    .from('drive_ratings')
+                    .select('*')
+                    .eq('user_id', userId)
+                    .gte('created_at', oneHourAgo.toISOString())
+                    .then(({ data, error }) => {
+                        console.log('Existing ratings:', data);
+                        if (error) {
+                            console.error('Error checking previous ratings:', error);
+                            showNotification('Error checking previous ratings: ' + error.message);
+                            return;
+                        }
+
+                        if (data.length > 0) {
+                            showNotification('You can only rate once per hour.');
+                        } else {
+                            supabase
+                                .from('drive_ratings')
+                                .insert([{ user_id: userId, rating: rating }])
+                                .then(({ data, error }) => {
+                                    if (error) {
+                                        console.error('Error submitting rating:', error);
+                                        showNotification('Error submitting rating: ' + error.message);
+                                    } else {
+                                        showNotification('Rating submitted successfully!');
+                                        fetchAndDisplayStats();
+                                    }
+                                });
+                        }
+                    });
+            });
+        }
+
+        document.querySelectorAll('.star').forEach(star => {
+            star.addEventListener('click', () => {
+                const rating = parseInt(star.style.getPropertyValue('--i'));
+                setStarRating(rating);
+            });
+        });
+
+        document.getElementById('submitRatingButton').addEventListener('click', () => {
+            const ratedStars = document.querySelectorAll('.star.rated').length;
+            if (ratedStars > 0) {
+                rateDrive(ratedStars);
+            } else {
+                showNotification('Please select a rating before submitting.');
+            }
+        });
+
+        
+
+        function setStarRating(rating) {
+            document.querySelectorAll('.star').forEach(star => {
+                const starValue = parseInt(star.style.getPropertyValue('--i'));
+                if (starValue <= rating) {
+                    star.classList.add('rated');
+                } else {
+                    star.classList.remove('rated');
+                }
+            });
+        }
+
+        function login(email, password) {
+            supabase.auth.signInWithPassword({ email, password })
+                .then(({ data, error }) => {
+                    if (error) {
+                        if (error.message === 'Invalid login credentials') {
+                            document.getElementById('registerModalContainer').style.display = 'flex';
+                            return;
+                        }
+
+                        console.error('Login error:', error);
+                        showNotification('Login failed: ' + error.message);
+                    } else {
+                        console.log('Login successful:', data);
+                        showNotification('Login successful!');
+                    }
+                });
+        }
+
+        document.getElementById('loginButton').addEventListener('click', () => {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            login(email, password);
+        });
+
+        document.getElementById('registerYesButton').addEventListener('click', () => {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            supabase.auth.signUp({ email, password })
+                .then(({ data, error }) => {
+                    if (error) {
+                        console.error('Registration error:', error);
+                        showNotification('Registration failed: ' + error.message);
+                    } else {
+                        console.log('Registration successful:', data);
+                        showNotification('Registration successful!');
+                    }
+                });
+            document.getElementById('registerModalContainer').style.display = 'none';
+        });
+
+        document.getElementById('registerNoButton').addEventListener('click', () => {
+            document.getElementById('registerModalContainer').style.display = 'none';
+        });
+
+        supabase.auth.onAuthStateChange((event, session) => {
+            console.log('Auth state changed:', event, session);
+            if (session && session.user) {
+                document.getElementById('userEmail').textContent = session.user.email;
+                document.getElementById('loginPanel').style.display = 'none';
+                document.getElementById('userPanel').style.display = 'flex';
+            } else {
+                document.getElementById('loginPanel').style.display = 'flex';
+                document.getElementById('userPanel').style.display = 'none';
+            }
+        });
+
+        document.getElementById('logoutButton').addEventListener('click', () => {
+            supabase.auth.signOut()
+                .then(({ error }) => {
+                    if (error) {
+                        console.error('Logout error:', error);
+                        showNotification('Logout failed: ' + error.message);
+                    } else {
+                        showNotification('Logout successful!');
+                    }
+                });
+        });
+    </script>
+</body>
+</html>
