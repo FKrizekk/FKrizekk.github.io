@@ -168,5 +168,12 @@
             </div>
         </div>
         <script src="sharedScript.js"></script>
+        <script type="module">
+            import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm'
+    
+            const supabaseUrl = 'https://cffytuffshfszpsybegc.supabase.co';
+            const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNmZnl0dWZmc2hmc3pwc3liZWdjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjMxMzg2OTIsImV4cCI6MjA3ODcxNDY5Mn0.oh7nWmofqKWtzHJmm8tfGpr62r7IoESNC3stg2YSOm4';
+            export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+        </script>
     </body>
 </html>
