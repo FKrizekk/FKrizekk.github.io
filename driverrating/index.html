@@ -96,7 +96,10 @@
             notification.setAttribute('message', message); // pass the message safely
             document.querySelector('.notificationContainer').appendChild(notification);
             setTimeout(() => {
-                document.querySelector('.notificationContainer').removeChild(notification);
+                notification.classList.add('animate__animated', 'animate__fadeOut');
+                notification.addEventListener('animationend', () => {
+                    notification.remove();
+                });
             }, 3000);
         }
 
