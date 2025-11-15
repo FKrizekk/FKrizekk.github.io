@@ -76,6 +76,10 @@ main{
     color: gold;
 }
 
+.star, .starBackground{
+    user-select: none;
+}
+
 #registerModalContainer{
     position: fixed;
     top: 0;
@@ -186,18 +190,25 @@ button{
 
 
 @media (max-width: 1400px) {
-    #statsPanel {
-        position: static;
-        width: auto;
-        margin: 1rem;
+    #sidePanels{
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
+    }
+}
+
+@media (max-height: 700px) {
+    #sidePanels{
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
     }
 
-    body{
-        height: auto;
-        width: auto;
+    #statsPanel, #loginPanel, #registerPanel, #loggedInPanel{
+        width: 12rem;
     }
 
-    main{
-        height: auto;
+    h1{
+        font-size: 3rem;
     }
 }
