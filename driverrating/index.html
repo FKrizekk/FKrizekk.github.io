@@ -11,17 +11,39 @@
 </head>
 
 <body>
-    <div id="statsPanel">
-        <h2>My Stats</h2>
-        <div id="statsContent">
-            <!-- Stats will be dynamically loaded here -->
+    <div id="sidePanels">
+        <div id="statsPanel">
+            <h2>My Stats</h2>
+            <div id="statsContent">
+                <!-- Stats will be dynamically loaded here -->
+            </div>
+        </div>
+        <div id="userPanel">
+            <div id="loginPanel">
+                <h2>Login</h2>
+                <p id="changeToRegisterButton" class="panelChangeButton">Register</p>
+                <input type="email" id="l-email" placeholder="Email">
+                <input type="password" id="l-password" placeholder="Password">
+                <button id="loginButton">Login</button>
+            </div>
+            <div id="registerPanel">
+                <h2>Register</h2>
+                <p id="changeToLoginButton" class="panelChangeButton">Login</p>
+                <input type="email" id="r-email" placeholder="Email">
+                <input type="password" id="r-password" placeholder="Password">
+                <button id="registerButton">Register</button>
+            </div>
+            <div id="loggedInPanel">
+                <h2>Logged in</h2>
+                <p id="userEmail"></p>
+                <button id="logoutButton">Logout</button>
+            </div>
         </div>
     </div>
     
     <main>
         <div id="ratingPanel">
             <h1>rate my drive</h1>
-    
             <div class="starContainer">
                 <div class="star" style="--i:1;">&#9733;</div>
                 <div class="star" style="--i:2;">&#9733;</div>
@@ -32,37 +54,11 @@
 
             <button id="submitRatingButton">Submit</button>
         </div>
-
-        <div id="loginPanel">
-            <h2>login</h2>
-            <input type="email" id="email" placeholder="Email">
-            <input type="password" id="password" placeholder="Password">
-            <button id="loginButton">Login</button>
-        </div>
-        <div id="userPanel">
-            <p>You are logged in as:</p>
-            <p id="userEmail">example@example.com</p>
-            <button id="logoutButton">Logout</button>
-        </div>
     </main>
 
     <div class="notificationContainer">
 
     </div>
-
-    <div id="registerModalContainer">
-        <div id="registerModal">
-            <h2>Login failed</h2>
-            <p>Incorrect login or you aren't registered, would you like to register?</p>
-            <div class="modalButtons">
-                <button id="registerYesButton">Yes</button>
-                <button id="registerNoButton">No</button>
-            </div>
-        </div>
-    </div>
-
-    
-
 
     <script type="module">
         import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm'
@@ -172,6 +168,17 @@
             });
         });
 
+        document.querySelectorAll('.star').forEach(star => {
+            star.addEventListener('mouseover', () => {
+                const rating = parseInt(star.style.getPropertyValue('--i'));
+                previewStarRating(rating);
+            });
+        });
+
+        document.querySelector(".starContainer").addEventListener('mouseleave', () => {
+            previewStarRating(0);
+        });
+
         document.getElementById('submitRatingButton').addEventListener('click', () => {
             const ratedStars = document.querySelectorAll('.star.rated').length;
             if (ratedStars > 0) {
@@ -194,12 +201,23 @@
             });
         }
 
+        function previewStarRating(rating) {
+            document.querySelectorAll('.star').forEach(star => {
+                const starValue = parseInt(star.style.getPropertyValue('--i'));
+                if (starValue <= rating) {
+                    star.classList.add('previewed');
+                } else {
+                    star.classList.remove('previewed');
+                }
+            });
+        }
+
         function login(email, password) {
             supabase.auth.signInWithPassword({ email, password })
                 .then(({ data, error }) => {
                     if (error) {
-                        if (error.message === 'Invalid login credentials') {
-                            document.getElementById('registerModalContainer').style.display = 'flex';
+                        if (error.message === 'missing email or phone') {
+                            showNotification('Login failed: missing email');
                             return;
                         }
 
@@ -213,20 +231,15 @@
         }
 
         document.getElementById('loginButton').addEventListener('click', () => {
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
+            const email = document.getElementById('l-email').value;
+            const password = document.getElementById('l-password').value;
             login(email, password);
         });
 
-        document.getElementById('registerYesButton').addEventListener('click', () => {
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            supabase.auth.signUp({
-                email: email,
-                password: password
-                }, {
-                redirectTo: 'https://fkrizekk.github.io/driverrating/'  // your desired URL
-                })
+        document.getElementById('registerButton').addEventListener('click', () => {
+            const email = document.getElementById('r-email').value;
+            const password = document.getElementById('r-password').value;
+            supabase.auth.signUp({ email, password })
                 .then(({ data, error }) => {
                     if (error) {
                         console.error('Registration error:', error);
@@ -236,22 +249,20 @@
                         showNotification('Registration successful! Please check your email to confirm your account.');
                     }
                 });
-            document.getElementById('registerModalContainer').style.display = 'none';
         });
 
-        document.getElementById('registerNoButton').addEventListener('click', () => {
-            document.getElementById('registerModalContainer').style.display = 'none';
-        });
 
         supabase.auth.onAuthStateChange((event, session) => {
             console.log('Auth state changed:', event, session);
             if (session && session.user) {
-                document.getElementById('userEmail').textContent = session.user.email;
+                document.getElementById('userEmail').textContent = "as: " + session.user.email;
                 document.getElementById('loginPanel').style.display = 'none';
-                document.getElementById('userPanel').style.display = 'flex';
+                document.getElementById('registerPanel').style.display = 'none';
+                document.getElementById('loggedInPanel').style.display = 'flex';
             } else {
                 document.getElementById('loginPanel').style.display = 'flex';
-                document.getElementById('userPanel').style.display = 'none';
+                document.getElementById('registerPanel').style.display = 'none';
+                document.getElementById('loggedInPanel').style.display = 'none';
             }
         });
 
@@ -265,6 +276,28 @@
                         showNotification('Logout successful!');
                     }
                 });
+        });
+
+        document.getElementById('changeToRegisterButton').addEventListener('click', () => {
+            document.getElementById('loginPanel').style.display = 'none';
+            document.getElementById('registerPanel').style.display = 'flex';
+        });
+
+        document.getElementById('changeToLoginButton').addEventListener('click', () => {
+            document.getElementById('registerPanel').style.display = 'none';
+            document.getElementById('loginPanel').style.display = 'flex';
+        });
+
+        document.querySelectorAll('#r-password, #l-password').forEach(input => {
+            input.addEventListener('keyup', (event) => {
+                if (event.key === 'Enter') {
+                    if (input.id === 'r-password') {
+                        document.getElementById('registerButton').click();
+                    } else {
+                        document.getElementById('loginButton').click();
+                    }
+                }
+            });
         });
     </script>
 </body>
