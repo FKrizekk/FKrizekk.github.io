@@ -50,6 +50,18 @@
                 <div class="star" style="--i:3;">&#9733;</div>
                 <div class="star" style="--i:4;">&#9733;</div>
                 <div class="star" style="--i:5;">&#9733;</div>
+                <div class="star" style="--i:6;">&#9733;</div>
+                <div class="star" style="--i:7;">&#9733;</div>
+                <div class="star" style="--i:8;">&#9733;</div>
+                <div class="star" style="--i:9;">&#9733;</div>
+                <div class="star" style="--i:10;">&#9733;</div>
+                <div id="starBackgroundContainer">
+                    <div class="starBackground">&#9733;</div>
+                    <div class="starBackground">&#9733;</div>
+                    <div class="starBackground">&#9733;</div>
+                    <div class="starBackground">&#9733;</div>
+                    <div class="starBackground">&#9733;</div>
+                </div>
             </div>
 
             <button id="submitRatingButton">Submit</button>
@@ -87,6 +99,18 @@
                 document.querySelector('.notificationContainer').removeChild(notification);
             }, 3000);
         }
+
+
+        // Crop stars to half-stars
+        document.querySelectorAll('.star').forEach(star => {
+            if (parseInt(star.style.getPropertyValue('--i')) % 2 === 1){
+                star.style.clipPath = "inset(0 50% 0 0)";
+                star.style.marginRight = "-5.1rem";
+            }else{
+                star.style.clipPath = "inset(0 0 0 50%)";
+                star.style.marginLeft = "-0.06rem";
+            }
+        });
 
         function fetchAndDisplayStats() {
             supabase
@@ -182,7 +206,7 @@
         document.getElementById('submitRatingButton').addEventListener('click', () => {
             const ratedStars = document.querySelectorAll('.star.rated').length;
             if (ratedStars > 0) {
-                rateDrive(ratedStars);
+                rateDrive(ratedStars/2);
             } else {
                 showNotification('Please select a rating before submitting.');
             }
@@ -199,6 +223,13 @@
                     star.classList.remove('rated');
                 }
             });
+            document.querySelectorAll('.starBackground').forEach((starBg, index) => {
+                if (index < rating / 2) {
+                    starBg.classList.add('rated');
+                } else {
+                    starBg.classList.remove('rated');
+                }
+            });
         }
 
         function previewStarRating(rating) {
@@ -208,6 +239,13 @@
                     star.classList.add('previewed');
                 } else {
                     star.classList.remove('previewed');
+                }
+            });
+            document.querySelectorAll('.starBackground').forEach((starBg, index) => {
+                if (index < rating / 2) {
+                    starBg.classList.add('previwed');
+                } else {
+                    starBg.classList.remove('previwed');
                 }
             });
         }
