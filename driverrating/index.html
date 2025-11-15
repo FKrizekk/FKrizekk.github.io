@@ -108,10 +108,9 @@
         document.querySelectorAll('.star').forEach(star => {
             if (parseInt(star.style.getPropertyValue('--i')) % 2 === 1){
                 star.style.clipPath = "inset(0 50% 0 0)";
-                star.style.marginRight = "-5.1rem";
             }else{
                 star.style.clipPath = "inset(0 0 0 50%)";
-                star.style.marginLeft = "-0.06rem";
+                star.style.marginLeft = -star.getBoundingClientRect().width - parseFloat(getComputedStyle(document.querySelector('.starContainer')).gap) + "px";
             }
         });
 
@@ -227,7 +226,7 @@
                 }
             });
             document.querySelectorAll('.starBackground').forEach((starBg, index) => {
-                if (index < rating / 2) {
+                if (index+1 <= rating / 2) {
                     starBg.classList.add('rated');
                 } else {
                     starBg.classList.remove('rated');
@@ -245,7 +244,7 @@
                 }
             });
             document.querySelectorAll('.starBackground').forEach((starBg, index) => {
-                if (index < rating / 2) {
+                if (index+1 <= rating / 2) {
                     starBg.classList.add('previwed');
                 } else {
                     starBg.classList.remove('previwed');

@@ -2,7 +2,7 @@ body{
     background-color: rgb(31, 31, 31);
     color: white;
     margin: 0;
-    height: 100vh;
+    height: 100dvh;
 }
 
 *{
@@ -39,11 +39,11 @@ main{
 .starContainer{
     display: flex;
     flex-direction: row;
-    gap: 1rem;
+    gap: 30px;
     position: relative;
 }
 .star{
-    font-size: 5rem;
+    font-size: 70px;
     color: gray;
     cursor: pointer;
 }
@@ -60,15 +60,17 @@ main{
     height: 100%;
     display: flex;
     flex-direction: row;
-    gap: 1rem;
+    gap: 30px;
     pointer-events: none;
     z-index: -1;
 }
 
-.starBackground{
-    font-size: 5rem;
-    color: gray;
+.starBackground {
+	font-size: 70px;
+	color: gray;
+	margin-left: 0px;
 }
+
 .starBackground.previwed{
     color: lightgray;
 }
@@ -78,6 +80,7 @@ main{
 
 .star, .starBackground{
     user-select: none;
+    -webkit-user-select: none;
 }
 
 #registerModalContainer{
