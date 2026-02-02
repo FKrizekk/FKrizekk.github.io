@@ -436,6 +436,11 @@ function selectWinner(winner, loser) {
     }
 
     console.log(`Age of winner: ${parseInt(winner.age)}`);
+
+    if(tramMode){
+        chosenAges.push(winner.age);
+    }
+
     if (parseAnilistCharacterAge(winner.age) !== null && chosenIds.indexOf(winner.id) === -1)
         chosenAges.push(parseAnilistCharacterAge(winner.age));
     chosenIds.push(winner.id);
@@ -509,6 +514,8 @@ function showFinalBoard() {
     document.body.style.justifyContent = 'flex-start';
     const finalBoard = document.getElementById('final-board');
     if(tournamentType === "robin"){
+        averageAge = robinMedian(chosenAges);
+        averageAge = Math.round(averageAge * 10) / 10; // Round to one decimal place
         finalBoard.innerHTML = `<div s  tyle="text-align: center;" class=element><h2 id="finalWinner">1. [${robinScore[survivors[0].id]}] Winner: <br>${survivors[0].name.full}</h2>`;
     }else{
         averageAge = median(chosenAges);
@@ -520,9 +527,11 @@ function showFinalBoard() {
                             </div>`
 
     getMeta(media.bannerImage, (err, img) => {
-        let ratio = img.naturalWidth / img.naturalHeight
-        let height = 100 / ratio
-        document.getElementById("finalBanner").style.height = height + "vw";
+        if (!tramMode){
+            let ratio = img.naturalWidth / img.naturalHeight
+            let height = 100 / ratio
+            document.getElementById("finalBanner").style.height = height + "vw";
+        }
     });
 
     petermeter = document.getElementById("peter-meter");
@@ -590,4 +599,23 @@ function median(arr) {
   return sorted.length % 2 !== 0
     ? sorted[mid]
     : (sorted[mid - 1] + sorted[mid]) / 2;
+}
+
+function robinMedian(arr) {
+    //return the median age of chosen winners, weighted by their robinScore
+    if (arr.length === 0) return null;
+    let weightedAges = [];
+    for (let i = 0; i < arr.length; i++) {
+        let age = arr[i];
+        let score = robinScore[chosenIds[i]];
+        for (let j = 0; j < score; j++) {
+            weightedAges.push(age);
+        }
+    }
+    const sorted = [...weightedAges].sort((a, b) => a - b);
+    const mid = Math.floor(sorted.length / 2);
+
+    return sorted.length % 2 !== 0
+        ? sorted[mid]
+        : (sorted[mid - 1] + sorted[mid]) / 2;
 }
