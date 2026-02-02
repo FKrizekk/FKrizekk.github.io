@@ -21,6 +21,7 @@ let desiredCharacterCount = params.get("charCount");;
 let desiredMinAge = params.get("minAge");
 let desiredMaxAge = params.get("maxAge");
 let showAge = params.get("showAge") === "true";
+let tramMode = params.get("tramMode") === "true";
 let desiredGender = params.get("genderFilter");
 let desiredSearchType = params.get("searchType");
 let tournamentType = params.get("system");
@@ -140,9 +141,25 @@ async function fetchCharacters(desiredCharacterCount) {
             let newCharactersRaw = [];
             let newCharacters = [];
 
+
             if (desiredSearchType === "Favorites") {
-                newCharactersRaw = result.data.Page.characters;
-            } else {
+                if(tramMode){
+                    try {
+                        const response = await fetch('trams.json');
+                        if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                        }
+                        const data = await response.json();
+                        newCharactersRaw = data.data.Page.characters;
+                        console.log(newCharactersRaw);
+                    } catch (error) {
+                        console.error('There was a problem fetching the data:', error);
+                    }
+                }else{
+                    newCharactersRaw = result.data.Page.characters;
+                    console.log(newCharactersRaw);
+                }
+            } else if(desiredSearchType === "Trending") {
                 let temp = result.data.Page.media.map(element => element.characters);
                 allMedia.push(...result.data.Page.media);
 
@@ -189,6 +206,10 @@ async function fetchCharacters(desiredCharacterCount) {
                 emptyPages++;
             } else {
                 emptyPages = 0;
+            }
+
+            if (tramMode) {
+                break;
             }
 
             // Break if we've reached the desired number of characters or there are no more characters

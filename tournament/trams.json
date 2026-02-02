@@ -1,0 +1,170 @@
+{
+    "data": {
+        "Page": {
+            "characters": [
+                {
+                    "name": {
+                        "full": "Škoda 52T ForCity Plus",
+                        "first": "52T"
+                    },
+                    "id": 9200,
+                    "image": {
+                        "large": "https://upload.wikimedia.org/wikipedia/commons/8/83/%C5%A0koda_52T%2C_Hlubo%C4%8Depy.jpg"
+                    },
+                    "gender": "Female",
+                    "age": "1",
+                    "siteUrl": "https://www.dpp.cz/en/entertainment-and-experience/public-transport-fans/public-transport-fleet/trams",
+                    "media": {
+                        "nodes": [
+                            {
+                                "title": {
+                                    "english": "Prague Public Transport",
+                                    "romaji": "Pražská integrovaná doprava"
+                                },
+                                "coverImage": {
+                                    "extraLarge": "https://example.com/images/pid-cover.jpg"
+                                },
+                                "bannerImage": "https://example.com/images/pid-banner.jpg"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "name": {
+                        "full": "Škoda 15T ForCity Alfa",
+                        "first": "15T"
+                    },
+                    "id": 9201,
+                    "image": {
+                        "large": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRgc7lES7kc-H3hSOu4K3rXAAUMvUsgd7WsgQ&s"
+                    },
+                    "gender": "Female",
+                    "age": "16",
+                    "siteUrl": "https://www.dpp.cz/en/entertainment-and-experience/public-transport-fans/public-transport-fleet/trams/skoda-15t",
+                    "media": {
+                        "nodes": [
+                            {
+                                "title": {
+                                    "english": "Prague Public Transport",
+                                    "romaji": "Pražská integrovaná doprava"
+                                },
+                                "coverImage": {
+                                    "extraLarge": "https://example.com/images/pid-cover.jpg"
+                                },
+                                "bannerImage": "https://example.com/images/pid-banner.jpg"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "name": {
+                        "full": "Škoda 14T Elektra",
+                        "first": "14T"
+                    },
+                    "id": 9111,
+                    "image": {
+                        "large": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQseLOpsF4TxGyBqbXtb_zq2WhhYPj-tAOiVg&s"
+                    },
+                    "gender": "Male",
+                    "age": "20",
+                    "siteUrl": "https://www.dpp.cz/en/entertainment-and-experience/public-transport-fans/public-transport-fleet/trams",
+                    "media": {
+                        "nodes": [
+                            {
+                                "title": {
+                                    "english": "Prague Public Transport",
+                                    "romaji": "Pražská integrovaná doprava"
+                                },
+                                "coverImage": {
+                                    "extraLarge": "https://example.com/images/pid-cover.jpg"
+                                },
+                                "bannerImage": "https://example.com/images/pid-banner.jpg"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "name": {
+                        "full": "Tatra KT8D5.RN2P",
+                        "first": "KT8D5"
+                    },
+                    "id": 9051,
+                    "image": {
+                        "large": "https://foto-busy.eu-central-1.linodeobjects.com/353469.jpg"
+                    },
+                    "gender": "Male",
+                    "age": "40",
+                    "siteUrl": "https://www.dpp.cz/en/entertainment-and-experience/public-transport-fans/public-transport-fleet/trams",
+                    "media": {
+                        "nodes": [
+                            {
+                                "title": {
+                                    "english": "Prague Public Transport",
+                                    "romaji": "Pražská integrovaná doprava"
+                                },
+                                "coverImage": {
+                                    "extraLarge": "https://example.com/images/pid-cover.jpg"
+                                },
+                                "bannerImage": "https://example.com/images/pid-banner.jpg"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "name": {
+                        "full": "Tatra T3R.P",
+                        "first": "T3"
+                    },
+                    "id": 8300,
+                    "image": {
+                        "large": "https://upload.wikimedia.org/wikipedia/commons/4/46/Tram_T3R.P_Brno.jpg"
+                    },
+                    "gender": "Female",
+                    "age": "64",
+                    "siteUrl": "https://www.dpp.cz/en/entertainment-and-experience/public-transport-fans/public-transport-fleet/trams",
+                    "media": {
+                        "nodes": [
+                            {
+                                "title": {
+                                    "english": "Prague Public Transport",
+                                    "romaji": "Pražská integrovaná doprava"
+                                },
+                                "coverImage": {
+                                    "extraLarge": "https://example.com/images/pid-cover.jpg"
+                                },
+                                "bannerImage": "https://example.com/images/pid-banner.jpg"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "name": {
+                        "full": "Tatra T3R.PLF",
+                        "first": "T3R.PLF"
+                    },
+                    "id": 8251,
+                    "image": {
+                        "large": "https://upload.wikimedia.org/wikipedia/commons/0/03/TT_Kotl%C3%A1%C5%99ka_-_S%C3%ADdli%C5%A1t%C4%9B_%C5%98epy%2C_Krematorium_Motol%2C_Tatra_T3R.PLF.jpg"
+                    },
+                    "gender": "Female",
+                    "age": "19",
+                    "siteUrl": "https://www.dpp.cz/en/entertainment-and-experience/public-transport-fans/public-transport-fleet/trams",
+                    "media": {
+                        "nodes": [
+                            {
+                                "title": {
+                                    "english": "Prague Public Transport",
+                                    "romaji": "Pražská integrovaná doprava"
+                                },
+                                "coverImage": {
+                                    "extraLarge": "https://example.com/images/pid-cover.jpg"
+                                },
+                                "bannerImage": "https://example.com/images/pid-banner.jpg"
+                            }
+                        ]
+                    }
+                }
+            ]
+        }
+    }
+}
